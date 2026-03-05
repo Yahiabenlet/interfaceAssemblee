@@ -15,6 +15,7 @@ type DisplayState = {
 
 export default function DisplayPage() {
   const [state, setState] = useState<DisplayState | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const load = () => {
@@ -38,10 +39,48 @@ export default function DisplayPage() {
     };
   }, []);
 
+  useEffect(() => {
+    const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "f") {
+        e.preventDefault();
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen?.();
+        } else {
+          document.exitFullscreen?.();
+        }
+      }
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
+  const toggleFullscreen = async () => {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen?.();
+    } else {
+      await document.exitFullscreen?.();
+    }
+  };
+
   if (!state) return <div className="w-screen h-screen bg-black" />;
 
   return (
-    <div className="min-h-screen bg-black p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
+      <button
+        onClick={toggleFullscreen}
+        className="absolute top-4 right-4 z-50 px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
+        title="Basculer plein écran (touche F)"
+      >
+        {isFullscreen ? "Quitter plein écran" : "Plein écran"}
+      </button>
+
       <div className="w-full max-w-5xl">
         <Hemicycle
           numSeats={state.numSeats}
