@@ -1,23 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Hemicycle from "./components/Hemicycle";
+
+type SeatColor = "white" | "green" | "red";
 
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [title, setTitle] = useState("Titre");
   const [paragraph, setParagraph] = useState("Votre paragraphe...");
+  const [seatColors, setSeatColors] = useState<SeatColor[]>([]);
+  const [presidentColor, setPresidentColor] = useState<SeatColor>("white");
+
+  const nextColor = (current: SeatColor): SeatColor => {
+    const colors: SeatColor[] = ["white", "green", "red"];
+    return colors[(colors.indexOf(current) + 1) % colors.length];
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const num = parseInt(inputValue);
     if (num >= 5 && num <= 20) {
       setNumSeats(num);
+      setSeatColors(Array(num).fill("white"));
+      setPresidentColor("white");
     } else {
       alert("Entrez un nombre entre 5 et 20");
     }
   };
+
+  const toggleSeat = (index: number) => {
+    setSeatColors((prev) => {
+      const next = [...prev];
+      next[index] = nextColor(next[index]);
+      return next;
+    });
+  };
+
+  const togglePresident = () => setPresidentColor((c) => nextColor(c));
+
+  useEffect(() => {
+    if (numSeats === null) return;
+    localStorage.setItem(
+      "hemicycleState",
+      JSON.stringify({ numSeats, title, paragraph, seatColors, presidentColor })
+    );
+  }, [numSeats, title, paragraph, seatColors, presidentColor]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
@@ -80,7 +109,24 @@ export default function Home() {
               </div>
             </div>
 
-            <Hemicycle numSeats={numSeats} title={title} paragraph={paragraph} />
+            <div className="mb-4 flex justify-end">
+              <button
+                onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
+              >
+                Ouvrir l’affichage plein écran
+              </button>
+            </div>
+
+            <Hemicycle
+              numSeats={numSeats}
+              title={title}
+              paragraph={paragraph}
+              seatColors={seatColors}
+              presidentColor={presidentColor}
+              onToggleSeat={toggleSeat}
+              onTogglePresident={togglePresident}
+            />
             <button
               onClick={() => setNumSeats(null)}
               className="mt-8 mx-auto block px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition"
