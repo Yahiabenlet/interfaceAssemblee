@@ -37,8 +37,8 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : 4;
 
-    // Un peu moins serré qu'avant
-    const rowRadii = rows === 3 ? [148, 172, 196] : [140, 162, 184, 206];
+    // Hémicycle plus gros (rayons augmentés)
+    const rowRadii = rows === 3 ? [160, 188, 216] : [152, 178, 204, 230];
 
     // Répartition progressive vers l'extérieur (style parlementaire)
     const baseWeights = rows === 3 ? [2, 3, 4] : [2, 3, 4, 5];
@@ -82,12 +82,11 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
         const radius = rowRadii[r];
         const x = 250 + radius * Math.cos(angle);
 
-        // Base actuelle
-        const baseY = 242 - radius * Math.sin(angle);
+        // Hémicycle encore plus bas
+        const baseY = 292 - radius * Math.sin(angle);
 
-        // Plus on est proche du centre (t≈0.5), plus on descend vers le bas
-        const centerProximity = 1 - Math.abs(t - 0.5) * 2; // 0 aux bords, 1 au centre
-        const centerDrop = 14 * centerProximity; // intensité du "creux" au centre
+        const centerProximity = 1 - Math.abs(t - 0.5) * 2;
+        const centerDrop = 18 * centerProximity;
 
         const y = baseY + centerDrop;
 
@@ -98,6 +97,24 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
 
     return result;
   }, [numSeats, seatColors]);
+
+  // Position Y du président: distance = 1.5 × distance moyenne entre rangées
+  const presidentY = useMemo(() => {
+    const rows = numSeats < 12 ? 3 : 4;
+    const rowRadii = rows === 3 ? [160, 188, 216] : [152, 178, 204, 230];
+
+    // Même formule verticale que les sièges, au centre (angle 90°, donc sin=1) + centerDrop max (=18)
+    const rowCenterYs = rowRadii.map((radius) => (292 - radius) + 18);
+
+    const sorted = [...rowCenterYs].sort((a, b) => a - b);
+    const deltas: number[] = [];
+    for (let i = 1; i < sorted.length; i++) deltas.push(sorted[i] - sorted[i - 1]);
+
+    const avgRowGap = deltas.length ? deltas.reduce((a, b) => a + b, 0) / deltas.length : 28;
+
+    const hemicycleBottomY = Math.max(...rowCenterYs);
+    return hemicycleBottomY + 1.5 * avgRowGap;
+  }, [numSeats]);
 
   const colorMap: Record<SeatColor, { fill: string; stroke: string }> = {
     white: { fill: "#ffffff", stroke: "#9ca3af" },
@@ -110,9 +127,9 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
         <div className="flex justify-center items-center mb-8">
           <svg viewBox="0 0 500 360" width="500" height="360" className="border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
-            {/* Arc de l'hémicycle aligné sur 40°–140° */}
+            {/* Arc guide descendu pour suivre le nouvel hémicycle */}
             <path
-              d="M 112 130 A 180 180 0 0 1 388 130"
+              d="M 100 176 A 196 196 0 0 1 400 176"
               fill="none"
               stroke="#ccc"
               strokeWidth="2"
@@ -125,7 +142,7 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
                 key={seat.index}
                 cx={seat.x}
                 cy={seat.y}
-                r="10"
+                r="12"
                 fill={colorMap[seat.color].fill}
                 stroke={colorMap[seat.color].stroke}
                 strokeWidth="2"
@@ -138,15 +155,15 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
             {/* Siège du président */}
             <circle
               cx="250"
-              cy="315"
-              r="11"
+              cy={presidentY}
+              r="13"
               fill={colorMap[presidentColor].fill}
               stroke={colorMap[presidentColor].stroke}
               strokeWidth="2"
               className="cursor-pointer transition hover:opacity-80"
               onClick={togglePresidentColor}
             />
-            <text x="250" y="343" textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
+            <text x="250" y={presidentY + 32} textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
               Président
             </text>
           </svg>
