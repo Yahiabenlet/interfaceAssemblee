@@ -34,6 +34,37 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
     };
   }, [seatColors, presidentColor]);
 
+  const majorityStatus = useMemo(() => {
+    const pour = seatColors.filter((c) => c === "green").length;
+    const contre = seatColors.filter((c) => c === "red").length;
+
+    const exprimes = pour + contre;
+    if (exprimes === 0) {
+      return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+    }
+
+    const ratioPour = pour / exprimes;
+
+    if (ratioPour >= 0.6) {
+      return { label: "Super Majorité 3/5", tone: "text-emerald-700 dark:text-emerald-300" };
+    }
+
+    if (ratioPour > 0.5) {
+      return { label: "Majorité simple (50%)", tone: "text-blue-700 dark:text-blue-300" };
+    }
+
+    if (ratioPour < 0.5) {
+      return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+    }
+
+    // ratioPour === 0.5 -> président prépondérant
+    if (presidentColor === "green") {
+      return { label: "Majorité simple (50%, voix du président prépondérante)", tone: "text-blue-700 dark:text-blue-300" };
+    }
+
+    return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+  }, [seatColors, presidentColor]);
+
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : 4;
 
@@ -172,29 +203,29 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
         </div>
 
         {/* Compteurs */}
-        <div className="grid grid-cols-3 gap-4 mt-8">
-          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-            <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              Votes Blancs
-            </div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-              {counts.white}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+          <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
+            <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>
+              {majorityStatus.label}
             </div>
           </div>
-          <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
-            <div className="text-sm font-medium text-green-600 dark:text-green-300">
-              Votes Pour
+
+          <div className="grid grid-rows-2 gap-4">
+            <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
+              <div className="text-sm font-medium text-green-600 dark:text-green-300">
+                Votes Pour
+              </div>
+              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">
+                {counts.green}
+              </div>
             </div>
-            <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">
-              {counts.green}
-            </div>
-          </div>
-          <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
-            <div className="text-sm font-medium text-red-600 dark:text-red-300">
-              Votes Contres
-            </div>
-            <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">
-              {counts.red}
+            <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
+              <div className="text-sm font-medium text-red-600 dark:text-red-300">
+                Votes Contres
+              </div>
+              <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">
+                {counts.red}
+              </div>
             </div>
           </div>
         </div>
