@@ -4,11 +4,13 @@ import { useState, useMemo } from "react";
 
 interface HemicycleProps {
   numSeats: number;
+  title: string;
+  paragraph: string;
 }
 
 type SeatColor = "white" | "green" | "red";
 
-export default function Hemicycle({ numSeats }: HemicycleProps) {
+export default function Hemicycle({ numSeats, title, paragraph }: HemicycleProps) {
   const [seatColors, setSeatColors] = useState<SeatColor[]>(Array(numSeats).fill("white"));
   const [presidentColor, setPresidentColor] = useState<SeatColor>("white");
 
@@ -148,50 +150,61 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-        <div className="flex justify-center items-center mb-8">
-          <svg viewBox="0 0 500 360" width="500" height="360" className="border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
-            <g transform="translate(250 220) scale(1.12) translate(-250 -220)">
-              {/* Arc guide descendu pour suivre le nouvel hémicycle */}
-              <path
-                d="M 100 176 A 196 196 0 0 1 400 176"
-                fill="none"
-                stroke="#ccc"
-                strokeWidth="2"
-                className="dark:stroke-gray-600"
-              />
+        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 items-start mb-8">
+          <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
+              {title || "Titre"}
+            </h2>
+            <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+              {paragraph || "Votre paragraphe..."}
+            </p>
+          </div>
 
-              {/* Sièges */}
-              {seats.map((seat) => (
+          <div className="flex justify-center items-center">
+            <svg viewBox="0 0 500 360" width="500" height="360" className="border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+              <g transform="translate(250 220) scale(1.12) translate(-250 -220)">
+                {/* Arc guide descendu pour suivre le nouvel hémicycle */}
+                <path
+                  d="M 100 176 A 196 196 0 0 1 400 176"
+                  fill="none"
+                  stroke="#ccc"
+                  strokeWidth="2"
+                  className="dark:stroke-gray-600"
+                />
+
+                {/* Sièges */}
+                {seats.map((seat) => (
+                  <circle
+                    key={seat.index}
+                    cx={seat.x}
+                    cy={seat.y}
+                    r="12"
+                    fill={colorMap[seat.color].fill}
+                    stroke={colorMap[seat.color].stroke}
+                    strokeWidth="2"
+                    className="cursor-pointer transition hover:opacity-80"
+                    onClick={() => toggleSeatColor(seat.index)}
+                    title={`Siège ${seat.index + 1}`}
+                  />
+                ))}
+
+                {/* Siège du président */}
                 <circle
-                  key={seat.index}
-                  cx={seat.x}
-                  cy={seat.y}
-                  r="12"
-                  fill={colorMap[seat.color].fill}
-                  stroke={colorMap[seat.color].stroke}
+                  cx="250"
+                  cy={presidentY}
+                  r="13"
+                  fill={colorMap[presidentColor].fill}
+                  stroke={colorMap[presidentColor].stroke}
                   strokeWidth="2"
                   className="cursor-pointer transition hover:opacity-80"
-                  onClick={() => toggleSeatColor(seat.index)}
-                  title={`Siège ${seat.index + 1}`}
+                  onClick={togglePresidentColor}
                 />
-              ))}
-
-              {/* Siège du président */}
-              <circle
-                cx="250"
-                cy={presidentY}
-                r="13"
-                fill={colorMap[presidentColor].fill}
-                stroke={colorMap[presidentColor].stroke}
-                strokeWidth="2"
-                className="cursor-pointer transition hover:opacity-80"
-                onClick={togglePresidentColor}
-              />
-              <text x="250" y={presidentY + 32} textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
-                Président
-              </text>
-            </g>
-          </svg>
+                <text x="250" y={presidentY + 32} textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
+                  Président
+                </text>
+              </g>
+            </svg>
+          </div>
         </div>
 
         {/* Compteurs */}
