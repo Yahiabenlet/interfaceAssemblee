@@ -127,45 +127,47 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
         <div className="flex justify-center items-center mb-8">
           <svg viewBox="0 0 500 360" width="500" height="360" className="border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
-            {/* Arc guide descendu pour suivre le nouvel hémicycle */}
-            <path
-              d="M 100 176 A 196 196 0 0 1 400 176"
-              fill="none"
-              stroke="#ccc"
-              strokeWidth="2"
-              className="dark:stroke-gray-600"
-            />
+            <g transform="translate(250 220) scale(1.12) translate(-250 -220)">
+              {/* Arc guide descendu pour suivre le nouvel hémicycle */}
+              <path
+                d="M 100 176 A 196 196 0 0 1 400 176"
+                fill="none"
+                stroke="#ccc"
+                strokeWidth="2"
+                className="dark:stroke-gray-600"
+              />
 
-            {/* Sièges */}
-            {seats.map((seat) => (
+              {/* Sièges */}
+              {seats.map((seat) => (
+                <circle
+                  key={seat.index}
+                  cx={seat.x}
+                  cy={seat.y}
+                  r="12"
+                  fill={colorMap[seat.color].fill}
+                  stroke={colorMap[seat.color].stroke}
+                  strokeWidth="2"
+                  className="cursor-pointer transition hover:opacity-80"
+                  onClick={() => toggleSeatColor(seat.index)}
+                  title={`Siège ${seat.index + 1}`}
+                />
+              ))}
+
+              {/* Siège du président */}
               <circle
-                key={seat.index}
-                cx={seat.x}
-                cy={seat.y}
-                r="12"
-                fill={colorMap[seat.color].fill}
-                stroke={colorMap[seat.color].stroke}
+                cx="250"
+                cy={presidentY}
+                r="13"
+                fill={colorMap[presidentColor].fill}
+                stroke={colorMap[presidentColor].stroke}
                 strokeWidth="2"
                 className="cursor-pointer transition hover:opacity-80"
-                onClick={() => toggleSeatColor(seat.index)}
-                title={`Siège ${seat.index + 1}`}
+                onClick={togglePresidentColor}
               />
-            ))}
-
-            {/* Siège du président */}
-            <circle
-              cx="250"
-              cy={presidentY}
-              r="13"
-              fill={colorMap[presidentColor].fill}
-              stroke={colorMap[presidentColor].stroke}
-              strokeWidth="2"
-              className="cursor-pointer transition hover:opacity-80"
-              onClick={togglePresidentColor}
-            />
-            <text x="250" y={presidentY + 32} textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
-              Président
-            </text>
+              <text x="250" y={presidentY + 32} textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
+                Président
+              </text>
+            </g>
           </svg>
         </div>
 
@@ -173,7 +175,7 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
         <div className="grid grid-cols-3 gap-4 mt-8">
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
             <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              Sièges Blancs
+              Votes Blancs
             </div>
             <div className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
               {counts.white}
@@ -181,7 +183,7 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
           </div>
           <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
             <div className="text-sm font-medium text-green-600 dark:text-green-300">
-              Sièges Verts
+              Votes Pour
             </div>
             <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">
               {counts.green}
@@ -189,7 +191,7 @@ export default function Hemicycle({ numSeats }: HemicycleProps) {
           </div>
           <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
             <div className="text-sm font-medium text-red-600 dark:text-red-300">
-              Sièges Rouges
+              Votes Contres
             </div>
             <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">
               {counts.red}
