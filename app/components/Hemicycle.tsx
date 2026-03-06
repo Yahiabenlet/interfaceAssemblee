@@ -84,6 +84,8 @@ export default function Hemicycle({
       green: all.filter((c) => c === "green").length,
       red: all.filter((c) => c === "red").length,
       orange: all.filter((c) => c === "orange").length,
+      // Les vétos (orange) comptent comme contre
+      against: all.filter((c) => c === "red" || c === "orange").length,
     };
   }, [seatColors, presidentColor]);
 
@@ -100,7 +102,8 @@ export default function Hemicycle({
     const hasSeatVeto = all.some((c) => c === "orange");
 
     const pour = all.filter((c) => c === "green").length;
-    const contre = all.filter((c) => c === "red").length;
+    // Les vétos (orange) comptent comme contre
+    const contre = all.filter((c) => c === "red" || c === "orange").length;
     const exprimes = pour + contre;
 
     if (hasSeatVeto) {
@@ -431,18 +434,14 @@ export default function Hemicycle({
                   <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px]">
                     <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
                   </div>
-                  <div className="grid grid-rows-3 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
+                  <div className="grid grid-rows-2 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
                     <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
                       <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
                       <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
                     </div>
                     <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
                       <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
-                      <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.red}</div>
-                    </div>
-                    <div className="bg-amber-50 dark:bg-amber-900 p-4 rounded-lg text-center">
-                      <div className="text-sm font-medium text-amber-700 dark:text-amber-300">Véto</div>
-                      <div className="text-3xl font-bold text-amber-700 dark:text-amber-400 mt-2">{counts.orange}</div>
+                      <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.against}</div>
                     </div>
                   </div>
                 </div>
