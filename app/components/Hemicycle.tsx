@@ -110,14 +110,24 @@ export default function Hemicycle({
     if (isNoConfidenceMotion) {
       const inscrits = all.length;
       const seuilAbsolu = Math.floor(inscrits / 2) + 1;
+      const allExpressed = all.every((c) => c !== "white");
+
+      if (!allExpressed) {
+        return {
+          label: "Vote en cours",
+          tone: "text-amber-700 dark:text-amber-300",
+        };
+      }
+
       if (pour >= seuilAbsolu) {
         return {
-          label: `Motion de censure adoptée (majorité absolue: ${pour}/${inscrits}, seuil ${seuilAbsolu})`,
+          label: "Motion de censure adoptée",
           tone: "text-emerald-700 dark:text-emerald-300",
         };
       }
+
       return {
-        label: `Motion de censure rejetée (majorité absolue requise: ${pour}/${inscrits}, seuil ${seuilAbsolu})`,
+        label: "Motion de censure rejetée",
         tone: "text-rose-700 dark:text-rose-300",
       };
     }
@@ -395,7 +405,19 @@ export default function Hemicycle({
                   </div>
                 </div>
 
-                {!isNoConfidenceMotion && (
+                {isNoConfidenceMotion ? (
+                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                    <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                      Motion de censure — Rappel des règles
+                    </div>
+                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
+                      Majorité absolue requise
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                      50% + 1 voix des inscrits
+                    </div>
+                  </div>
+                ) : (
                   <div
                     className={`rounded-lg p-4 border text-center ${
                       isControlValidated
