@@ -26,6 +26,11 @@ type ProvinceState = {
   "Etat de Tori Valu": ProvinceControl;
 };
 
+type PassedLaw = {
+  title: string;
+  text: string;
+};
+
 const CONTROL_OPTIONS: ProvinceControl[] = [
   "Indépendant",
   "Autonomie",
@@ -61,6 +66,11 @@ export default function Home() {
     "Provinces des Plasticiens": "Indépendant",
     "Etat de Tori Valu": "Indépendant",
   });
+  const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
+  const [lawFeedback, setLawFeedback] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -95,25 +105,51 @@ export default function Home() {
     setPresidentColor("white");
   };
 
+  const addCurrentLawToPassed = () => {
+    const lawTitle = title.trim();
+    const lawText = paragraph.trim();
+
+    if (!lawTitle && !lawText) {
+      setLawFeedback({
+        type: "error",
+        message: "Impossible d’ajouter : renseignez au moins un titre ou un texte.",
+      });
+      return;
+    }
+
+    setPassedLaws((prev) => [{ title: lawTitle || "Sans titre", text: lawText || "Sans texte" }, ...prev]);
+    setLawFeedback({
+      type: "success",
+      message: `Loi ajoutée${lawTitle ? ` : ${lawTitle}` : ""}.`,
+    });
+  };
+
+  useEffect(() => {
+    if (!lawFeedback) return;
+    const t = setTimeout(() => setLawFeedback(null), 2500);
+    return () => clearTimeout(t);
+  }, [lawFeedback]);
+
   useEffect(() => {
     if (numSeats === null) return;
-    localStorage.setItem(
-      "hemicycleState",
-      JSON.stringify({
-        numSeats,
-        title,
-        paragraph,
-        seatColors,
-        presidentColor,
-        economyGauge,
-        socialGauge,
-        securityGauge,
-        countrySituation,
-        isCrisis,
-        crisisDescription,
-        provinces,
-      })
-    );
+    const payload = {
+      numSeats,
+      title,
+      paragraph,
+      seatColors,
+      presidentColor,
+      economyGauge,
+      socialGauge,
+      securityGauge,
+      countrySituation,
+      isCrisis,
+      crisisDescription,
+      provinces,
+      passedLaws,
+    };
+
+    localStorage.setItem("hemicycleState", JSON.stringify(payload));
+    localStorage.setItem("hemicycleNotes", JSON.stringify(passedLaws));
   }, [
     numSeats,
     title,
@@ -127,6 +163,7 @@ export default function Home() {
     isCrisis,
     crisisDescription,
     provinces,
+    passedLaws,
   ]);
 
   return (
@@ -308,6 +345,12 @@ export default function Home() {
 
             <div className="mb-4 flex justify-end gap-3">
               <button
+                onClick={addCurrentLawToPassed}
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition"
+              >
+                Ajouter la loi aux lois votées
+              </button>
+              <button
                 onClick={resetVotes}
                 className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition"
               >
@@ -326,6 +369,18 @@ export default function Home() {
                 Ouvrir l’affichage plein écran
               </button>
             </div>
+
+            {lawFeedback && (
+              <div
+                className={`mb-4 rounded-lg border px-4 py-2 text-sm font-medium ${
+                  lawFeedback.type === "success"
+                    ? "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-300"
+                    : "bg-red-50 border-red-200 text-red-700 dark:bg-red-950 dark:border-red-800 dark:text-red-300"
+                }`}
+              >
+                {lawFeedback.message}
+              </div>
+            )}
 
             <div className="mb-4 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 items-start">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

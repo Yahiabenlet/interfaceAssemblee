@@ -2,13 +2,25 @@
 
 import { useEffect, useState } from "react";
 
+type PassedLaw = {
+  title: string;
+  text: string;
+};
+
 export default function NotesPage() {
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState<PassedLaw[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("hemicycleNotes");
-    if (saved !== null) setNotes(saved);
+    if (saved !== null) {
+      try {
+        const parsed = JSON.parse(saved);
+        setNotes(Array.isArray(parsed) ? parsed : []);
+      } catch {
+        setNotes([]);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -48,13 +60,25 @@ export default function NotesPage() {
 
       <div className="w-full max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Lois précédemments votées</h1>
-        <textarea
-          value={notes}
-          readOnly
-          rows={24}
-          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
-          placeholder="Aucun texte"
-        />
+
+        <div className="w-full h-[70vh] overflow-auto px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700">
+          {notes.length === 0 ? (
+            <p className="text-gray-700 dark:text-gray-300">Aucune loi enregistrée.</p>
+          ) : (
+            <div className="space-y-4">
+              {notes.map((law, idx) => (
+                <div key={idx} className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-black/20 p-3">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white break-words">
+                    {law.title || "Sans titre"}
+                  </h2>
+                  <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
+                    {law.text || "Sans texte"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

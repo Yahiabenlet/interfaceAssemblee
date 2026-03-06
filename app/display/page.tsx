@@ -39,6 +39,7 @@ type DisplayState = {
   isCrisis?: boolean;
   crisisDescription?: string;
   provinces?: ProvinceState;
+  passedLaws?: Array<{ title: string; text: string }>;
 };
 
 export default function DisplayPage() {
