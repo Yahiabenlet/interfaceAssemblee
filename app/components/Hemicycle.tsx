@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 
-type SeatColor = "white" | "green" | "red";
+type SeatColor = "white" | "green" | "red" | "orange";
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
@@ -83,6 +83,7 @@ export default function Hemicycle({
       white: all.filter((c) => c === "white").length,
       green: all.filter((c) => c === "green").length,
       red: all.filter((c) => c === "red").length,
+      orange: all.filter((c) => c === "orange").length,
     };
   }, [seatColors, presidentColor]);
 
@@ -96,9 +97,20 @@ export default function Hemicycle({
 
   const majorityStatus = useMemo(() => {
     const all = [...seatColors, presidentColor];
+    const hasSeatVeto = all.some((c) => c === "orange");
+
     const pour = all.filter((c) => c === "green").length;
     const contre = all.filter((c) => c === "red").length;
     const exprimes = pour + contre;
+
+    if (hasSeatVeto) {
+      return {
+        label: presidentColor === "orange"
+          ? "Droit de véto du Président utilisé"
+          : "Un droit de véto a été utilisé par un siège",
+        tone: "text-amber-700 dark:text-amber-300",
+      };
+    }
 
     // Véto président : si activé et président vote contre
     if (vetoMode === "president" && presidentColor === "red") {
@@ -218,6 +230,7 @@ export default function Hemicycle({
     white: { fill: "#ffffff", stroke: "#9ca3af" },
     green: { fill: "#22c55e", stroke: "#15803d" },
     red: { fill: "#ef4444", stroke: "#b91c1c" },
+    orange: { fill: "#f59e0b", stroke: "#b45309" },
   };
 
   const presidentBorder = {
@@ -426,7 +439,7 @@ export default function Hemicycle({
                   <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px]">
                     <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
                   </div>
-                  <div className="grid grid-rows-2 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
+                  <div className="grid grid-rows-3 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
                     <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
                       <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
                       <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
@@ -434,6 +447,10 @@ export default function Hemicycle({
                     <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
                       <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
                       <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.red}</div>
+                    </div>
+                    <div className="bg-amber-50 dark:bg-amber-900 p-4 rounded-lg text-center">
+                      <div className="text-sm font-medium text-amber-700 dark:text-amber-300">Véto</div>
+                      <div className="text-3xl font-bold text-amber-700 dark:text-amber-400 mt-2">{counts.orange}</div>
                     </div>
                   </div>
                 </div>
@@ -443,7 +460,7 @@ export default function Hemicycle({
         </div>
       </div>
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge)
+        Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge → Orange)
       </p>
     </div>
   );
