@@ -256,6 +256,58 @@ export default function Home() {
                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
                   Avis de la Cour Constitutionnelle
                 </h3>
+
+                <div className="mb-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsControlValidated(true)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      isControlValidated ? "bg-emerald-600" : "bg-emerald-500 hover:bg-emerald-600"
+                    }`}
+                  >
+                    Loi conforme
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsControlValidated(false)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      !isControlValidated ? "bg-rose-600" : "bg-rose-500 hover:bg-rose-600"
+                    }`}
+                  >
+                    Loi non-conforme
+                  </button>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Type de majorité requis
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setRequiredMajority("simple")}
+                      className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                        requiredMajority === "simple"
+                          ? "bg-blue-600"
+                          : "bg-blue-500 hover:bg-blue-600"
+                      }`}
+                    >
+                      Majorité simple
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRequiredMajority("super")}
+                      className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                        requiredMajority === "super"
+                          ? "bg-violet-600"
+                          : "bg-violet-500 hover:bg-violet-600"
+                      }`}
+                    >
+                      Super majorité
+                    </button>
+                  </div>
+                </div>
+
                 <div className="space-y-3">
                   {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
                     <div key={name} className="grid grid-cols-[1fr_140px] gap-2 items-center">
