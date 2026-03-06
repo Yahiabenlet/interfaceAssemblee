@@ -43,6 +43,7 @@ type DisplayState = {
   isControlValidated?: boolean;
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
+  vetoMode?: "none" | "president" | "player";
 };
 
 export default function DisplayPage() {
@@ -150,6 +151,7 @@ export default function DisplayPage() {
           isControlValidated={state.isControlValidated ?? false}
           requiredMajority={state.requiredMajority ?? "simple"}
           superMajorityRatio={state.superMajorityRatio ?? "3/5"}
+          vetoMode={state.vetoMode ?? "none"}
           readOnly
         />
       </div>

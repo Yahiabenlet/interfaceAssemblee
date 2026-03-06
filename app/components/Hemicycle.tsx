@@ -45,6 +45,7 @@ interface HemicycleProps {
   isControlValidated?: boolean;
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
+  vetoMode?: "none" | "president" | "player";
 }
 
 export default function Hemicycle({
@@ -74,6 +75,7 @@ export default function Hemicycle({
   isControlValidated = false,
   requiredMajority = "simple",
   superMajorityRatio = "3/5",
+  vetoMode = "none",
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -381,6 +383,13 @@ export default function Hemicycle({
                     {requiredMajority === "super"
                       ? `Super Majorité nécessaire (${superMajorityRatio})`
                       : "Majorité Simple nécessaire"}
+                  </div>
+                  <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                    {vetoMode === "president"
+                      ? "Droit de véto : Président"
+                      : vetoMode === "player"
+                      ? "Droit de véto : Joueur"
+                      : "Droit de véto : Aucun"}
                   </div>
                 </div>
 

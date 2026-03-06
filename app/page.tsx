@@ -47,6 +47,8 @@ const CONTROL_OPTIONS: ProvinceControl[] = [
 ];
 
 const SUPER_MAJORITY_OPTIONS = ["3/5", "2/3", "7/10" ,"3/4"] as const;
+const VETO_OPTIONS = ["none", "president", "player"] as const;
+type VetoMode = (typeof VETO_OPTIONS)[number];
 
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
@@ -77,6 +79,7 @@ export default function Home() {
   const [isControlValidated, setIsControlValidated] = useState(false);
   const [requiredMajority, setRequiredMajority] = useState<"simple" | "super">("simple");
   const [superMajorityRatio, setSuperMajorityRatio] = useState<string>("3/5");
+  const [vetoMode, setVetoMode] = useState<VetoMode>("none");
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -155,6 +158,14 @@ export default function Home() {
     });
   };
 
+  const cycleVetoMode = () => {
+    setVetoMode((prev) => {
+      const idx = VETO_OPTIONS.indexOf(prev);
+      const nextIdx = idx === -1 ? 0 : (idx + 1) % VETO_OPTIONS.length;
+      return VETO_OPTIONS[nextIdx];
+    });
+  };
+
   useEffect(() => {
     if (!lawFeedback) return;
     const t = setTimeout(() => setLawFeedback(null), 2500);
@@ -180,6 +191,7 @@ export default function Home() {
       isControlValidated,
       requiredMajority,
       superMajorityRatio,
+      vetoMode,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -201,6 +213,7 @@ export default function Home() {
     isControlValidated,
     requiredMajority,
     superMajorityRatio,
+    vetoMode,
   ]);
 
   return (
@@ -324,6 +337,13 @@ export default function Home() {
                       className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-slate-600 hover:bg-slate-700"
                     >
                       Ratio supermajorité : {superMajorityRatio}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={cycleVetoMode}
+                      className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-amber-600 hover:bg-amber-700"
+                    >
+                      Véto : {vetoMode === "president" ? "Président" : vetoMode === "player" ? "Joueur" : "Aucun"}
                     </button>
                   </div>
                 </div>
@@ -542,6 +562,7 @@ export default function Home() {
               isControlValidated={isControlValidated}
               requiredMajority={requiredMajority}
               superMajorityRatio={superMajorityRatio}
+              vetoMode={vetoMode}
             />
             <button
               onClick={() => setNumSeats(null)}
