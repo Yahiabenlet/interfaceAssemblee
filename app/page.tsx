@@ -80,6 +80,7 @@ export default function Home() {
   const [requiredMajority, setRequiredMajority] = useState<"simple" | "super">("simple");
   const [superMajorityRatio, setSuperMajorityRatio] = useState<string>("3/5");
   const [vetoMode, setVetoMode] = useState<VetoMode>("none");
+  const [isNoConfidenceMotion, setIsNoConfidenceMotion] = useState(false);
 
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
     const seatCycleNoVeto: SeatColor[] = ["white", "green", "red"];
@@ -207,6 +208,7 @@ export default function Home() {
       requiredMajority,
       superMajorityRatio,
       vetoMode,
+      isNoConfidenceMotion,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -229,6 +231,7 @@ export default function Home() {
     requiredMajority,
     superMajorityRatio,
     vetoMode,
+    isNoConfidenceMotion,
   ]);
 
   return (
@@ -359,6 +362,15 @@ export default function Home() {
                       className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-amber-600 hover:bg-amber-700"
                     >
                       Véto : {vetoMode === "president" ? "Président" : vetoMode === "player" ? "Joueur" : "Aucun"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsNoConfidenceMotion((v) => !v)}
+                      className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                        isNoConfidenceMotion ? "bg-red-700 hover:bg-red-800" : "bg-red-500 hover:bg-red-600"
+                      }`}
+                    >
+                      Motion de censure : {isNoConfidenceMotion ? "Activée" : "Désactivée"}
                     </button>
                   </div>
                 </div>
@@ -578,6 +590,7 @@ export default function Home() {
               requiredMajority={requiredMajority}
               superMajorityRatio={superMajorityRatio}
               vetoMode={vetoMode}
+              isNoConfidenceMotion={isNoConfidenceMotion}
             />
             <button
               onClick={() => setNumSeats(null)}

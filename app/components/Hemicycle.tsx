@@ -46,6 +46,7 @@ interface HemicycleProps {
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
   vetoMode?: "none" | "president" | "player";
+  isNoConfidenceMotion?: boolean;
 }
 
 export default function Hemicycle({
@@ -76,6 +77,7 @@ export default function Hemicycle({
   requiredMajority = "simple",
   superMajorityRatio = "3/5",
   vetoMode = "none",
+  isNoConfidenceMotion = false,
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -102,15 +104,30 @@ export default function Hemicycle({
     const hasSeatVeto = all.some((c) => c === "orange");
 
     const pour = all.filter((c) => c === "green").length;
-    // Les vétos (orange) comptent comme contre
     const contre = all.filter((c) => c === "red" || c === "orange").length;
     const exprimes = pour + contre;
 
+    if (isNoConfidenceMotion) {
+      const inscrits = all.length;
+      const seuilAbsolu = Math.floor(inscrits / 2) + 1;
+      if (pour >= seuilAbsolu) {
+        return {
+          label: `Motion de censure adoptée (majorité absolue: ${pour}/${inscrits}, seuil ${seuilAbsolu})`,
+          tone: "text-emerald-700 dark:text-emerald-300",
+        };
+      }
+      return {
+        label: `Motion de censure rejetée (majorité absolue requise: ${pour}/${inscrits}, seuil ${seuilAbsolu})`,
+        tone: "text-rose-700 dark:text-rose-300",
+      };
+    }
+
     if (hasSeatVeto) {
       return {
-        label: presidentColor === "orange"
-          ? "Droit de véto du Président utilisé"
-          : "Un droit de véto a été utilisé par un parlementaire",
+        label:
+          presidentColor === "orange"
+            ? "Droit de véto du Président utilisé"
+            : "Un droit de véto a été utilisé par un parlementaire",
         tone: "text-amber-700 dark:text-amber-300",
       };
     }
@@ -145,7 +162,7 @@ export default function Hemicycle({
     }
 
     return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
-  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode]);
+  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
