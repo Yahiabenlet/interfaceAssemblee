@@ -314,6 +314,12 @@ export default function Home() {
                 Reset tous les sièges
               </button>
               <button
+                onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
+              >
+                Ouvrir la zone de texte
+              </button>
+              <button
                 onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
               >

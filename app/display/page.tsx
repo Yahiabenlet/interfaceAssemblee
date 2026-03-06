@@ -101,13 +101,22 @@ export default function DisplayPage() {
 
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
-      <button
-        onClick={toggleFullscreen}
-        className="absolute top-4 right-4 z-50 px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
-        title="Basculer plein écran (touche F)"
-      >
-        {isFullscreen ? "Quitter plein écran" : "Plein écran"}
-      </button>
+      <div className="absolute top-4 right-4 z-50 flex gap-2">
+        <button
+          onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
+          className="px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
+          title="Ouvrir la zone de texte"
+        >
+          Zone de texte
+        </button>
+        <button
+          onClick={toggleFullscreen}
+          className="px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
+          title="Basculer plein écran (touche F)"
+        >
+          {isFullscreen ? "Quitter plein écran" : "Plein écran"}
+        </button>
+      </div>
 
       <div className="w-full max-w-7xl">
         <Hemicycle
