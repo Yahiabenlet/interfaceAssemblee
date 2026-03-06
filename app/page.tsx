@@ -43,6 +43,12 @@ export default function Home() {
 
   const togglePresident = () => setPresidentColor((c) => nextColor(c));
 
+  const resetVotes = () => {
+    if (numSeats === null) return;
+    setSeatColors(Array(numSeats).fill("white"));
+    setPresidentColor("white");
+  };
+
   useEffect(() => {
     if (numSeats === null) return;
     localStorage.setItem(
@@ -166,7 +172,13 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mb-4 flex justify-end">
+            <div className="mb-4 flex justify-end gap-3">
+              <button
+                onClick={resetVotes}
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition"
+              >
+                Reset tous les sièges
+              </button>
               <button
                 onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
