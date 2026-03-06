@@ -16,6 +16,8 @@ export default function Home() {
   const [socialGauge, setSocialGauge] = useState(5);
   const [securityGauge, setSecurityGauge] = useState(5);
   const [countrySituation, setCountrySituation] = useState("");
+  const [isCrisis, setIsCrisis] = useState(false);
+  const [crisisDescription, setCrisisDescription] = useState("");
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -64,9 +66,23 @@ export default function Home() {
         socialGauge,
         securityGauge,
         countrySituation,
+        isCrisis,
+        crisisDescription,
       })
     );
-  }, [numSeats, title, paragraph, seatColors, presidentColor, economyGauge, socialGauge, securityGauge, countrySituation]);
+  }, [
+    numSeats,
+    title,
+    paragraph,
+    seatColors,
+    presidentColor,
+    economyGauge,
+    socialGauge,
+    securityGauge,
+    countrySituation,
+    isCrisis,
+    crisisDescription,
+  ]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
@@ -176,7 +192,7 @@ export default function Home() {
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Situation actuelle du pays :
+                L'essentiel de l'info :
               </label>
               <textarea
                 value={countrySituation}
@@ -186,6 +202,33 @@ export default function Home() {
                 placeholder="Décrivez la situation actuelle..."
               />
             </div>
+
+            <div className="mb-4">
+              <label className="inline-flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <input
+                  type="checkbox"
+                  checked={isCrisis}
+                  onChange={(e) => setIsCrisis(e.target.checked)}
+                  className="h-4 w-4"
+                />
+                Situation de crise
+              </label>
+            </div>
+
+            {isCrisis && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Description de la crise :
+                </label>
+                <textarea
+                  value={crisisDescription}
+                  onChange={(e) => setCrisisDescription(e.target.value)}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="Décrivez la situation de crise..."
+                />
+              </div>
+            )}
 
             <div className="mb-4 flex justify-end gap-3">
               <button
@@ -214,6 +257,8 @@ export default function Home() {
               socialGauge={socialGauge}
               securityGauge={securityGauge}
               countrySituation={countrySituation}
+              isCrisis={isCrisis}
+              crisisDescription={crisisDescription}
             />
             <button
               onClick={() => setNumSeats(null)}

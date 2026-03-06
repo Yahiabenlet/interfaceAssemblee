@@ -15,6 +15,8 @@ type DisplayState = {
   socialGauge?: number;
   securityGauge?: number;
   countrySituation?: string;
+  isCrisis?: boolean;
+  crisisDescription?: string;
 };
 
 export default function DisplayPage() {
@@ -98,6 +100,8 @@ export default function DisplayPage() {
           socialGauge={state.socialGauge ?? 0}
           securityGauge={state.securityGauge ?? 0}
           countrySituation={state.countrySituation ?? ""}
+          isCrisis={state.isCrisis ?? false}
+          crisisDescription={state.crisisDescription ?? ""}
           readOnly
         />
       </div>

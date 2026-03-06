@@ -16,6 +16,8 @@ interface HemicycleProps {
   socialGauge?: number;
   securityGauge?: number;
   countrySituation?: string;
+  isCrisis?: boolean;
+  crisisDescription?: string;
 }
 
 type SeatColor = "white" | "green" | "red";
@@ -34,6 +36,8 @@ export default function Hemicycle({
   socialGauge = 0,
   securityGauge = 0,
   countrySituation = "",
+  isCrisis = false,
+  crisisDescription = "",
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -210,8 +214,37 @@ export default function Hemicycle({
               </div>
             </div>
 
+            <div
+              className={`rounded-lg p-4 border ${
+                isCrisis
+                  ? "bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800"
+                  : "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800"
+              }`}
+            >
+              <h3
+                className={`text-sm font-semibold mb-2 ${
+                  isCrisis
+                    ? "text-red-800 dark:text-red-200"
+                    : "text-blue-800 dark:text-blue-200"
+                }`}
+              >
+                {isCrisis ? "Situation de crise" : "Situation Normale"}
+              </h3>
+              <p
+                className={`text-sm whitespace-pre-wrap break-words min-h-16 ${
+                  isCrisis
+                    ? "text-red-700 dark:text-red-300"
+                    : "text-blue-700 dark:text-blue-300"
+                }`}
+              >
+                {isCrisis
+                  ? (crisisDescription || "Crise déclarée, description non renseignée.")
+                  : "Tout va bien."}
+              </p>
+            </div>
+
             <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">Situation actuelle du pays</h3>
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">L'essentiel de l'info</h3>
               <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words min-h-16">
                 {countrySituation || "Aucune information renseignée."}
               </p>
