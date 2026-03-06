@@ -77,6 +77,7 @@ export default function Home() {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const [isControlValidated, setIsControlValidated] = useState(false);
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -192,6 +193,7 @@ export default function Home() {
       crisisDescription,
       provinces,
       passedLaws,
+      isControlValidated,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -210,6 +212,7 @@ export default function Home() {
     crisisDescription,
     provinces,
     passedLaws,
+    isControlValidated,
   ]);
 
   return (
@@ -276,7 +279,7 @@ export default function Home() {
 
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
-                  Contrôle des Provinces
+                  Avis de la Cour Constitutionnelle
                 </h3>
                 <div className="space-y-3">
                   {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
@@ -420,6 +423,16 @@ export default function Home() {
               >
                 Annuler la dernière suppression
               </button>
+              <button
+                onClick={() => setIsControlValidated((v) => !v)}
+                className={`px-4 py-2 font-semibold rounded-lg transition text-white ${
+                  isControlValidated
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : "bg-rose-600 hover:bg-rose-700"
+                }`}
+              >
+                Avis Cour Constitutionnelle
+              </button>
             </div>
 
             {lawFeedback && (
@@ -490,6 +503,7 @@ export default function Home() {
               isCrisis={isCrisis}
               crisisDescription={crisisDescription}
               provinces={provinces}
+              isControlValidated={isControlValidated}
             />
             <button
               onClick={() => setNumSeats(null)}

@@ -42,6 +42,7 @@ interface HemicycleProps {
   isCrisis?: boolean;
   crisisDescription?: string;
   provinces?: ProvinceState;
+  isControlValidated?: boolean;
 }
 
 export default function Hemicycle({
@@ -68,6 +69,7 @@ export default function Hemicycle({
     "Provinces des Plasticiens": "Indépendant",
     "Etat de Tori Valu": "Indépendant",
   },
+  isControlValidated = false,
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -335,6 +337,33 @@ export default function Hemicycle({
                         </span>
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                <div
+                  className={`rounded-lg p-4 border text-center ${
+                    isControlValidated
+                      ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
+                      : "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
+                  }`}
+                >
+                  <div
+                    className={`text-sm font-medium ${
+                      isControlValidated
+                        ? "text-emerald-700 dark:text-emerald-300"
+                        : "text-rose-700 dark:text-rose-300"
+                    }`}
+                  >
+                    Avis de la Cour Constitutionnelle
+                  </div>
+                  <div
+                    className={`text-3xl font-bold mt-2 ${
+                      isControlValidated
+                        ? "text-emerald-700 dark:text-emerald-300"
+                        : "text-rose-700 dark:text-rose-300"
+                    }`}
+                  >
+                    {isControlValidated ? "Loi respectant la Constitution" : "Loi anti constitutionnelle"}
                   </div>
                 </div>
 

@@ -40,6 +40,8 @@ type DisplayState = {
   crisisDescription?: string;
   provinces?: ProvinceState;
   passedLaws?: Array<{ title: string; text: string }>;
+  isControlValidated?: boolean;
+  requiredMajority?: "simple" | "super";
 };
 
 export default function DisplayPage() {
@@ -144,6 +146,8 @@ export default function DisplayPage() {
               "Etat de Tori Valu": "Indépendant",
             }
           }
+          isControlValidated={state.isControlValidated ?? false}
+          requiredMajority={state.requiredMajority ?? "simple"}
           readOnly
         />
       </div>
