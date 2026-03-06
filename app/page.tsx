@@ -81,9 +81,19 @@ export default function Home() {
   const [superMajorityRatio, setSuperMajorityRatio] = useState<string>("3/5");
   const [vetoMode, setVetoMode] = useState<VetoMode>("none");
 
-  const nextColor = (current: SeatColor): SeatColor => {
-    const colors: SeatColor[] = ["white", "green", "red", "orange"];
-    return colors[(colors.indexOf(current) + 1) % colors.length];
+  const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
+    const seatCycleNoVeto: SeatColor[] = ["white", "green", "red"];
+    const seatCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange"];
+
+    const presidentCycleNoVeto: SeatColor[] = ["white", "green", "red"];
+    const presidentCycleWithVeto: SeatColor[] = ["white", "green", "red", "orange"];
+
+    const cycle =
+      target === "seat"
+        ? (vetoMode === "player" ? seatCycleWithPlayerVeto : seatCycleNoVeto)
+        : (vetoMode === "player" || vetoMode === "president" ? presidentCycleWithVeto : presidentCycleNoVeto);
+
+    return cycle[(cycle.indexOf(current) + 1) % cycle.length];
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -101,12 +111,12 @@ export default function Home() {
   const toggleSeat = (index: number) => {
     setSeatColors((prev) => {
       const next = [...prev];
-      next[index] = nextColor(next[index]);
+      next[index] = nextColor(next[index], "seat");
       return next;
     });
   };
 
-  const togglePresident = () => setPresidentColor((c) => nextColor(c));
+  const togglePresident = () => setPresidentColor((c) => nextColor(c, "president"));
 
   const resetVotes = () => {
     if (numSeats === null) return;

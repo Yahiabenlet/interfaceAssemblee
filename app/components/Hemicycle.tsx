@@ -417,8 +417,8 @@ export default function Hemicycle({
                     {vetoMode === "president"
                       ? "Droit de véto : Président"
                       : vetoMode === "player"
-                      ? "Droit de véto : Joueur"
-                      : "Droit de véto : Aucun"}
+                      ? ""
+                      : ""}
                   </div>
                 </div>
 
