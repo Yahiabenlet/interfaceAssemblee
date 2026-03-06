@@ -49,10 +49,28 @@ export default function Hemicycle({
     const pour = all.filter((c) => c === "green").length;
     const contre = all.filter((c) => c === "red").length;
     const exprimes = pour + contre;
-    if (exprimes === 0) return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+
+    if (exprimes === 0) {
+      return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+    }
+
     const ratioPour = pour / exprimes;
-    if (ratioPour >= 0.6) return { label: "Super Majorité 3/5", tone: "text-emerald-700 dark:text-emerald-300" };
-    if (ratioPour > 0.5) return { label: "Majorité simple (50% + 1 voix)", tone: "text-blue-700 dark:text-blue-300" };
+
+    if (ratioPour >= 0.6) {
+      return { label: "Super Majorité 3/5", tone: "text-emerald-700 dark:text-emerald-300" };
+    }
+
+    if (ratioPour > 0.5) {
+      return { label: "Majorité simple (50% + 1 voix)", tone: "text-blue-700 dark:text-blue-300" };
+    }
+
+    if (ratioPour === 0.5) {
+      if (presidentColor === "green") {
+        return { label: "Majorité simple (voix prépondérante du Président)", tone: "text-blue-700 dark:text-blue-300" };
+      }
+      return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+    }
+
     return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
   }, [seatColors, presidentColor]);
 
@@ -109,6 +127,11 @@ export default function Hemicycle({
     red: { fill: "#ef4444", stroke: "#b91c1c" },
   };
 
+  const presidentBorder = {
+    stroke: "#d4af37",
+    strokeWidth: 3,
+  };
+
   const svgBlock = (
     <svg
       viewBox="0 0 500 360"
@@ -135,8 +158,8 @@ export default function Hemicycle({
           cy={presidentY}
           r="13"
           fill={colorMap[presidentColor].fill}
-          stroke={colorMap[presidentColor].stroke}
-          strokeWidth="2"
+          stroke={presidentBorder.stroke}
+          strokeWidth={presidentBorder.strokeWidth}
           className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
           onClick={svgOnly || readOnly ? undefined : onTogglePresident}
         />
