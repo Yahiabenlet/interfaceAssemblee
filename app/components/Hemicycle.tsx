@@ -116,6 +116,7 @@ export default function Hemicycle({
         return {
           label: "Vote en cours",
           tone: "text-amber-700 dark:text-amber-300",
+          bg: "bg-amber-50 dark:bg-amber-950",
         };
       }
 
@@ -123,12 +124,14 @@ export default function Hemicycle({
         return {
           label: "Motion de censure adoptée",
           tone: "text-emerald-700 dark:text-emerald-300",
+          bg: "bg-emerald-50 dark:bg-emerald-950",
         };
       }
 
       return {
         label: "Motion de censure rejetée",
         tone: "text-rose-700 dark:text-rose-300",
+        bg: "bg-rose-50 dark:bg-rose-950",
       };
     }
 
@@ -139,6 +142,7 @@ export default function Hemicycle({
             ? "Droit de véto du Président utilisé"
             : "Un droit de véto a été utilisé par un parlementaire",
         tone: "text-amber-700 dark:text-amber-300",
+        bg: "bg-amber-50 dark:bg-amber-950",
       };
     }
 
@@ -147,31 +151,56 @@ export default function Hemicycle({
       return {
         label: "Un droit de véto a été utilisé",
         tone: "text-amber-700 dark:text-amber-300",
+        bg: "bg-amber-50 dark:bg-amber-950",
       };
     }
 
     if (exprimes === 0) {
-      return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+      return {
+        label: "Aucune majorité",
+        tone: "text-gray-700 dark:text-gray-200",
+        bg: "bg-rose-50 dark:bg-rose-950",
+      };
     }
 
     const ratioPour = pour / exprimes;
 
     if (ratioPour >= superThreshold) {
-      return { label: `Super Majorité (${superMajorityRatio})`, tone: "text-emerald-700 dark:text-emerald-300" };
+      return {
+        label: `Super Majorité (${superMajorityRatio})`,
+        tone: "text-emerald-700 dark:text-emerald-300",
+        bg: "bg-emerald-50 dark:bg-emerald-950",
+      };
     }
 
     if (ratioPour > 0.5) {
-      return { label: "Majorité simple (50% + 1 voix)", tone: "text-blue-700 dark:text-blue-300" };
+      return {
+        label: "Majorité simple (50% + 1 voix)",
+        tone: "text-blue-700 dark:text-blue-300",
+        bg: "bg-emerald-50 dark:bg-emerald-950",
+      };
     }
 
     if (ratioPour === 0.5) {
       if (presidentColor === "green") {
-        return { label: "Majorité simple (voix prépondérante du Président)", tone: "text-blue-700 dark:text-blue-300" };
+        return {
+          label: "Majorité simple (voix prépondérante du Président)",
+          tone: "text-blue-700 dark:text-blue-300",
+          bg: "bg-emerald-50 dark:bg-emerald-950",
+        };
       }
-      return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+      return {
+        label: "Aucune majorité",
+        tone: "text-gray-700 dark:text-gray-200",
+        bg: "bg-rose-50 dark:bg-rose-950",
+      };
     }
 
-    return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
+    return {
+      label: "Aucune majorité",
+      tone: "text-gray-700 dark:text-gray-200",
+      bg: "bg-rose-50 dark:bg-rose-950",
+    };
   }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion]);
 
   const seats = useMemo(() => {
@@ -474,7 +503,7 @@ export default function Hemicycle({
             <div className="mt-8 grid">
               <div className="w-full max-w-3xl justify-self-start">
                 <div className="w-full grid grid-cols-1 md:[grid-template-columns:minmax(0,2fr)_minmax(0,1fr)] gap-4">
-                  <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px]">
+                  <div className={`p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px] ${majorityStatus.bg}`}>
                     <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
                   </div>
                   <div className="grid grid-rows-2 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
