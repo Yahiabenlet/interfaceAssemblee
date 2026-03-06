@@ -100,6 +100,22 @@ export default function Hemicycle({
     const contre = all.filter((c) => c === "red").length;
     const exprimes = pour + contre;
 
+    // Véto président : si activé et président vote contre
+    if (vetoMode === "president" && presidentColor === "red") {
+      return {
+        label: "Droit de véto du Président utilisé",
+        tone: "text-amber-700 dark:text-amber-300",
+      };
+    }
+
+    // Véto joueur : si activé, le résultat indique le véto utilisé
+    if (vetoMode === "player" && exprimes > 0) {
+      return {
+        label: "Un droit de véto a été utilisé",
+        tone: "text-amber-700 dark:text-amber-300",
+      };
+    }
+
     if (exprimes === 0) {
       return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
     }
@@ -122,7 +138,7 @@ export default function Hemicycle({
     }
 
     return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
-  }, [seatColors, presidentColor, superThreshold, superMajorityRatio]);
+  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
