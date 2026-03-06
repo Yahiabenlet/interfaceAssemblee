@@ -86,12 +86,17 @@ export default function Home() {
     const seatCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange"];
 
     const presidentCycleNoVeto: SeatColor[] = ["white", "green", "red"];
-    const presidentCycleWithVeto: SeatColor[] = ["white", "green", "red", "orange"];
+    const presidentCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange"];
+    const presidentCycleWithPresidentVeto: SeatColor[] = ["white", "green", "orange"];
 
     const cycle =
       target === "seat"
         ? (vetoMode === "player" ? seatCycleWithPlayerVeto : seatCycleNoVeto)
-        : (vetoMode === "player" || vetoMode === "president" ? presidentCycleWithVeto : presidentCycleNoVeto);
+        : (vetoMode === "player"
+            ? presidentCycleWithPlayerVeto
+            : vetoMode === "president"
+              ? presidentCycleWithPresidentVeto
+              : presidentCycleNoVeto);
 
     return cycle[(cycle.indexOf(current) + 1) % cycle.length];
   };

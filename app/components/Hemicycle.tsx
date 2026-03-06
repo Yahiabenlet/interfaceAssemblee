@@ -107,21 +107,13 @@ export default function Hemicycle({
       return {
         label: presidentColor === "orange"
           ? "Droit de véto du Président utilisé"
-          : "Un droit de véto a été utilisé par un siège",
-        tone: "text-amber-700 dark:text-amber-300",
-      };
-    }
-
-    // Véto président : si activé et président vote contre
-    if (vetoMode === "president" && presidentColor === "red") {
-      return {
-        label: "Droit de véto du Président utilisé",
+          : "Un droit de véto a été utilisé par un parlementaire",
         tone: "text-amber-700 dark:text-amber-300",
       };
     }
 
     // Véto joueur : si activé, le résultat indique le véto utilisé
-    if (vetoMode === "player" && exprimes > 0) {
+    if (vetoMode === "player" && exprimes > 0 && hasSeatVeto=== true) {
       return {
         label: "Un droit de véto a été utilisé",
         tone: "text-amber-700 dark:text-amber-300",
