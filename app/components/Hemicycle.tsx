@@ -15,6 +15,7 @@ interface HemicycleProps {
   economyGauge?: number;
   socialGauge?: number;
   securityGauge?: number;
+  countrySituation?: string;
 }
 
 type SeatColor = "white" | "green" | "red";
@@ -32,6 +33,7 @@ export default function Hemicycle({
   economyGauge = 0,
   socialGauge = 0,
   securityGauge = 0,
+  countrySituation = "",
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -150,36 +152,45 @@ export default function Hemicycle({
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 items-start min-w-[980px]">
-          <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges de la République </h3>
-            <div className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
-                  <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
+          <div className="space-y-4">
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges de la République </h3>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
+                    <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
+                  </div>
+                  <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
+                    <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
+                  </div>
                 </div>
-                <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
-                  <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
+                    <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
+                  </div>
+                  <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
+                    <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
+                    <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
+                  </div>
+                  <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
+                    <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
+                  </div>
                 </div>
               </div>
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
-                  <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
-                </div>
-                <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
-                  <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
-                  <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
-                </div>
-                <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
-                  <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
-                </div>
-              </div>
+            </div>
+
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">Situation actuelle du pays</h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words min-h-16">
+                {countrySituation || "Aucune information renseignée."}
+              </p>
             </div>
           </div>
 

@@ -15,6 +15,7 @@ export default function Home() {
   const [economyGauge, setEconomyGauge] = useState(5);
   const [socialGauge, setSocialGauge] = useState(5);
   const [securityGauge, setSecurityGauge] = useState(5);
+  const [countrySituation, setCountrySituation] = useState("");
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -62,9 +63,10 @@ export default function Home() {
         economyGauge,
         socialGauge,
         securityGauge,
+        countrySituation,
       })
     );
-  }, [numSeats, title, paragraph, seatColors, presidentColor, economyGauge, socialGauge, securityGauge]);
+  }, [numSeats, title, paragraph, seatColors, presidentColor, economyGauge, socialGauge, securityGauge, countrySituation]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
@@ -172,6 +174,19 @@ export default function Home() {
               </div>
             </div>
 
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Situation actuelle du pays :
+              </label>
+              <textarea
+                value={countrySituation}
+                onChange={(e) => setCountrySituation(e.target.value)}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                placeholder="Décrivez la situation actuelle..."
+              />
+            </div>
+
             <div className="mb-4 flex justify-end gap-3">
               <button
                 onClick={resetVotes}
@@ -198,6 +213,7 @@ export default function Home() {
               economyGauge={economyGauge}
               socialGauge={socialGauge}
               securityGauge={securityGauge}
+              countrySituation={countrySituation}
             />
             <button
               onClick={() => setNumSeats(null)}
