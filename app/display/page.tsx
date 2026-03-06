@@ -42,6 +42,7 @@ type DisplayState = {
   passedLaws?: Array<{ title: string; text: string; abrogee?: boolean }>;
   isControlValidated?: boolean;
   requiredMajority?: "simple" | "super";
+  superMajorityRatio?: string;
 };
 
 export default function DisplayPage() {
@@ -148,6 +149,7 @@ export default function DisplayPage() {
           }
           isControlValidated={state.isControlValidated ?? false}
           requiredMajority={state.requiredMajority ?? "simple"}
+          superMajorityRatio={state.superMajorityRatio ?? "3/5"}
           readOnly
         />
       </div>

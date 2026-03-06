@@ -44,6 +44,7 @@ interface HemicycleProps {
   provinces?: ProvinceState;
   isControlValidated?: boolean;
   requiredMajority?: "simple" | "super";
+  superMajorityRatio?: string;
 }
 
 export default function Hemicycle({
@@ -72,6 +73,7 @@ export default function Hemicycle({
   },
   isControlValidated = false,
   requiredMajority = "simple",
+  superMajorityRatio = "3/5",
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -81,6 +83,14 @@ export default function Hemicycle({
       red: all.filter((c) => c === "red").length,
     };
   }, [seatColors, presidentColor]);
+
+  const superThreshold = useMemo(() => {
+    const [numStr, denStr] = superMajorityRatio.split("/");
+    const num = Number(numStr);
+    const den = Number(denStr);
+    if (!Number.isFinite(num) || !Number.isFinite(den) || den <= 0) return 3 / 5;
+    return num / den;
+  }, [superMajorityRatio]);
 
   const majorityStatus = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -94,8 +104,8 @@ export default function Hemicycle({
 
     const ratioPour = pour / exprimes;
 
-    if (ratioPour >= 0.6) {
-      return { label: "Super Majorité 3/5", tone: "text-emerald-700 dark:text-emerald-300" };
+    if (ratioPour >= superThreshold) {
+      return { label: `Super Majorité (${superMajorityRatio})`, tone: "text-emerald-700 dark:text-emerald-300" };
     }
 
     if (ratioPour > 0.5) {
@@ -110,7 +120,7 @@ export default function Hemicycle({
     }
 
     return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
-  }, [seatColors, presidentColor]);
+  }, [seatColors, presidentColor, superThreshold, superMajorityRatio]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
@@ -368,7 +378,9 @@ export default function Hemicycle({
                     {isControlValidated ? "Loi conforme à la Constitution" : "Loi non-conforme à la Constitution"}
                   </div>
                   <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                    {requiredMajority === "super" ? "Super Majorité nécessaire" : "Majorité Simple nécessaire"}
+                    {requiredMajority === "super"
+                      ? `Super Majorité nécessaire (${superMajorityRatio})`
+                      : "Majorité Simple nécessaire"}
                   </div>
                 </div>
 

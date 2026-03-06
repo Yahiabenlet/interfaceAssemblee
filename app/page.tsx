@@ -46,6 +46,8 @@ const CONTROL_OPTIONS: ProvinceControl[] = [
     "En Guerre"
 ];
 
+const SUPER_MAJORITY_OPTIONS = ["3/5", "2/3", "7/10" ,"3/4"] as const;
+
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -74,6 +76,7 @@ export default function Home() {
   } | null>(null);
   const [isControlValidated, setIsControlValidated] = useState(false);
   const [requiredMajority, setRequiredMajority] = useState<"simple" | "super">("simple");
+  const [superMajorityRatio, setSuperMajorityRatio] = useState<string>("3/5");
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -144,6 +147,14 @@ export default function Home() {
     });
   };
 
+  const cycleSuperMajorityRatio = () => {
+    setSuperMajorityRatio((prev) => {
+      const idx = SUPER_MAJORITY_OPTIONS.indexOf(prev as (typeof SUPER_MAJORITY_OPTIONS)[number]);
+      const nextIdx = idx === -1 ? 0 : (idx + 1) % SUPER_MAJORITY_OPTIONS.length;
+      return SUPER_MAJORITY_OPTIONS[nextIdx];
+    });
+  };
+
   useEffect(() => {
     if (!lawFeedback) return;
     const t = setTimeout(() => setLawFeedback(null), 2500);
@@ -168,6 +179,7 @@ export default function Home() {
       passedLaws,
       isControlValidated,
       requiredMajority,
+      superMajorityRatio,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -188,6 +200,7 @@ export default function Home() {
     passedLaws,
     isControlValidated,
     requiredMajority,
+    superMajorityRatio,
   ]);
 
   return (
@@ -304,6 +317,13 @@ export default function Home() {
                       }`}
                     >
                       Super majorité
+                    </button>
+                    <button
+                      type="button"
+                      onClick={cycleSuperMajorityRatio}
+                      className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-slate-600 hover:bg-slate-700"
+                    >
+                      Ratio supermajorité : {superMajorityRatio}
                     </button>
                   </div>
                 </div>
@@ -521,6 +541,7 @@ export default function Home() {
               provinces={provinces}
               isControlValidated={isControlValidated}
               requiredMajority={requiredMajority}
+              superMajorityRatio={superMajorityRatio}
             />
             <button
               onClick={() => setNumSeats(null)}
