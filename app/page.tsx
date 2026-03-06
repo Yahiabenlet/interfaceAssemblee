@@ -105,26 +105,26 @@ export default function Home() {
             <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="w-full">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Titre :
+                  Loi :
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Entrez un titre"
+                  placeholder="Entrez le nom d'une Loi"
                 />
               </div>
               <div className="w-full">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Paragraphe :
+                  Texte de loi :
                 </label>
                 <textarea
                   value={paragraph}
                   onChange={(e) => setParagraph(e.target.value)}
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Entrez un paragraphe"
+                  placeholder="Entrez le texte de loi"
                 />
               </div>
             </div>
