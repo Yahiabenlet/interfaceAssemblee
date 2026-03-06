@@ -8,8 +8,8 @@ type SeatColor = "white" | "green" | "red";
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
-  const [title, setTitle] = useState("Titre");
-  const [paragraph, setParagraph] = useState("Votre paragraphe...");
+  const [title, setTitle] = useState("");
+  const [paragraph, setParagraph] = useState("");
   const [seatColors, setSeatColors] = useState<SeatColor[]>([]);
   const [presidentColor, setPresidentColor] = useState<SeatColor>("white");
   const [economyGauge, setEconomyGauge] = useState(5);

@@ -239,7 +239,7 @@ export default function Hemicycle({
               >
                 {isCrisis
                   ? (crisisDescription || "Crise déclarée, description non renseignée.")
-                  : "Tout va bien."}
+                  : "Jusqu'à preuve du contraire, tout va bien."}
               </p>
             </div>
 
@@ -260,8 +260,8 @@ export default function Hemicycle({
               </div>
 
               <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">{title || "Loi"}</h2>
-                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{paragraph || "Proposition de loi"}</p>
+                <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">{title || "Proposition de loi"}</h2>
+                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{paragraph || "Texte de loi"}</p>
               </div>
             </div>
 
