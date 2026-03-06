@@ -39,7 +39,7 @@ type DisplayState = {
   isCrisis?: boolean;
   crisisDescription?: string;
   provinces?: ProvinceState;
-  passedLaws?: Array<{ title: string; text: string }>;
+  passedLaws?: Array<{ title: string; text: string; abrogee?: boolean }>;
   isControlValidated?: boolean;
   requiredMajority?: "simple" | "super";
 };

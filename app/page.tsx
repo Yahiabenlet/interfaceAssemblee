@@ -29,12 +29,7 @@ type ProvinceState = {
 type PassedLaw = {
   title: string;
   text: string;
-};
-
-type DeletedLawEntry = {
-  id: string;
-  law: PassedLaw;
-  index: number;
+  abrogee?: boolean;
 };
 
 const CONTROL_OPTIONS: ProvinceControl[] = [
@@ -73,7 +68,6 @@ export default function Home() {
     "Etat de Tori Valu": "Indépendant",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
-  const [deletedLaws, setDeletedLaws] = useState<DeletedLawEntry[]>([]);
   const [lawFeedback, setLawFeedback] = useState<{
     type: "success" | "error";
     message: string;
@@ -126,62 +120,27 @@ export default function Home() {
       return;
     }
 
-    setPassedLaws((prev) => [{ title: lawTitle || "Sans titre", text: lawText || "Sans texte" }, ...prev]);
+    setPassedLaws((prev) => [{ title: lawTitle || "Sans titre", text: lawText || "Sans texte", abrogee: false }, ...prev]);
     setLawFeedback({
       type: "success",
       message: `Loi ajoutée${lawTitle ? ` : ${lawTitle}` : ""}.`,
     });
   };
 
-  const removePassedLaw = (index: number) => {
+  const toggleLawAbrogation = (index: number) => {
     setPassedLaws((prev) => {
       if (index < 0 || index >= prev.length) return prev;
-      const removed = prev[index];
-      setDeletedLaws((stack) => [
-        ...stack,
-        {
-          id: `${removed.title}__${removed.text}__${Date.now()}__${Math.random()}`,
-          law: removed,
-          index,
-        },
-      ]);
+      const next = [...prev];
+      const current = next[index];
+      const nextStatus = !current.abrogee;
+      next[index] = { ...current, abrogee: nextStatus };
       setLawFeedback({
         type: "success",
-        message: `Loi supprimée${removed.title ? ` : ${removed.title}` : ""}.`,
+        message: nextStatus
+          ? `Loi abrogée${current.title ? ` : ${current.title}` : ""}.`
+          : `Loi rétablie${current.title ? ` : ${current.title}` : ""}.`,
       });
-      return prev.filter((_, i) => i !== index);
-    });
-  };
-
-  const undoDeleteLaw = () => {
-    setDeletedLaws((stack) => {
-      if (stack.length === 0) {
-        setLawFeedback({
-          type: "error",
-          message: "Aucune suppression à annuler.",
-        });
-        return stack;
-      }
-
-      const last = stack[stack.length - 1];
-      setPassedLaws((prev) => {
-        const alreadyExists = prev.some(
-          (law) => law.title === last.law.title && law.text === last.law.text
-        );
-        if (alreadyExists) return prev;
-
-        const next = [...prev];
-        const safeIndex = Math.max(0, Math.min(last.index, next.length));
-        next.splice(safeIndex, 0, last.law);
-        return next;
-      });
-
-      setLawFeedback({
-        type: "success",
-        message: `Suppression annulée${last.law.title ? ` : ${last.law.title}` : ""}.`,
-      });
-
-      return stack.slice(0, -1);
+      return next;
     });
   };
 
@@ -433,32 +392,6 @@ export default function Home() {
               >
                 Ouvrir l’affichage plein écran
               </button>
-              <button
-                onClick={undoDeleteLaw}
-                className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition"
-              >
-                Annuler la dernière suppression
-              </button>
-              <button
-                onClick={() => setIsControlValidated((v) => !v)}
-                className={`px-4 py-2 font-semibold rounded-lg transition text-white ${
-                  isControlValidated
-                    ? "bg-emerald-600 hover:bg-emerald-700"
-                    : "bg-rose-600 hover:bg-rose-700"
-                }`}
-              >
-                Avis Cour Constitutionnelle
-              </button>
-              <button
-                onClick={() => setRequiredMajority((m) => (m === "simple" ? "super" : "simple"))}
-                className={`px-4 py-2 font-semibold rounded-lg transition text-white ${
-                  requiredMajority === "super"
-                    ? "bg-violet-600 hover:bg-violet-700"
-                    : "bg-sky-600 hover:bg-sky-700"
-                }`}
-              >
-                {requiredMajority === "super" ? "Super Majorité nécessaire" : "Majorité Simple nécessaire"}
-              </button>
             </div>
 
             {lawFeedback && (
@@ -484,22 +417,31 @@ export default function Home() {
                   {passedLaws.map((law, idx) => (
                     <div
                       key={`${law.title}-${idx}`}
-                      className="rounded-lg border border-slate-200 dark:border-slate-700 p-3 bg-slate-50 dark:bg-slate-900"
+                      className={`rounded-lg border p-3 ${
+                        law.abrogee
+                          ? "border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-950/40"
+                          : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
+                      }`}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-gray-900 dark:text-white break-words">
-                            {law.title || "Sans titre"}
+                            {law.title || "Sans titre"}{" "}
+                            {law.abrogee ? <span className="text-red-700 dark:text-red-300">(Abrogée)</span> : null}
                           </p>
                           <p className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
                             {law.text || "Sans texte"}
                           </p>
                         </div>
                         <button
-                          onClick={() => removePassedLaw(idx)}
-                          className="shrink-0 px-3 py-1.5 text-xs font-semibold rounded-md bg-red-600 hover:bg-red-700 text-white transition"
+                          onClick={() => toggleLawAbrogation(idx)}
+                          className={`shrink-0 px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                            law.abrogee
+                              ? "bg-emerald-600 hover:bg-emerald-700"
+                              : "bg-red-600 hover:bg-red-700"
+                          }`}
                         >
-                          Supprimer
+                          {law.abrogee ? "Rétablir la loi" : "Abroger la loi"}
                         </button>
                       </div>
                     </div>

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 type PassedLaw = {
   title: string;
   text: string;
+  abrogee?: boolean;
 };
 
 export default function NotesPage() {
@@ -67,9 +68,17 @@ export default function NotesPage() {
           ) : (
             <div className="space-y-4">
               {notes.map((law, idx) => (
-                <div key={idx} className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-black/20 p-3">
+                <div
+                  key={idx}
+                  className={`rounded-lg border p-3 ${
+                    law.abrogee
+                      ? "border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-950/40"
+                      : "border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-black/20"
+                  }`}
+                >
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white break-words">
-                    {law.title || "Sans titre"}
+                    {law.title || "Sans titre"}{" "}
+                    {law.abrogee ? <span className="text-red-700 dark:text-red-300">(Abrogée)</span> : null}
                   </h2>
                   <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
                     {law.text || "Sans texte"}
