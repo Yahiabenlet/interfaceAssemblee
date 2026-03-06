@@ -109,17 +109,36 @@ export default function Hemicycle({
   }, [seatColors, presidentColor]);
 
   const seats = useMemo(() => {
-    const rows = numSeats < 12 ? 3 : 4;
-    const rowRadii = rows === 3 ? [160, 188, 216] : [152, 178, 204, 230];
-    const baseWeights = rows === 3 ? [2, 3, 4] : [2, 3, 4, 5];
+    const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
+    const rowRadii =
+      rows === 3
+        ? [160, 188, 216]
+        : rows === 4
+        ? [152, 178, 204, 230]
+        : [144, 168, 192, 216, 240];
+
+    const baseWeights =
+      rows === 3 ? [2, 3, 4] : rows === 4 ? [2, 3, 4, 5] : [2, 3, 4, 5, 6];
+
     const weightSum = baseWeights.reduce((a, b) => a + b, 0);
     const capacities = baseWeights.map((w) => Math.max(1, Math.floor((numSeats * w) / weightSum)));
     let allocated = capacities.reduce((a, b) => a + b, 0);
     let cursor = capacities.length - 1;
-    while (allocated < numSeats) { capacities[cursor]++; allocated++; cursor = (cursor - 1 + capacities.length) % capacities.length; }
-    while (allocated > numSeats) { const idx = capacities.findIndex((c) => c > 1); if (idx === -1) break; capacities[idx]--; allocated--; }
+    while (allocated < numSeats) {
+      capacities[cursor]++;
+      allocated++;
+      cursor = (cursor - 1 + capacities.length) % capacities.length;
+    }
+    while (allocated > numSeats) {
+      const idx = capacities.findIndex((c) => c > 1);
+      if (idx === -1) break;
+      capacities[idx]--;
+      allocated--;
+    }
+
     let index = 0;
     const result: Array<{ index: number; x: number; y: number; color: SeatColor }> = [];
+
     for (let r = 0; r < rows; r++) {
       const count = capacities[r];
       const edgeInsetDeg = count <= 2 ? 12 : count <= 4 ? 9 : 6;
@@ -127,6 +146,7 @@ export default function Hemicycle({
       const endDeg = 40 + edgeInsetDeg;
       const start = (startDeg * Math.PI) / 180;
       const end = (endDeg * Math.PI) / 180;
+
       for (let i = 0; i < count; i++) {
         const t = count === 1 ? 0.5 : i / (count - 1);
         const angle = start - t * (start - end);
@@ -140,12 +160,19 @@ export default function Hemicycle({
         index++;
       }
     }
+
     return result;
   }, [numSeats, seatColors]);
 
   const presidentY = useMemo(() => {
-    const rows = numSeats < 12 ? 3 : 4;
-    const rowRadii = rows === 3 ? [160, 188, 216] : [152, 178, 204, 230];
+    const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
+    const rowRadii =
+      rows === 3
+        ? [160, 188, 216]
+        : rows === 4
+        ? [152, 178, 204, 230]
+        : [144, 168, 192, 216, 240];
+
     const rowCenterYs = rowRadii.map((radius) => (292 - radius) + 18);
     const sorted = [...rowCenterYs].sort((a, b) => a - b);
     const deltas: number[] = [];

@@ -86,12 +86,12 @@ export default function Home() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const num = parseInt(inputValue);
-    if (num >= 5 && num <= 20) {
+    if (num >= 5 && num <= 35) {
       setNumSeats(num);
       setSeatColors(Array(num).fill("white"));
       setPresidentColor("white");
     } else {
-      alert("Entrez un nombre entre 5 et 20");
+      alert("Entrez un nombre entre 5 et 35");
     }
   };
 
@@ -231,9 +231,9 @@ export default function Home() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   min="5"
-                  max="20"
+                  max="35"
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Entre 5 et 20"
+                  placeholder="Entre 5 et 35"
                 />
               </div>
               <button
