@@ -43,6 +43,7 @@ interface HemicycleProps {
   crisisDescription?: string;
   provinces?: ProvinceState;
   isControlValidated?: boolean;
+  requiredMajority?: "simple" | "super";
 }
 
 export default function Hemicycle({
@@ -70,6 +71,7 @@ export default function Hemicycle({
     "Etat de Tori Valu": "Indépendant",
   },
   isControlValidated = false,
+  requiredMajority = "simple",
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -364,6 +366,9 @@ export default function Hemicycle({
                     }`}
                   >
                     {isControlValidated ? "Loi respectant la Constitution" : "Loi anti constitutionnelle"}
+                  </div>
+                  <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    {requiredMajority === "super" ? "Super Majorité nécessaire" : "Majorité Simple nécessaire"}
                   </div>
                 </div>
 

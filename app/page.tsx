@@ -78,6 +78,7 @@ export default function Home() {
     message: string;
   } | null>(null);
   const [isControlValidated, setIsControlValidated] = useState(false);
+  const [requiredMajority, setRequiredMajority] = useState<"simple" | "super">("simple");
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -194,6 +195,7 @@ export default function Home() {
       provinces,
       passedLaws,
       isControlValidated,
+      requiredMajority,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -213,6 +215,7 @@ export default function Home() {
     provinces,
     passedLaws,
     isControlValidated,
+    requiredMajority,
   ]);
 
   return (
@@ -433,6 +436,16 @@ export default function Home() {
               >
                 Avis Cour Constitutionnelle
               </button>
+              <button
+                onClick={() => setRequiredMajority((m) => (m === "simple" ? "super" : "simple"))}
+                className={`px-4 py-2 font-semibold rounded-lg transition text-white ${
+                  requiredMajority === "super"
+                    ? "bg-violet-600 hover:bg-violet-700"
+                    : "bg-sky-600 hover:bg-sky-700"
+                }`}
+              >
+                {requiredMajority === "super" ? "Super Majorité nécessaire" : "Majorité Simple nécessaire"}
+              </button>
             </div>
 
             {lawFeedback && (
@@ -504,6 +517,7 @@ export default function Home() {
               crisisDescription={crisisDescription}
               provinces={provinces}
               isControlValidated={isControlValidated}
+              requiredMajority={requiredMajority}
             />
             <button
               onClick={() => setNumSeats(null)}
