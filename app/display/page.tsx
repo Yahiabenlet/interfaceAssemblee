@@ -106,9 +106,9 @@ export default function DisplayPage() {
         <button
           onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
           className="px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
-          title="Ouvrir la zone de texte"
+          title="Ouvrir l'historique des lois adoptées"
         >
-          Zone de texte
+          Historique des lois
         </button>
         <button
           onClick={toggleFullscreen}

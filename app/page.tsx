@@ -216,7 +216,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white">
-          Visualiseur du Parlement
+          Tableau de bord parlementaire
         </h1>
 
         {numSeats === null ? (
@@ -406,7 +406,7 @@ export default function Home() {
                 onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
               >
-                Ouvrir la zone de texte
+                Ouvrir l'historique des lois votées
               </button>
               <button
                 onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
