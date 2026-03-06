@@ -4,17 +4,17 @@ import { useMemo } from "react";
 
 type SeatColor = "white" | "green" | "red";
 type ProvinceControl =
-  | "Indépendant"
-  | "Autonomie"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "Contrôle Total";
+    | "Indépendant"
+    | "Autonomie"
+    | "2/10"
+    | "3/10"
+    | "4/10"
+    | "5/10"
+    | "6/10"
+    | "7/10"
+    | "8/10"
+    | "9/10"
+    | "Contrôle Total";
 
 type ProvinceState = {
   "201D": ProvinceControl;
@@ -207,7 +207,7 @@ export default function Hemicycle({
   const getProvinceControlColor = (value: ProvinceControl) => {
     if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
     if (value === "Autonomie") return "text-green-700 dark:text-green-300";
-    if (value === "8" || value === "9" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+    if (value === "8/10" || value === "9/10" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
     return "text-gray-800 dark:text-gray-100";
   };
 

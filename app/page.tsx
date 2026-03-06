@@ -7,14 +7,14 @@ type SeatColor = "white" | "green" | "red";
 type ProvinceControl =
   | "Indépendant"
   | "Autonomie"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
+  | "2/10"
+  | "3/10"
+  | "4/10"
+  | "5/10"
+  | "6/10"
+  | "7/10"
+  | "8/10"
+  | "9/10"
   | "Contrôle Total";
 
 type ProvinceState = {
@@ -29,14 +29,14 @@ type ProvinceState = {
 const CONTROL_OPTIONS: ProvinceControl[] = [
   "Indépendant",
   "Autonomie",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
+  "2/10",
+  "3/10",
+  "4/10",
+  "5/10",
+  "6/10",
+  "7/10",
+  "8/10",
+  "9/10",
   "Contrôle Total",
 ];
 
@@ -319,6 +319,12 @@ export default function Home() {
               >
                 Ouvrir l’affichage plein écran
               </button>
+            </div>
+
+            <div className="mb-4 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 items-start">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* bloc lawView/previousLawsTitle supprimé */}
+              </div>
             </div>
 
             <Hemicycle
