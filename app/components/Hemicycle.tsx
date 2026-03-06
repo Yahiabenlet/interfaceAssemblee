@@ -6,15 +6,15 @@ type SeatColor = "white" | "green" | "red";
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
-    | "2/10"
-    | "3/10"
-    | "4/10"
-    | "5/10"
-    | "6/10"
-    | "7/10"
-    | "8/10"
-    | "9/10"
-    | "Contrôle Total";
+    | "Sédition"
+    | "Insoumission"
+    | "Contestation"
+    | "Équilibre"
+    | "Stable"
+    | "Prospère"
+    | "Pacifié"
+    | "Contrôle Total"
+    | "En Guerre";
 
 type ProvinceState = {
   "201D": ProvinceControl;
@@ -236,9 +236,9 @@ export default function Hemicycle({
   );
 
   const getProvinceControlColor = (value: ProvinceControl) => {
-    if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
-    if (value === "Autonomie") return "text-green-700 dark:text-green-300";
-    if (value === "8/10" || value === "9/10" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+    if (value === "Indépendant" || value === "Autonomie" || value === "Pacifié") return "text-blue-700 dark:text-blue-300";
+    if (value === "Stable" || value === "Prospère") return "text-green-700 dark:text-green-300";
+    if (value === "Sédition" || value === "En Guerre" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
     return "text-gray-800 dark:text-gray-100";
   };
 
@@ -328,7 +328,7 @@ export default function Hemicycle({
               <div className="space-y-4">
                 <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
-                    Contrôle des Provinces
+                    Niveau de Contrôle des Provinces
                   </h3>
                   <div className="space-y-2">
                     {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
@@ -365,7 +365,7 @@ export default function Hemicycle({
                         : "text-rose-700 dark:text-rose-300"
                     }`}
                   >
-                    {isControlValidated ? "Loi respectant la Constitution" : "Loi anti constitutionnelle"}
+                    {isControlValidated ? "Loi conforme à la Constitution" : "Loi non-conforme à la Constitution"}
                   </div>
                   <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
                     {requiredMajority === "super" ? "Super Majorité nécessaire" : "Majorité Simple nécessaire"}

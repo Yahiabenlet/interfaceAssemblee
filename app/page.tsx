@@ -5,17 +5,17 @@ import Hemicycle from "./components/Hemicycle";
 
 type SeatColor = "white" | "green" | "red";
 type ProvinceControl =
-  | "Indépendant"
-  | "Autonomie"
-  | "2/10"
-  | "3/10"
-  | "4/10"
-  | "5/10"
-  | "6/10"
-  | "7/10"
-  | "8/10"
-  | "9/10"
-  | "Contrôle Total";
+    | "Indépendant"
+    | "Autonomie"
+    | "Sédition"
+    | "Insoumission"
+    | "Contestation"
+    | "Équilibre"
+    | "Stable"
+    | "Prospère"
+    | "Pacifié"
+    | "Contrôle Total"
+    | "En Guerre";
 
 type ProvinceState = {
   "201D": ProvinceControl;
@@ -37,17 +37,17 @@ type DeletedLawEntry = {
 };
 
 const CONTROL_OPTIONS: ProvinceControl[] = [
-  "Indépendant",
-  "Autonomie",
-  "2/10",
-  "3/10",
-  "4/10",
-  "5/10",
-  "6/10",
-  "7/10",
-  "8/10",
-  "9/10",
-  "Contrôle Total",
+    "Indépendant",
+    "Autonomie",
+    "Sédition",
+    "Insoumission",
+    "Contestation",
+    "Équilibre",
+    "Stable",
+    "Prospère",
+    "Pacifié",
+    "Contrôle Total",
+    "En Guerre"
 ];
 
 export default function Home() {
@@ -495,11 +495,7 @@ export default function Home() {
               )}
             </div>
 
-            <div className="mb-4 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 items-start">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* bloc lawView/previousLawsTitle supprimé */}
-              </div>
-            </div>
+
 
             <Hemicycle
               numSeats={numSeats}
