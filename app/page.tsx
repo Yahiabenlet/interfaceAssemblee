@@ -32,6 +32,7 @@ type PassedLaw = {
 };
 
 type DeletedLawEntry = {
+  id: string;
   law: PassedLaw;
   index: number;
 };
@@ -136,7 +137,14 @@ export default function Home() {
     setPassedLaws((prev) => {
       if (index < 0 || index >= prev.length) return prev;
       const removed = prev[index];
-      setDeletedLaws((stack) => [...stack, { law: removed, index }]);
+      setDeletedLaws((stack) => [
+        ...stack,
+        {
+          id: `${removed.title}__${removed.text}__${Date.now()}__${Math.random()}`,
+          law: removed,
+          index,
+        },
+      ]);
       setLawFeedback({
         type: "success",
         message: `Loi supprimée${removed.title ? ` : ${removed.title}` : ""}.`,
@@ -157,6 +165,11 @@ export default function Home() {
 
       const last = stack[stack.length - 1];
       setPassedLaws((prev) => {
+        const alreadyExists = prev.some(
+          (law) => law.title === last.law.title && law.text === last.law.text
+        );
+        if (alreadyExists) return prev;
+
         const next = [...prev];
         const safeIndex = Math.max(0, Math.min(last.index, next.length));
         next.splice(safeIndex, 0, last.law);
