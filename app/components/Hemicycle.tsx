@@ -395,53 +395,57 @@ export default function Hemicycle({
                   </div>
                 </div>
 
-                <div
-                  className={`rounded-lg p-4 border text-center ${
-                    isControlValidated
-                      ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
-                      : "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
-                  }`}
-                >
+                {!isNoConfidenceMotion && (
                   <div
-                    className={`text-sm font-medium ${
+                    className={`rounded-lg p-4 border text-center ${
                       isControlValidated
-                        ? "text-emerald-700 dark:text-emerald-300"
-                        : "text-rose-700 dark:text-rose-300"
+                        ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
+                        : "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
                     }`}
                   >
-                    Avis de la Cour Constitutionnelle
+                    <div
+                      className={`text-sm font-medium ${
+                        isControlValidated
+                          ? "text-emerald-700 dark:text-emerald-300"
+                          : "text-rose-700 dark:text-rose-300"
+                      }`}
+                    >
+                      Avis de la Cour Constitutionnelle
+                    </div>
+                    <div
+                      className={`text-3xl font-bold mt-2 ${
+                        isControlValidated
+                          ? "text-emerald-700 dark:text-emerald-300"
+                          : "text-rose-700 dark:text-rose-300"
+                      }`}
+                    >
+                      {isControlValidated ? "Loi conforme à la Constitution" : "Loi non-conforme à la Constitution"}
+                    </div>
+                    <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                      {requiredMajority === "super"
+                        ? `Super Majorité nécessaire (${superMajorityRatio})`
+                        : "Majorité Simple nécessaire"}
+                    </div>
+                    <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                      {vetoMode === "president"
+                        ? "Droit de véto : Président"
+                        : vetoMode === "player"
+                        ? ""
+                        : ""}
+                    </div>
                   </div>
-                  <div
-                    className={`text-3xl font-bold mt-2 ${
-                      isControlValidated
-                        ? "text-emerald-700 dark:text-emerald-300"
-                        : "text-rose-700 dark:text-rose-300"
-                    }`}
-                  >
-                    {isControlValidated ? "Loi conforme à la Constitution" : "Loi non-conforme à la Constitution"}
-                  </div>
-                  <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                    {requiredMajority === "super"
-                      ? `Super Majorité nécessaire (${superMajorityRatio})`
-                      : "Majorité Simple nécessaire"}
-                  </div>
-                  <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                    {vetoMode === "president"
-                      ? "Droit de véto : Président"
-                      : vetoMode === "player"
-                      ? ""
-                      : ""}
-                  </div>
-                </div>
+                )}
 
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                  <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
-                    {title || "Proposition de loi"}
-                  </h2>
-                  <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
-                    {paragraph || "Texte de loi"}
-                  </p>
-                </div>
+                {!isNoConfidenceMotion && (
+                  <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                    <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
+                      {title || "Proposition de loi"}
+                    </h2>
+                    <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+                      {paragraph || "Texte de loi"}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
