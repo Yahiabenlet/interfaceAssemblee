@@ -324,11 +324,11 @@ export default function Hemicycle({
 
             <div className="mt-8 grid">
               <div className="w-full max-w-3xl justify-self-start">
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
+                <div className="w-full grid grid-cols-1 md:[grid-template-columns:minmax(0,2fr)_minmax(0,1fr)] gap-4">
+                  <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px]">
                     <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
                   </div>
-                  <div className="grid grid-rows-2 gap-4">
+                  <div className="grid grid-rows-2 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
                     <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
                       <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
                       <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
