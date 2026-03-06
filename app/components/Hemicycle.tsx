@@ -107,7 +107,10 @@ export default function Hemicycle({
   };
 
   const svgBlock = (
-    <svg viewBox="0 0 500 360" width="500" height="360" className="border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+    <svg
+      viewBox="0 0 500 360"
+      className="w-full h-auto border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700"
+    >
       <g transform="translate(250 220) scale(1.12) translate(-250 -220)">
         <path d="M 100 176 A 196 196 0 0 1 400 176" fill="none" stroke="#ccc" strokeWidth="2" className="dark:stroke-gray-600" />
         {seats.map((seat) => (
@@ -145,10 +148,10 @@ export default function Hemicycle({
 
   return (
     <div className="space-y-8">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 items-start">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 items-start min-w-[980px]">
           <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges</h3>
+            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges de la République </h3>
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-1">
@@ -181,27 +184,35 @@ export default function Hemicycle({
           </div>
 
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 items-start mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-6 items-start mb-8">
+              <div className="w-full max-w-3xl justify-self-center">
+                <div className="flex justify-center items-start self-start">
+                  {svgBlock}
+                </div>
+              </div>
+
               <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                 <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">{title || "Titre"}</h2>
                 <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{paragraph || "Votre paragraphe..."}</p>
               </div>
-              <div className="flex justify-center items-start self-start">
-                {svgBlock}
-              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-              <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
-                <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
-              </div>
-              <div className="grid grid-rows-2 gap-4">
-                <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
-                  <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
-                </div>
-                <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
-                  <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
-                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.red}</div>
+
+            <div className="mt-8 grid">
+              <div className="w-full max-w-3xl justify-self-center">
+                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
+                    <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
+                  </div>
+                  <div className="grid grid-rows-2 gap-4">
+                    <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
+                      <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
+                      <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
+                    </div>
+                    <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
+                      <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
+                      <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.red}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -209,7 +220,7 @@ export default function Hemicycle({
         </div>
       </div>
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        Cliquez sur les sièges (y compris Président) pour changer la couleur (Blanc → Vert → Rouge)
+        Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge)
       </p>
     </div>
   );

@@ -84,7 +84,7 @@ export default function DisplayPage() {
         {isFullscreen ? "Quitter plein écran" : "Plein écran"}
       </button>
 
-      <div className="w-full max-w-5xl">
+      <div className="w-full max-w-7xl">
         <Hemicycle
           numSeats={state.numSeats}
           title={state.title}
