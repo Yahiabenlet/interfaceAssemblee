@@ -45,15 +45,16 @@ export default function Hemicycle({
   }, [seatColors, presidentColor]);
 
   const majorityStatus = useMemo(() => {
-    const pour = seatColors.filter((c) => c === "green").length;
-    const contre = seatColors.filter((c) => c === "red").length;
+    const all = [...seatColors, presidentColor];
+    const pour = all.filter((c) => c === "green").length;
+    const contre = all.filter((c) => c === "red").length;
     const exprimes = pour + contre;
     if (exprimes === 0) return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
     const ratioPour = pour / exprimes;
     if (ratioPour >= 0.6) return { label: "Super Majorité 3/5", tone: "text-emerald-700 dark:text-emerald-300" };
     if (ratioPour > 0.5) return { label: "Majorité simple (50% + 1 voix)", tone: "text-blue-700 dark:text-blue-300" };
     return { label: "Aucune majorité", tone: "text-gray-700 dark:text-gray-200" };
-  }, [seatColors]);
+  }, [seatColors, presidentColor]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : 4;
