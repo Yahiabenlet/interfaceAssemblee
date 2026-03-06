@@ -31,6 +31,11 @@ type PassedLaw = {
   text: string;
 };
 
+type DeletedLawEntry = {
+  law: PassedLaw;
+  index: number;
+};
+
 const CONTROL_OPTIONS: ProvinceControl[] = [
   "Indépendant",
   "Autonomie",
@@ -67,6 +72,7 @@ export default function Home() {
     "Etat de Tori Valu": "Indépendant",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
+  const [deletedLaws, setDeletedLaws] = useState<DeletedLawEntry[]>([]);
   const [lawFeedback, setLawFeedback] = useState<{
     type: "success" | "error";
     message: string;
@@ -121,6 +127,46 @@ export default function Home() {
     setLawFeedback({
       type: "success",
       message: `Loi ajoutée${lawTitle ? ` : ${lawTitle}` : ""}.`,
+    });
+  };
+
+  const removePassedLaw = (index: number) => {
+    setPassedLaws((prev) => {
+      if (index < 0 || index >= prev.length) return prev;
+      const removed = prev[index];
+      setDeletedLaws((stack) => [...stack, { law: removed, index }]);
+      setLawFeedback({
+        type: "success",
+        message: `Loi supprimée${removed.title ? ` : ${removed.title}` : ""}.`,
+      });
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const undoDeleteLaw = () => {
+    setDeletedLaws((stack) => {
+      if (stack.length === 0) {
+        setLawFeedback({
+          type: "error",
+          message: "Aucune suppression à annuler.",
+        });
+        return stack;
+      }
+
+      const last = stack[stack.length - 1];
+      setPassedLaws((prev) => {
+        const next = [...prev];
+        const safeIndex = Math.max(0, Math.min(last.index, next.length));
+        next.splice(safeIndex, 0, last.law);
+        return next;
+      });
+
+      setLawFeedback({
+        type: "success",
+        message: `Suppression annulée${last.law.title ? ` : ${last.law.title}` : ""}.`,
+      });
+
+      return stack.slice(0, -1);
     });
   };
 
@@ -368,6 +414,12 @@ export default function Home() {
               >
                 Ouvrir l’affichage plein écran
               </button>
+              <button
+                onClick={undoDeleteLaw}
+                className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition"
+              >
+                Annuler la dernière suppression
+              </button>
             </div>
 
             {lawFeedback && (
@@ -381,6 +433,41 @@ export default function Home() {
                 {lawFeedback.message}
               </div>
             )}
+
+            <div className="mb-6 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100">Lois votées ({passedLaws.length})</h3>
+              </div>
+              {passedLaws.length === 0 ? (
+                <p className="text-sm text-gray-600 dark:text-gray-300">Aucune loi enregistrée.</p>
+              ) : (
+                <div className="space-y-2 max-h-56 overflow-auto">
+                  {passedLaws.map((law, idx) => (
+                    <div
+                      key={`${law.title}-${idx}`}
+                      className="rounded-lg border border-slate-200 dark:border-slate-700 p-3 bg-slate-50 dark:bg-slate-900"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white break-words">
+                            {law.title || "Sans titre"}
+                          </p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+                            {law.text || "Sans texte"}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => removePassedLaw(idx)}
+                          className="shrink-0 px-3 py-1.5 text-xs font-semibold rounded-md bg-red-600 hover:bg-red-700 text-white transition"
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="mb-4 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 items-start">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

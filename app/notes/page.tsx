@@ -59,7 +59,7 @@ export default function NotesPage() {
       </div>
 
       <div className="w-full max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Lois précédemments votées</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Lois précédemment votées</h1>
 
         <div className="w-full h-[70vh] overflow-auto px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700">
           {notes.length === 0 ? (
