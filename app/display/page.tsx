@@ -4,6 +4,27 @@ import { useEffect, useState } from "react";
 import Hemicycle from "../components/Hemicycle";
 
 type SeatColor = "white" | "green" | "red";
+type ProvinceControl =
+  | "Indépendant"
+  | "Autonomie"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "Contrôle Total";
+
+type ProvinceState = {
+  "201D": ProvinceControl;
+  "202D-Plateau": ProvinceControl;
+  "202D-Profond": ProvinceControl;
+  "204D": ProvinceControl;
+  "Provinces des Plasticiens": ProvinceControl;
+  "Etat de Tori Valu": ProvinceControl;
+};
 
 type DisplayState = {
   numSeats: number;
@@ -17,6 +38,7 @@ type DisplayState = {
   countrySituation?: string;
   isCrisis?: boolean;
   crisisDescription?: string;
+  provinces?: ProvinceState;
 };
 
 export default function DisplayPage() {
@@ -102,6 +124,16 @@ export default function DisplayPage() {
           countrySituation={state.countrySituation ?? ""}
           isCrisis={state.isCrisis ?? false}
           crisisDescription={state.crisisDescription ?? ""}
+          provinces={
+            state.provinces ?? {
+              "201D": "Indépendant",
+              "202D-Plateau": "Indépendant",
+              "202D-Profond": "Indépendant",
+              "204D": "Indépendant",
+              "Provinces des Plasticiens": "Indépendant",
+              "Etat de Tori Valu": "Indépendant",
+            }
+          }
           readOnly
         />
       </div>

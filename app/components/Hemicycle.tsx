@@ -2,6 +2,29 @@
 
 import { useMemo } from "react";
 
+type SeatColor = "white" | "green" | "red";
+type ProvinceControl =
+  | "Indépendant"
+  | "Autonomie"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "Contrôle Total";
+
+type ProvinceState = {
+  "201D": ProvinceControl;
+  "202D-Plateau": ProvinceControl;
+  "202D-Profond": ProvinceControl;
+  "204D": ProvinceControl;
+  "Provinces des Plasticiens": ProvinceControl;
+  "Etat de Tori Valu": ProvinceControl;
+};
+
 interface HemicycleProps {
   numSeats: number;
   title: string;
@@ -18,9 +41,8 @@ interface HemicycleProps {
   countrySituation?: string;
   isCrisis?: boolean;
   crisisDescription?: string;
+  provinces?: ProvinceState;
 }
-
-type SeatColor = "white" | "green" | "red";
 
 export default function Hemicycle({
   numSeats,
@@ -38,6 +60,14 @@ export default function Hemicycle({
   countrySituation = "",
   isCrisis = false,
   crisisDescription = "",
+  provinces = {
+    "201D": "Indépendant",
+    "202D-Plateau": "Indépendant",
+    "202D-Profond": "Indépendant",
+    "204D": "Indépendant",
+    "Provinces des Plasticiens": "Indépendant",
+    "Etat de Tori Valu": "Indépendant",
+  },
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -174,6 +204,13 @@ export default function Hemicycle({
     </svg>
   );
 
+  const getProvinceControlColor = (value: ProvinceControl) => {
+    if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
+    if (value === "Autonomie") return "text-green-700 dark:text-green-300";
+    if (value === "8" || value === "9" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+    return "text-gray-800 dark:text-gray-100";
+  };
+
   if (svgOnly) return <div className="w-screen h-screen flex items-center justify-center bg-black">{svgBlock}</div>;
 
   return (
@@ -254,14 +291,34 @@ export default function Hemicycle({
           <div>
             <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-6 items-start mb-8">
               <div className="w-full max-w-3xl justify-self-center">
-                <div className="flex justify-center items-start self-start">
-                  {svgBlock}
-                </div>
+                <div className="flex justify-center items-start self-start">{svgBlock}</div>
               </div>
 
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">{title || "Proposition de loi"}</h2>
-                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{paragraph || "Texte de loi"}</p>
+              <div className="space-y-4">
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                    Contrôle des Provinces
+                  </h3>
+                  <div className="space-y-2">
+                    {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
+                      <div key={name} className="flex items-center justify-between gap-2">
+                        <span className="text-xs text-gray-700 dark:text-gray-300">{name}</span>
+                        <span className={`text-xs font-semibold ${getProvinceControlColor(provinces[name])}`}>
+                          {provinces[name]}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                  <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
+                    {title || "Proposition de loi"}
+                  </h2>
+                  <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+                    {paragraph || "Texte de loi"}
+                  </p>
+                </div>
               </div>
             </div>
 

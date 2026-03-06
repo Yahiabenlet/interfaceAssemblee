@@ -4,6 +4,41 @@ import { useEffect, useState } from "react";
 import Hemicycle from "./components/Hemicycle";
 
 type SeatColor = "white" | "green" | "red";
+type ProvinceControl =
+  | "Indépendant"
+  | "Autonomie"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "Contrôle Total";
+
+type ProvinceState = {
+  "201D": ProvinceControl;
+  "202D-Plateau": ProvinceControl;
+  "202D-Profond": ProvinceControl;
+  "204D": ProvinceControl;
+  "Provinces des Plasticiens": ProvinceControl;
+  "Etat de Tori Valu": ProvinceControl;
+};
+
+const CONTROL_OPTIONS: ProvinceControl[] = [
+  "Indépendant",
+  "Autonomie",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "Contrôle Total",
+];
 
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
@@ -18,6 +53,14 @@ export default function Home() {
   const [countrySituation, setCountrySituation] = useState("");
   const [isCrisis, setIsCrisis] = useState(false);
   const [crisisDescription, setCrisisDescription] = useState("");
+  const [provinces, setProvinces] = useState<ProvinceState>({
+    "201D": "Indépendant",
+    "202D-Plateau": "Indépendant",
+    "202D-Profond": "Indépendant",
+    "204D": "Indépendant",
+    "Provinces des Plasticiens": "Indépendant",
+    "Etat de Tori Valu": "Indépendant",
+  });
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -68,6 +111,7 @@ export default function Home() {
         countrySituation,
         isCrisis,
         crisisDescription,
+        provinces,
       })
     );
   }, [
@@ -82,6 +126,7 @@ export default function Home() {
     countrySituation,
     isCrisis,
     crisisDescription,
+    provinces,
   ]);
 
   return (
@@ -118,30 +163,61 @@ export default function Home() {
           </div>
         ) : (
           <div>
-            <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Loi :
-                </label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Entrez le nom d'une Loi"
-                />
+            <div className="mb-4 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 items-start">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="w-full">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Loi :
+                  </label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Entrez le nom d'une Loi"
+                  />
+                </div>
+                <div className="w-full">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Texte de loi :
+                  </label>
+                  <textarea
+                    value={paragraph}
+                    onChange={(e) => setParagraph(e.target.value)}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Entrez le texte de loi"
+                  />
+                </div>
               </div>
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Texte de loi :
-                </label>
-                <textarea
-                  value={paragraph}
-                  onChange={(e) => setParagraph(e.target.value)}
-                  rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Entrez le texte de loi"
-                />
+
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                  Contrôle des Provinces
+                </h3>
+                <div className="space-y-3">
+                  {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
+                    <div key={name} className="grid grid-cols-[1fr_140px] gap-2 items-center">
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{name}</span>
+                      <select
+                        value={provinces[name]}
+                        onChange={(e) =>
+                          setProvinces((prev) => ({
+                            ...prev,
+                            [name]: e.target.value as ProvinceControl,
+                          }))
+                        }
+                        className="px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      >
+                        {CONTROL_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -259,6 +335,7 @@ export default function Home() {
               countrySituation={countrySituation}
               isCrisis={isCrisis}
               crisisDescription={crisisDescription}
+              provinces={provinces}
             />
             <button
               onClick={() => setNumSeats(null)}
