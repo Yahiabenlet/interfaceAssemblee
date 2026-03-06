@@ -211,7 +211,7 @@ export default function Hemicycle({
             <div className="mt-8 grid">
               <div className="w-full max-w-3xl justify-self-start">
                 <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-slate-50 dark:bg-green-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
+                  <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
                     <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
                   </div>
                   <div className="grid grid-rows-2 gap-4">
