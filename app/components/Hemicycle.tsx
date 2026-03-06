@@ -12,6 +12,9 @@ interface HemicycleProps {
   onTogglePresident: () => void;
   svgOnly?: boolean;
   readOnly?: boolean;
+  economyGauge?: number;
+  socialGauge?: number;
+  securityGauge?: number;
 }
 
 type SeatColor = "white" | "green" | "red";
@@ -26,6 +29,9 @@ export default function Hemicycle({
   onTogglePresident,
   svgOnly = false,
   readOnly = false,
+  economyGauge = 0,
+  socialGauge = 0,
+  securityGauge = 0,
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -140,25 +146,64 @@ export default function Hemicycle({
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 items-start mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 items-start">
           <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">{title || "Titre"}</h2>
-            <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{paragraph || "Votre paragraphe..."}</p>
-          </div>
-          <div className="flex justify-center items-center">{svgBlock}</div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-          <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
-            <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
-          </div>
-          <div className="grid grid-rows-2 gap-4">
-            <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
-              <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
+            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges</h3>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
+                  <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
+                </div>
+                <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
+                  <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
+                  <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
+                </div>
+                <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
+                  <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
+                  <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
+                </div>
+                <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
+                  <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
+                </div>
+              </div>
             </div>
-            <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
-              <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
-              <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.red}</div>
+          </div>
+
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 items-start mb-8">
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">{title || "Titre"}</h2>
+                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{paragraph || "Votre paragraphe..."}</p>
+              </div>
+              <div className="flex justify-center items-start self-start">
+                {svgBlock}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+              <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center md:h-full flex items-center justify-center">
+                <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
+              </div>
+              <div className="grid grid-rows-2 gap-4">
+                <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
+                  <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
+                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
+                </div>
+                <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
+                  <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
+                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.red}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,9 @@ export default function Home() {
   const [paragraph, setParagraph] = useState("Votre paragraphe...");
   const [seatColors, setSeatColors] = useState<SeatColor[]>([]);
   const [presidentColor, setPresidentColor] = useState<SeatColor>("white");
+  const [economyGauge, setEconomyGauge] = useState(5);
+  const [socialGauge, setSocialGauge] = useState(5);
+  const [securityGauge, setSecurityGauge] = useState(5);
 
   const nextColor = (current: SeatColor): SeatColor => {
     const colors: SeatColor[] = ["white", "green", "red"];
@@ -44,9 +47,18 @@ export default function Home() {
     if (numSeats === null) return;
     localStorage.setItem(
       "hemicycleState",
-      JSON.stringify({ numSeats, title, paragraph, seatColors, presidentColor })
+      JSON.stringify({
+        numSeats,
+        title,
+        paragraph,
+        seatColors,
+        presidentColor,
+        economyGauge,
+        socialGauge,
+        securityGauge,
+      })
     );
-  }, [numSeats, title, paragraph, seatColors, presidentColor]);
+  }, [numSeats, title, paragraph, seatColors, presidentColor, economyGauge, socialGauge, securityGauge]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
@@ -109,6 +121,51 @@ export default function Home() {
               </div>
             </div>
 
+            <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-green-200 dark:border-green-900">
+                <label className="block text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
+                  Économie ({economyGauge}/10)
+                </label>
+                <input
+                  type="range"
+                  min={0}
+                  max={10}
+                  step={1}
+                  value={economyGauge}
+                  onChange={(e) => setEconomyGauge(Number(e.target.value))}
+                  className="w-full accent-green-500"
+                />
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-red-200 dark:border-red-900">
+                <label className="block text-sm font-semibold text-red-700 dark:text-red-300 mb-2">
+                  Social ({socialGauge}/10)
+                </label>
+                <input
+                  type="range"
+                  min={0}
+                  max={10}
+                  step={1}
+                  value={socialGauge}
+                  onChange={(e) => setSocialGauge(Number(e.target.value))}
+                  className="w-full accent-red-500"
+                />
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-200 dark:border-blue-900">
+                <label className="block text-sm font-semibold text-blue-700 dark:text-blue-300 mb-2">
+                  Sécurité ({securityGauge}/10)
+                </label>
+                <input
+                  type="range"
+                  min={0}
+                  max={10}
+                  step={1}
+                  value={securityGauge}
+                  onChange={(e) => setSecurityGauge(Number(e.target.value))}
+                  className="w-full accent-blue-500"
+                />
+              </div>
+            </div>
+
             <div className="mb-4 flex justify-end">
               <button
                 onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
@@ -126,6 +183,9 @@ export default function Home() {
               presidentColor={presidentColor}
               onToggleSeat={toggleSeat}
               onTogglePresident={togglePresident}
+              economyGauge={economyGauge}
+              socialGauge={socialGauge}
+              securityGauge={securityGauge}
             />
             <button
               onClick={() => setNumSeats(null)}

@@ -11,6 +11,9 @@ type DisplayState = {
   paragraph: string;
   seatColors: SeatColor[];
   presidentColor: SeatColor;
+  economyGauge?: number;
+  socialGauge?: number;
+  securityGauge?: number;
 };
 
 export default function DisplayPage() {
@@ -90,6 +93,9 @@ export default function DisplayPage() {
           presidentColor={state.presidentColor}
           onToggleSeat={() => {}}
           onTogglePresident={() => {}}
+          economyGauge={state.economyGauge ?? 0}
+          socialGauge={state.socialGauge ?? 0}
+          securityGauge={state.securityGauge ?? 0}
           readOnly
         />
       </div>
