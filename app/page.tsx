@@ -102,6 +102,12 @@ export default function Home() {
     const presidentCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange"];
     const presidentCycleWithPresidentVeto: SeatColor[] = ["white", "green", "orange"];
 
+    // Motion de censure: pas d'orange, uniquement blanc/vert/rouge
+    if (isNoConfidenceMotion) {
+      const forcedCycle: SeatColor[] = ["white", "green", "red"];
+      return forcedCycle[(forcedCycle.indexOf(current) + 1) % forcedCycle.length];
+    }
+
     const cycle =
       target === "seat"
         ? (vetoMode === "player" ? seatCycleWithPlayerVeto : seatCycleNoVeto)
@@ -299,6 +305,14 @@ export default function Home() {
     () => useEnclumeLaw && enclumeStatus === "running",
     [useEnclumeLaw, enclumeStatus]
   );
+
+  // Si la motion de censure est activée, on supprime les oranges déjà posés
+  useEffect(() => {
+    if (!isNoConfidenceMotion) return;
+
+    setSeatColors((prev) => prev.map((c) => (c === "orange" ? "red" : c)));
+    setPresidentColor((prev) => (prev === "orange" ? "red" : prev));
+  }, [isNoConfidenceMotion]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
