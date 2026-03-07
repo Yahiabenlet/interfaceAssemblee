@@ -26,6 +26,8 @@ type ProvinceState = {
   "Etat de Tori Valu": ProvinceControl;
 };
 
+type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
+
 type DisplayState = {
   numSeats: number;
   title: string;
@@ -46,6 +48,8 @@ type DisplayState = {
   vetoMode?: "none" | "president" | "player";
   isNoConfidenceMotion?: boolean;
   useEnclumeLaw?: boolean;
+  enclumeStatus?: EnclumeStatus;
+  enclumeStartedAt?: number | null;
 };
 
 export default function DisplayPage() {
@@ -156,6 +160,8 @@ export default function DisplayPage() {
           vetoMode={state.vetoMode ?? "none"}
           isNoConfidenceMotion={state.isNoConfidenceMotion ?? false}
           useEnclumeLaw={state.useEnclumeLaw ?? false}
+          enclumeStatus={state.enclumeStatus ?? "idle"}
+          enclumeStartedAt={state.enclumeStartedAt ?? null}
           readOnly
         />
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Hemicycle from "./components/Hemicycle";
 
 type SeatColor = "white" | "green" | "red" | "orange";
@@ -50,6 +50,9 @@ const SUPER_MAJORITY_OPTIONS = ["3/5", "2/3", "7/10" ,"3/4"] as const;
 const VETO_OPTIONS = ["none", "president", "player"] as const;
 type VetoMode = (typeof VETO_OPTIONS)[number];
 
+type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
+const ENCLUME_DURATION_MS = 4 * 60 * 1000;
+
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -82,6 +85,8 @@ export default function Home() {
   const [vetoMode, setVetoMode] = useState<VetoMode>("none");
   const [isNoConfidenceMotion, setIsNoConfidenceMotion] = useState(false);
   const [useEnclumeLaw, setUseEnclumeLaw] = useState(false);
+  const [enclumeStatus, setEnclumeStatus] = useState<EnclumeStatus>("idle");
+  const [enclumeStartedAt, setEnclumeStartedAt] = useState<number | null>(null);
 
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
     const seatCycleNoVeto: SeatColor[] = ["white", "green", "red"];
@@ -211,6 +216,8 @@ export default function Home() {
       vetoMode,
       isNoConfidenceMotion,
       useEnclumeLaw,
+      enclumeStatus,
+      enclumeStartedAt,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -235,7 +242,37 @@ export default function Home() {
     vetoMode,
     isNoConfidenceMotion,
     useEnclumeLaw,
+    enclumeStatus,
+    enclumeStartedAt,
   ]);
+
+  useEffect(() => {
+    if (useEnclumeLaw) {
+      if (!enclumeStartedAt || enclumeStatus === "idle") {
+        setEnclumeStartedAt(Date.now());
+        setEnclumeStatus("running");
+      }
+    } else {
+      setEnclumeStartedAt(null);
+      setEnclumeStatus("idle");
+    }
+  }, [useEnclumeLaw, enclumeStartedAt, enclumeStatus]);
+
+  useEffect(() => {
+    if (!useEnclumeLaw || enclumeStatus !== "running" || !enclumeStartedAt) return;
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - enclumeStartedAt;
+      if (elapsed >= ENCLUME_DURATION_MS) {
+        setEnclumeStatus("adopted");
+      }
+    }, 250);
+    return () => clearInterval(interval);
+  }, [useEnclumeLaw, enclumeStatus, enclumeStartedAt]);
+
+  const canRejectEnclume = useMemo(
+    () => useEnclumeLaw && enclumeStatus === "running",
+    [useEnclumeLaw, enclumeStatus]
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
@@ -415,6 +452,18 @@ export default function Home() {
                     }`}
                   >
                     Utiliser la loi de l&apos;Enclume : {useEnclumeLaw ? "Oui" : "Non"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEnclumeStatus("rejected")}
+                    disabled={!canRejectEnclume}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      canRejectEnclume
+                        ? "bg-rose-600 hover:bg-rose-700"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    Rejeter la loi de l&apos;Enclume
                   </button>
                 </div>
               </div>
@@ -611,6 +660,8 @@ export default function Home() {
               vetoMode={vetoMode}
               isNoConfidenceMotion={isNoConfidenceMotion}
               useEnclumeLaw={useEnclumeLaw}
+              enclumeStatus={enclumeStatus}
+              enclumeStartedAt={enclumeStartedAt}
             />
             <button
               onClick={() => setNumSeats(null)}

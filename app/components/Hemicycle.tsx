@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type SeatColor = "white" | "green" | "red" | "orange";
 type ProvinceControl =
@@ -25,6 +25,9 @@ type ProvinceState = {
   "Etat de Tori Valu": ProvinceControl;
 };
 
+type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
+const ENCLUME_DURATION_MS = 4 * 60 * 1000;
+
 interface HemicycleProps {
   numSeats: number;
   title: string;
@@ -48,6 +51,8 @@ interface HemicycleProps {
   vetoMode?: "none" | "president" | "player";
   isNoConfidenceMotion?: boolean;
   useEnclumeLaw?: boolean;
+  enclumeStatus?: EnclumeStatus;
+  enclumeStartedAt?: number | null;
 }
 
 export default function Hemicycle({
@@ -80,7 +85,17 @@ export default function Hemicycle({
   vetoMode = "none",
   isNoConfidenceMotion = false,
   useEnclumeLaw = false,
+  enclumeStatus = "idle",
+  enclumeStartedAt = null,
 }: HemicycleProps) {
+  const [now, setNow] = useState<number>(Date.now());
+
+  useEffect(() => {
+    if (!useEnclumeLaw || enclumeStatus !== "running") return;
+    const t = setInterval(() => setNow(Date.now()), 250);
+    return () => clearInterval(t);
+  }, [useEnclumeLaw, enclumeStatus]);
+
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
     return {
@@ -101,6 +116,18 @@ export default function Hemicycle({
     return num / den;
   }, [superMajorityRatio]);
 
+  const enclumeRemaining = useMemo(() => {
+    if (!enclumeStartedAt) return ENCLUME_DURATION_MS;
+    return Math.max(0, ENCLUME_DURATION_MS - (now - enclumeStartedAt));
+  }, [enclumeStartedAt, now]);
+
+  const enclumeTimerLabel = useMemo(() => {
+    const totalSec = Math.ceil(enclumeRemaining / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }, [enclumeRemaining]);
+
   const majorityStatus = useMemo(() => {
     const all = [...seatColors, presidentColor];
     const hasSeatVeto = all.some((c) => c === "orange");
@@ -110,10 +137,24 @@ export default function Hemicycle({
     const exprimes = pour + contre;
 
     if (useEnclumeLaw && !isNoConfidenceMotion) {
+      if (enclumeStatus === "adopted") {
+        return {
+          label: "Loi de l’Enclume adoptée",
+          tone: "text-emerald-700 dark:text-emerald-300",
+          bg: "bg-emerald-50 dark:bg-emerald-950",
+        };
+      }
+      if (enclumeStatus === "rejected") {
+        return {
+          label: "Loi de l’Enclume rejetée",
+          tone: "text-rose-700 dark:text-rose-300",
+          bg: "bg-rose-50 dark:bg-rose-950",
+        };
+      }
       return {
-        label: "Loi adoptée sans vote (Loi de l’Enclume)",
-        tone: "text-emerald-700 dark:text-emerald-300",
-        bg: "bg-emerald-50 dark:bg-emerald-950",
+        label: "Loi de l’Enclume en cours (chronomètre actif)",
+        tone: "text-amber-700 dark:text-amber-300",
+        bg: "bg-amber-50 dark:bg-amber-950",
       };
     }
 
@@ -211,7 +252,7 @@ export default function Hemicycle({
       tone: "text-gray-700 dark:text-gray-200",
       bg: "bg-rose-50 dark:bg-rose-950",
     };
-  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion, useEnclumeLaw]);
+  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion, useEnclumeLaw, enclumeStatus]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
@@ -455,6 +496,14 @@ export default function Hemicycle({
                     <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
                       50% + 1 voix des inscrits
                     </div>
+                    {useEnclumeLaw && (
+                      <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
+                        <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                          Chronomètre Loi de l’Enclume
+                        </div>
+                        <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
+                      </div>
+                    )}
                   </div>
                 ) : useEnclumeLaw ? (
                   <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
@@ -466,6 +515,17 @@ export default function Hemicycle({
                     </div>
                     <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
                       Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée avant la fin du chronomètre
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
+                      <div className="text-xs font-medium text-amber-800 dark:text-amber-300">Chronomètre (4:00)</div>
+                      <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
+                      <div className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                        {enclumeStatus === "adopted"
+                          ? "Résultat : Adoptée"
+                          : enclumeStatus === "rejected"
+                          ? "Résultat : Rejetée"
+                          : "Vote en attente de l'issue du chronomètre"}
+                      </div>
                     </div>
                   </div>
                 ) : (
