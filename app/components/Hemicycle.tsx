@@ -456,6 +456,18 @@ export default function Hemicycle({
                       50% + 1 voix des inscrits
                     </div>
                   </div>
+                ) : useEnclumeLaw ? (
+                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-300">
+                      Loi de l&apos;Enclume — Rappel des règles
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
+                      Loi adoptée sans vote
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                      Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée dans 5min
+                    </div>
+                  </div>
                 ) : (
                   <div
                     className={`rounded-lg p-4 border text-center ${
@@ -497,7 +509,7 @@ export default function Hemicycle({
                   </div>
                 )}
 
-                {!isNoConfidenceMotion && (
+                {!isNoConfidenceMotion && !useEnclumeLaw && (
                   <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
                       {title || "Proposition de loi"}
