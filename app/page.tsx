@@ -92,6 +92,7 @@ export default function Home() {
   const [selectionRingColor, setSelectionRingColor] = useState("#3b82f6");
   const [selectedSeatOverlays, setSelectedSeatOverlays] = useState<Record<number, string>>({});
   const [selectedPresidentOverlay, setSelectedPresidentOverlay] = useState<string | null>(null);
+  const [isEraseMode, setIsEraseMode] = useState(false);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -147,6 +148,15 @@ export default function Home() {
       return;
     }
 
+    if (isEraseMode) {
+      setSeatColors((prev) => {
+        const next = [...prev];
+        next[index] = "white";
+        return next;
+      });
+      return;
+    }
+
     setSeatColors((prev) => {
       const next = [...prev];
       next[index] = nextColor(next[index], "seat");
@@ -159,13 +169,26 @@ export default function Home() {
       setSelectedPresidentOverlay((prev) => (prev ? null : selectionRingColor));
       return;
     }
+
+    if (isEraseMode) {
+      setPresidentColor("white");
+      return;
+    }
+
     setPresidentColor((c) => nextColor(c, "president"));
   };
 
+  // Reset uniquement les voix (couleurs de vote)
   const resetVotes = () => {
     if (numSeats === null) return;
     setSeatColors(Array(numSeats).fill("white"));
     setPresidentColor("white");
+  };
+
+  // Reset uniquement les cercles de sélection (annotations)
+  const resetSelections = () => {
+    setSelectedSeatOverlays({});
+    setSelectedPresidentOverlay(null);
   };
 
   const addCurrentLawToPassed = () => {
@@ -264,6 +287,9 @@ export default function Home() {
       enclumeStatus,
       enclumeStartedAt,
       enclumeDurationMinutes,
+      selectedSeatOverlays,
+      selectedPresidentOverlay,
+      isEraseMode,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -291,6 +317,9 @@ export default function Home() {
     enclumeStatus,
     enclumeStartedAt,
     enclumeDurationMinutes,
+    selectedSeatOverlays,
+    selectedPresidentOverlay,
+    isEraseMode,
   ]);
 
   useEffect(() => {
@@ -669,11 +698,28 @@ export default function Home() {
               </label>
 
               <button
+                onClick={() => setIsEraseMode((v) => !v)}
+                className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
+                  isEraseMode ? "bg-rose-700 hover:bg-rose-800" : "bg-rose-600 hover:bg-rose-700"
+                }`}
+              >
+                {isEraseMode ? "Mode effacement: ON" : "Mode effacement: OFF"}
+              </button>
+
+              <button
                 onClick={resetVotes}
                 className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition"
               >
-                Reset tous les sièges
+                Reset des voix
               </button>
+
+              <button
+                onClick={resetSelections}
+                className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition"
+              >
+                Reset des sélections
+              </button>
+
               <button
                 onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
