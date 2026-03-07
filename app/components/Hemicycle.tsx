@@ -47,6 +47,7 @@ interface HemicycleProps {
   superMajorityRatio?: string;
   vetoMode?: "none" | "president" | "player";
   isNoConfidenceMotion?: boolean;
+  useEnclumeLaw?: boolean;
 }
 
 export default function Hemicycle({
@@ -78,6 +79,7 @@ export default function Hemicycle({
   superMajorityRatio = "3/5",
   vetoMode = "none",
   isNoConfidenceMotion = false,
+  useEnclumeLaw = false,
 }: HemicycleProps) {
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
@@ -106,6 +108,14 @@ export default function Hemicycle({
     const pour = all.filter((c) => c === "green").length;
     const contre = all.filter((c) => c === "red" || c === "orange").length;
     const exprimes = pour + contre;
+
+    if (useEnclumeLaw && !isNoConfidenceMotion) {
+      return {
+        label: "Loi adoptée sans vote (Loi de l’Enclume)",
+        tone: "text-emerald-700 dark:text-emerald-300",
+        bg: "bg-emerald-50 dark:bg-emerald-950",
+      };
+    }
 
     if (isNoConfidenceMotion) {
       const inscrits = all.length;
@@ -201,7 +211,7 @@ export default function Hemicycle({
       tone: "text-gray-700 dark:text-gray-200",
       bg: "bg-rose-50 dark:bg-rose-950",
     };
-  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion]);
+  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion, useEnclumeLaw]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;

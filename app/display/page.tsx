@@ -45,6 +45,7 @@ type DisplayState = {
   superMajorityRatio?: string;
   vetoMode?: "none" | "president" | "player";
   isNoConfidenceMotion?: boolean;
+  useEnclumeLaw?: boolean;
 };
 
 export default function DisplayPage() {
@@ -154,6 +155,7 @@ export default function DisplayPage() {
           superMajorityRatio={state.superMajorityRatio ?? "3/5"}
           vetoMode={state.vetoMode ?? "none"}
           isNoConfidenceMotion={state.isNoConfidenceMotion ?? false}
+          useEnclumeLaw={state.useEnclumeLaw ?? false}
           readOnly
         />
       </div>

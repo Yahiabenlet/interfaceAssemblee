@@ -81,6 +81,7 @@ export default function Home() {
   const [superMajorityRatio, setSuperMajorityRatio] = useState<string>("3/5");
   const [vetoMode, setVetoMode] = useState<VetoMode>("none");
   const [isNoConfidenceMotion, setIsNoConfidenceMotion] = useState(false);
+  const [useEnclumeLaw, setUseEnclumeLaw] = useState(false);
 
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
     const seatCycleNoVeto: SeatColor[] = ["white", "green", "red"];
@@ -209,6 +210,7 @@ export default function Home() {
       superMajorityRatio,
       vetoMode,
       isNoConfidenceMotion,
+      useEnclumeLaw,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -232,6 +234,7 @@ export default function Home() {
     superMajorityRatio,
     vetoMode,
     isNoConfidenceMotion,
+    useEnclumeLaw,
   ]);
 
   return (
@@ -403,6 +406,15 @@ export default function Home() {
                     }`}
                   >
                     Motion de censure : {isNoConfidenceMotion ? "Activée" : "Désactivée"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUseEnclumeLaw((v) => !v)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      useEnclumeLaw ? "bg-emerald-700 hover:bg-emerald-800" : "bg-emerald-500 hover:bg-emerald-600"
+                    }`}
+                  >
+                    Utiliser la loi de l&apos;Enclume : {useEnclumeLaw ? "Oui" : "Non"}
                   </button>
                 </div>
               </div>
@@ -598,6 +610,7 @@ export default function Home() {
               superMajorityRatio={superMajorityRatio}
               vetoMode={vetoMode}
               isNoConfidenceMotion={isNoConfidenceMotion}
+              useEnclumeLaw={useEnclumeLaw}
             />
             <button
               onClick={() => setNumSeats(null)}
