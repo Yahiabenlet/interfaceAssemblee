@@ -462,10 +462,10 @@ export default function Hemicycle({
                       Loi de l&apos;Enclume — Rappel des règles
                     </div>
                     <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
-                      Loi adoptée sans vote
+                      Loi adoptée sans vote, engageant la responsabilité du président
                     </div>
                     <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
-                      Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée dans 5min
+                      Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée avant la fin du chronomètre
                     </div>
                   </div>
                 ) : (
