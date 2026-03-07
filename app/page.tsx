@@ -208,7 +208,7 @@ export default function Home() {
   };
 
   const canSaveLaw = useMemo(() => {
-    if (isControlValidated === "conforme") return true;
+    if (isControlValidated === "conforme" || isControlValidated === "nonStatue") return true;
     return useEnclumeLaw && enclumeStatus === "adopted";
   }, [isControlValidated, useEnclumeLaw, enclumeStatus]);
 
@@ -417,6 +417,22 @@ export default function Home() {
     });
   };
 
+  const renameProvince = (oldName: string, rawNewName: string) => {
+    const newName = rawNewName.trim();
+    if (!newName || newName === oldName) return;
+
+    setProvinces((prev) => {
+      if (!prev[oldName]) return prev;
+      if (prev[newName]) return prev; // évite doublon de clé
+      const next: ProvinceState = {};
+      (Object.keys(prev) as string[]).forEach((key) => {
+        if (key === oldName) next[newName] = prev[oldName];
+        else next[key] = prev[key];
+      });
+      return next;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
       <div className="max-w-7xl mx-auto">
@@ -504,7 +520,20 @@ export default function Home() {
                 <div className="space-y-3">
                   {(Object.keys(provinces) as string[]).map((name) => (
                     <div key={name} className="grid grid-cols-[1fr_140px_auto] gap-2 items-center">
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{name}</span>
+                      <input
+                        type="text"
+                        defaultValue={name}
+                        onBlur={(e) => renameProvince(name, e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            renameProvince(name, (e.target as HTMLInputElement).value);
+                            (e.target as HTMLInputElement).blur();
+                          }
+                        }}
+                        className="min-w-0 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        title="Modifier le nom de la province"
+                      />
                       <select
                         value={provinces[name]}
                         onChange={(e) =>
