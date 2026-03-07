@@ -138,8 +138,27 @@ export default function Home() {
     }
   };
 
+  const canEnableSelectionMode = useMemo(() => !isEraseMode, [isEraseMode]);
+  const canEnableEraseMode = useMemo(() => !isSeatSelectionMode, [isSeatSelectionMode]);
+
+  const toggleSelectionMode = () => {
+    setIsSeatSelectionMode((prev) => {
+      const next = !prev;
+      if (next) setIsEraseMode(false);
+      return next;
+    });
+  };
+
+  const toggleEraseMode = () => {
+    setIsEraseMode((prev) => {
+      const next = !prev;
+      if (next) setIsSeatSelectionMode(false);
+      return next;
+    });
+  };
+
   const toggleSeat = (index: number) => {
-    if (isSeatSelectionMode) {
+    if (isSeatSelectionMode && !isEraseMode) {
       setSelectedSeatOverlays((prev) => {
         const next = { ...prev };
         if (next[index]) delete next[index];
@@ -149,7 +168,7 @@ export default function Home() {
       return;
     }
 
-    if (isEraseMode) {
+    if (isEraseMode && !isSeatSelectionMode) {
       setSeatColors((prev) => {
         const next = [...prev];
         next[index] = "white";
@@ -166,12 +185,12 @@ export default function Home() {
   };
 
   const togglePresident = () => {
-    if (isSeatSelectionMode) {
+    if (isSeatSelectionMode && !isEraseMode) {
       setSelectedPresidentOverlay((prev) => (prev ? null : selectionRingColor));
       return;
     }
 
-    if (isEraseMode) {
+    if (isEraseMode && !isSeatSelectionMode) {
       setPresidentColor("white");
       return;
     }
@@ -724,18 +743,28 @@ export default function Home() {
               {/* Boutons superposés et compacts */}
               <div className="flex flex-col gap-1.5">
                 <button
-                  onClick={() => setIsSeatSelectionMode((v) => !v)}
+                  onClick={toggleSelectionMode}
+                  disabled={!canEnableSelectionMode && !isSeatSelectionMode}
                   className={`px-2.5 py-1.5 text-xs text-white font-semibold rounded-md transition ${
-                    isSeatSelectionMode ? "bg-blue-700 hover:bg-blue-800" : "bg-blue-600 hover:bg-blue-700"
+                    isSeatSelectionMode
+                      ? "bg-blue-700 hover:bg-blue-800"
+                      : !canEnableSelectionMode
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700"
                   }`}
                 >
                   {isSeatSelectionMode ? "Mode sélection: ON" : "Mode sélection: OFF"}
                 </button>
 
                 <button
-                  onClick={() => setIsEraseMode((v) => !v)}
+                  onClick={toggleEraseMode}
+                  disabled={!canEnableEraseMode && !isEraseMode}
                   className={`px-2.5 py-1.5 text-xs text-white font-semibold rounded-md transition ${
-                    isEraseMode ? "bg-rose-700 hover:bg-rose-800" : "bg-rose-600 hover:bg-rose-700"
+                    isEraseMode
+                      ? "bg-rose-700 hover:bg-rose-800"
+                      : !canEnableEraseMode
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-rose-600 hover:bg-rose-700"
                   }`}
                 >
                   {isEraseMode ? "Mode effacement: ON" : "Mode effacement: OFF"}
