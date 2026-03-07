@@ -269,7 +269,7 @@ export default function Home() {
         ) : (
           <div>
             <div className="mb-4 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 items-start">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="w-full">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Loi :
@@ -297,83 +297,9 @@ export default function Home() {
               </div>
 
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
-                  Avis de la Cour Constitutionnelle
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                  Niveau de Contrôle des Provinces
                 </h3>
-
-                <div className="mb-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsControlValidated(true)}
-                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                      isControlValidated ? "bg-emerald-600" : "bg-emerald-500 hover:bg-emerald-600"
-                    }`}
-                  >
-                    Loi conforme
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsControlValidated(false)}
-                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                      !isControlValidated ? "bg-rose-600" : "bg-rose-500 hover:bg-rose-600"
-                    }`}
-                  >
-                    Loi non-conforme
-                  </button>
-                </div>
-
-                <div className="mb-4">
-                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Type de majorité requis
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setRequiredMajority("simple")}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                        requiredMajority === "simple"
-                          ? "bg-blue-600"
-                          : "bg-blue-500 hover:bg-blue-600"
-                      }`}
-                    >
-                      Majorité simple
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setRequiredMajority("super")}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                        requiredMajority === "super"
-                          ? "bg-violet-600"
-                          : "bg-violet-500 hover:bg-violet-600"
-                      }`}
-                    >
-                      Super majorité
-                    </button>
-                    <button
-                      type="button"
-                      onClick={cycleSuperMajorityRatio}
-                      className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-slate-600 hover:bg-slate-700"
-                    >
-                      Ratio supermajorité : {superMajorityRatio}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={cycleVetoMode}
-                      className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-amber-600 hover:bg-amber-700"
-                    >
-                      Véto : {vetoMode === "president" ? "Président" : vetoMode === "player" ? "Joueur" : "Aucun"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setIsNoConfidenceMotion((v) => !v)}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                        isNoConfidenceMotion ? "bg-red-700 hover:bg-red-800" : "bg-red-500 hover:bg-red-600"
-                      }`}
-                    >
-                      Motion de censure : {isNoConfidenceMotion ? "Activée" : "Désactivée"}
-                    </button>
-                  </div>
-                </div>
 
                 <div className="space-y-3">
                   {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
@@ -397,6 +323,87 @@ export default function Home() {
                       </select>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-4 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                Pilotage du vote
+              </h3>
+
+              <div className="mb-3 text-center">
+                <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Avis de la Cour Constitutionnelle
+                </p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsControlValidated(true)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      isControlValidated ? "bg-emerald-600" : "bg-emerald-500 hover:bg-emerald-600"
+                    }`}
+                  >
+                    Loi conforme
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsControlValidated(false)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      !isControlValidated ? "bg-rose-600" : "bg-rose-500 hover:bg-rose-600"
+                    }`}
+                  >
+                    Loi non-conforme
+                  </button>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Type de majorité requis
+                </p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setRequiredMajority("simple")}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      requiredMajority === "simple" ? "bg-blue-600" : "bg-blue-500 hover:bg-blue-600"
+                    }`}
+                  >
+                    Majorité simple
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRequiredMajority("super")}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      requiredMajority === "super" ? "bg-violet-600" : "bg-violet-500 hover:bg-violet-600"
+                    }`}
+                  >
+                    Super majorité
+                  </button>
+                  <button
+                    type="button"
+                    onClick={cycleSuperMajorityRatio}
+                    className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-slate-600 hover:bg-slate-700"
+                  >
+                    Ratio supermajorité : {superMajorityRatio}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={cycleVetoMode}
+                    className="px-3 py-1.5 text-xs font-semibold rounded-md text-white transition bg-amber-600 hover:bg-amber-700"
+                  >
+                    Véto : {vetoMode === "president" ? "Président" : vetoMode === "player" ? "Joueur" : "Aucun"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsNoConfidenceMotion((v) => !v)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      isNoConfidenceMotion ? "bg-red-700 hover:bg-red-800" : "bg-red-500 hover:bg-red-600"
+                    }`}
+                  >
+                    Motion de censure : {isNoConfidenceMotion ? "Activée" : "Désactivée"}
+                  </button>
                 </div>
               </div>
             </div>
