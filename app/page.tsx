@@ -93,6 +93,7 @@ export default function Home() {
   const [isGoldOutlineMode, setIsGoldOutlineMode] = useState(false);
   const [goldOutlinedSeats, setGoldOutlinedSeats] = useState<number[]>([]);
   const [goldOutlinedPresident, setGoldOutlinedPresident] = useState(false);
+  const [isSecretBallot, setIsSecretBallot] = useState(false);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -345,6 +346,7 @@ export default function Home() {
       goldOutlinedSeats,
       goldOutlinedPresident,
       isEraseMode,
+      isSecretBallot,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -377,6 +379,7 @@ export default function Home() {
     goldOutlinedSeats,
     goldOutlinedPresident,
     isEraseMode,
+    isSecretBallot,
   ]);
 
   useEffect(() => {
@@ -903,6 +906,14 @@ export default function Home() {
                 >
                   Ouvrir l’affichage plein écran
                 </button>
+                <button
+                  onClick={() => setIsSecretBallot((v) => !v)}
+                  className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
+                    isSecretBallot ? "bg-gray-700 hover:bg-gray-800" : "bg-gray-600 hover:bg-gray-700"
+                  }`}
+                >
+                  {isSecretBallot ? "Désactiver le bulletin secret" : "Activer le bulletin secret"}
+                </button>
               </div>
             </div>
 
@@ -1002,6 +1013,7 @@ export default function Home() {
               selectedPresidentOverlay={selectedPresidentOverlay}
               goldOutlinedSeats={goldOutlinedSeats}
               goldOutlinedPresident={goldOutlinedPresident}
+              isSecretBallot={isSecretBallot}
             />
             <button
               onClick={() => setNumSeats(null)}

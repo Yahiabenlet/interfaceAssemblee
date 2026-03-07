@@ -50,6 +50,7 @@ interface HemicycleProps {
   selectedPresidentOverlay?: string | null;
   goldOutlinedSeats?: number[];
   goldOutlinedPresident?: boolean;
+  isSecretBallot?: boolean;
 }
 
 export default function Hemicycle({
@@ -89,6 +90,7 @@ export default function Hemicycle({
   selectedPresidentOverlay = null,
   goldOutlinedSeats = [],
   goldOutlinedPresident = false,
+  isSecretBallot = false,
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -452,14 +454,17 @@ export default function Hemicycle({
     </svg>
   );
 
-  const getProvinceControlColor = (value: ProvinceControl) => {
-    if (value === "Indépendant" || value === "Autonomie" || value === "Pacifié") return "text-blue-700 dark:text-blue-300";
-    if (value === "Stable" || value === "Prospère") return "text-green-700 dark:text-green-300";
-    if (value === "Sédition" || value === "En Guerre" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
-    return "text-gray-800 dark:text-gray-100";
-  };
+  const hemicycleOrSecretBlock = isSecretBallot ? (
+    <div className="w-full aspect-[500/360] border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+      <div className="text-center px-4">
+        <p className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100">Vote à bulletin secret</p>
+      </div>
+    </div>
+  ) : (
+    svgBlock
+  );
 
-  if (svgOnly) return <div className="w-screen h-screen flex items-center justify-center bg-black">{svgBlock}</div>;
+  if (svgOnly) return <div className="w-screen h-screen flex items-center justify-center bg-black">{hemicycleOrSecretBlock}</div>;
 
   return (
     <div className="space-y-8">
@@ -539,7 +544,7 @@ export default function Hemicycle({
           <div>
             <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-6 items-start mb-8">
               <div className="w-full max-w-3xl justify-self-center">
-                <div className="flex justify-center items-start self-start">{svgBlock}</div>
+                <div className="flex justify-center items-start self-start">{hemicycleOrSecretBlock}</div>
               </div>
 
               <div className="space-y-4">
@@ -692,3 +697,10 @@ export default function Hemicycle({
     </div>
   );
 }
+
+const getProvinceControlColor = (value: ProvinceControl): string => {
+  if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
+  if (value === "Autonomie") return "text-green-700 dark:text-green-300";
+  if (value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+  return "text-gray-700 dark:text-gray-300";
+};

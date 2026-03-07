@@ -48,6 +48,7 @@ type DisplayState = {
   selectedPresidentOverlay?: string | null;
   goldOutlinedSeats?: number[];
   goldOutlinedPresident?: boolean;
+  isSecretBallot?: boolean;
 };
 
 export default function DisplayPage() {
@@ -165,6 +166,7 @@ export default function DisplayPage() {
           selectedPresidentOverlay={state.selectedPresidentOverlay ?? null}
           goldOutlinedSeats={state.goldOutlinedSeats ?? []}
           goldOutlinedPresident={state.goldOutlinedPresident ?? false}
+          isSecretBallot={state.isSecretBallot ?? false}
           readOnly
         />
       </div>
