@@ -192,14 +192,30 @@ export default function Home() {
     setSelectedPresidentOverlay(null);
   };
 
+  const canSaveLaw = useMemo(() => {
+    // Autorisé si conforme constitutionnellement
+    if (isControlValidated) return true;
+    // Exception: loi sous Enclume et effectivement adoptée
+    return useEnclumeLaw && enclumeStatus === "adopted";
+  }, [isControlValidated, useEnclumeLaw, enclumeStatus]);
+
   const addCurrentLawToPassed = () => {
     const lawTitle = title.trim();
     const lawText = paragraph.trim();
 
+    if (!canSaveLaw) {
+      setLawFeedback({
+        type: "error",
+        message:
+          "Impossible d’adopter : loi non validée par la Cour constitutionnelle (sauf loi de l’Enclume adoptée).",
+      });
+      return;
+    }
+
     if (!lawTitle && !lawText) {
       setLawFeedback({
         type: "error",
-        message: "Impossible d’ajouter : renseignez au moins un nom de loi ou un texte de loi.",
+        message: "Impossible d’adopter : renseignez au moins un nom de loi ou un texte de loi.",
       });
       return;
     }
@@ -680,9 +696,19 @@ export default function Home() {
             <div className="mb-4 flex justify-end gap-3">
               <button
                 onClick={addCurrentLawToPassed}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition"
+                disabled={!canSaveLaw}
+                className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
+                  canSaveLaw
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                title={
+                  canSaveLaw
+                    ? "Adopter la loi"
+                    : "Loi non conforme à la Constitution (sauf Enclume adoptée)"
+                }
               >
-                Ajouter la loi aux lois votées
+                Adopter la loi
               </button>
 
               <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center gap-2">
