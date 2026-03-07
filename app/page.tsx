@@ -31,6 +31,7 @@ type PassedLaw = {
   text: string;
   abrogee?: boolean;
   adopteeSousEnclume?: boolean;
+  organique?: boolean;
 };
 
 const CONTROL_OPTIONS: ProvinceControl[] = [
@@ -198,12 +199,13 @@ export default function Home() {
     if (!lawTitle && !lawText) {
       setLawFeedback({
         type: "error",
-        message: "Impossible d’ajouter : renseignez au moins un titre ou un texte.",
+        message: "Impossible d’ajouter : renseignez au moins un nom de loi ou un texte de loi.",
       });
       return;
     }
 
     const adoptedUnderEnclume = useEnclumeLaw && enclumeStatus === "adopted";
+    const isOrganicLaw = requiredMajority === "super";
 
     setPassedLaws((prev) => [
       {
@@ -211,6 +213,7 @@ export default function Home() {
         text: lawText || "Sans texte",
         abrogee: false,
         adopteeSousEnclume: adoptedUnderEnclume,
+        organique: isOrganicLaw,
       },
       ...prev,
     ]);
@@ -218,7 +221,11 @@ export default function Home() {
     setLawFeedback({
       type: "success",
       message: `Loi ajoutée${lawTitle ? ` : ${lawTitle}` : ""}${
-        adoptedUnderEnclume ? " (adoptée sous loi de l’Enclume)." : "."
+        adoptedUnderEnclume
+          ? " (Adoptée sous loi de l’Enclume)."
+          : isOrganicLaw
+          ? " (Loi Organique)."
+          : "."
       }`,
     });
   };
@@ -774,7 +781,12 @@ export default function Home() {
                           </p>
                           {law.adopteeSousEnclume ? (
                             <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
-                              Adoptée sous loi de l’Enclume
+                              Adoptée sous Loi de l’Enclume
+                            </p>
+                          ) : null}
+                          {law.organique ? (
+                            <p className="text-xs font-semibold text-violet-700 dark:text-violet-300">
+                              Loi Organique (supermajorité requise)
                             </p>
                           ) : null}
                           <p className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
