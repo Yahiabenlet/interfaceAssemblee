@@ -200,7 +200,7 @@ export default function Hemicycle({
     }
 
     // Véto joueur : si activé, le résultat indique le véto utilisé
-    if (vetoMode === "player" && exprimes > 0 && hasSeatVeto=== true) {
+    if (vetoMode === "player" && exprimes > 0 && hasSeatVeto) {
       return {
         label: "Un droit de véto a été utilisé",
         tone: "text-amber-700 dark:text-amber-300",
@@ -523,7 +523,7 @@ export default function Hemicycle({
             </div>
 
             <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">L'essentiel de l'info</h3>
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">L&apos;essentiel de l&apos;info</h3>
               <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words min-h-16">
                 {countrySituation || "Aucune information renseignée."}
               </p>
