@@ -26,7 +26,6 @@ type ProvinceState = {
 };
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
-const ENCLUME_DURATION_MS = 4 * 60 * 1000;
 
 interface HemicycleProps {
   numSeats: number;
@@ -53,6 +52,7 @@ interface HemicycleProps {
   useEnclumeLaw?: boolean;
   enclumeStatus?: EnclumeStatus;
   enclumeStartedAt?: number | null;
+  enclumeDurationMinutes?: number;
 }
 
 export default function Hemicycle({
@@ -87,8 +87,10 @@ export default function Hemicycle({
   useEnclumeLaw = false,
   enclumeStatus = "idle",
   enclumeStartedAt = null,
+  enclumeDurationMinutes = 4,
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
+  const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
 
   useEffect(() => {
     if (!useEnclumeLaw || enclumeStatus !== "running") return;
@@ -117,9 +119,9 @@ export default function Hemicycle({
   }, [superMajorityRatio]);
 
   const enclumeRemaining = useMemo(() => {
-    if (!enclumeStartedAt) return ENCLUME_DURATION_MS;
-    return Math.max(0, ENCLUME_DURATION_MS - (now - enclumeStartedAt));
-  }, [enclumeStartedAt, now]);
+    if (!enclumeStartedAt) return enclumeDurationMs;
+    return Math.max(0, enclumeDurationMs - (now - enclumeStartedAt));
+  }, [enclumeStartedAt, now, enclumeDurationMs]);
 
   const enclumeTimerLabel = useMemo(() => {
     const totalSec = Math.ceil(enclumeRemaining / 1000);
@@ -499,7 +501,7 @@ export default function Hemicycle({
                     {useEnclumeLaw && (
                       <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
                         <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                          Chronomètre Loi de l’Enclume
+                          Chronomètre Loi de l’Enclume ({enclumeDurationMinutes}:00 max)
                         </div>
                         <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
                       </div>
@@ -517,7 +519,9 @@ export default function Hemicycle({
                       Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée avant la fin du chronomètre
                     </div>
                     <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
-                      <div className="text-xs font-medium text-amber-800 dark:text-amber-300">Chronomètre (4:00)</div>
+                      <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                        Chronomètre ({enclumeDurationMinutes}:00)
+                      </div>
                       <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
                       <div className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
                         {enclumeStatus === "adopted"

@@ -50,6 +50,7 @@ type DisplayState = {
   useEnclumeLaw?: boolean;
   enclumeStatus?: EnclumeStatus;
   enclumeStartedAt?: number | null;
+  enclumeDurationMinutes?: number;
 };
 
 export default function DisplayPage() {
@@ -162,6 +163,7 @@ export default function DisplayPage() {
           useEnclumeLaw={state.useEnclumeLaw ?? false}
           enclumeStatus={state.enclumeStatus ?? "idle"}
           enclumeStartedAt={state.enclumeStartedAt ?? null}
+          enclumeDurationMinutes={state.enclumeDurationMinutes ?? 4}
           readOnly
         />
       </div>

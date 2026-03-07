@@ -51,7 +51,6 @@ const VETO_OPTIONS = ["none", "president", "player"] as const;
 type VetoMode = (typeof VETO_OPTIONS)[number];
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
-const ENCLUME_DURATION_MS = 4 * 60 * 1000;
 
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
@@ -87,6 +86,12 @@ export default function Home() {
   const [useEnclumeLaw, setUseEnclumeLaw] = useState(false);
   const [enclumeStatus, setEnclumeStatus] = useState<EnclumeStatus>("idle");
   const [enclumeStartedAt, setEnclumeStartedAt] = useState<number | null>(null);
+  const [enclumeDurationMinutes, setEnclumeDurationMinutes] = useState(4);
+
+  const enclumeDurationMs = useMemo(
+    () => enclumeDurationMinutes * 60 * 1000,
+    [enclumeDurationMinutes]
+  );
 
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
     const seatCycleNoVeto: SeatColor[] = ["white", "green", "red"];
@@ -218,6 +223,7 @@ export default function Home() {
       useEnclumeLaw,
       enclumeStatus,
       enclumeStartedAt,
+      enclumeDurationMinutes,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -244,6 +250,7 @@ export default function Home() {
     useEnclumeLaw,
     enclumeStatus,
     enclumeStartedAt,
+    enclumeDurationMinutes,
   ]);
 
   useEffect(() => {
@@ -262,12 +269,12 @@ export default function Home() {
     if (!useEnclumeLaw || enclumeStatus !== "running" || !enclumeStartedAt) return;
     const interval = setInterval(() => {
       const elapsed = Date.now() - enclumeStartedAt;
-      if (elapsed >= ENCLUME_DURATION_MS) {
+      if (elapsed >= enclumeDurationMs) {
         setEnclumeStatus("adopted");
       }
     }, 250);
     return () => clearInterval(interval);
-  }, [useEnclumeLaw, enclumeStatus, enclumeStartedAt]);
+  }, [useEnclumeLaw, enclumeStatus, enclumeStartedAt, enclumeDurationMs]);
 
   const canRejectEnclume = useMemo(
     () => useEnclumeLaw && enclumeStatus === "running",
@@ -466,6 +473,21 @@ export default function Home() {
                     Rejeter la loi de l&apos;Enclume
                   </button>
                 </div>
+
+                <div className="mt-4 max-w-sm mx-auto text-left">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                    Durée chrono Loi de l&apos;Enclume ({enclumeDurationMinutes} min)
+                  </label>
+                  <input
+                    type="range"
+                    min={1}
+                    max={7}
+                    step={1}
+                    value={enclumeDurationMinutes}
+                    onChange={(e) => setEnclumeDurationMinutes(Number(e.target.value))}
+                    className="w-full accent-amber-500"
+                  />
+                </div>
               </div>
             </div>
 
@@ -662,6 +684,7 @@ export default function Home() {
               useEnclumeLaw={useEnclumeLaw}
               enclumeStatus={enclumeStatus}
               enclumeStartedAt={enclumeStartedAt}
+              enclumeDurationMinutes={enclumeDurationMinutes}
             />
             <button
               onClick={() => setNumSeats(null)}
