@@ -380,7 +380,7 @@ export default function Hemicycle({
       <defs>
         {overlayGroups.map((g) => (
           <filter key={g.id} id={g.id} x="-40%" y="-40%" width="180%" height="180%">
-            <feMorphology in="SourceGraphic" operator="dilate" radius="8" result="dilated" />
+            <feMorphology in="SourceGraphic" operator="dilate" radius="1" result="dilated" />
             <feGaussianBlur in="dilated" stdDeviation="4.5" result="blurred" />
             <feColorMatrix
               in="blurred"
