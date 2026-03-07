@@ -88,6 +88,10 @@ export default function Home() {
   const [enclumeStatus, setEnclumeStatus] = useState<EnclumeStatus>("idle");
   const [enclumeStartedAt, setEnclumeStartedAt] = useState<number | null>(null);
   const [enclumeDurationMinutes, setEnclumeDurationMinutes] = useState(4);
+  const [isSeatSelectionMode, setIsSeatSelectionMode] = useState(false);
+  const [selectionRingColor, setSelectionRingColor] = useState("#3b82f6");
+  const [selectedSeatOverlays, setSelectedSeatOverlays] = useState<Record<number, string>>({});
+  const [selectedPresidentOverlay, setSelectedPresidentOverlay] = useState<string | null>(null);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -133,6 +137,16 @@ export default function Home() {
   };
 
   const toggleSeat = (index: number) => {
+    if (isSeatSelectionMode) {
+      setSelectedSeatOverlays((prev) => {
+        const next = { ...prev };
+        if (next[index]) delete next[index];
+        else next[index] = selectionRingColor;
+        return next;
+      });
+      return;
+    }
+
     setSeatColors((prev) => {
       const next = [...prev];
       next[index] = nextColor(next[index], "seat");
@@ -140,7 +154,13 @@ export default function Home() {
     });
   };
 
-  const togglePresident = () => setPresidentColor((c) => nextColor(c, "president"));
+  const togglePresident = () => {
+    if (isSeatSelectionMode) {
+      setSelectedPresidentOverlay((prev) => (prev ? null : selectionRingColor));
+      return;
+    }
+    setPresidentColor((c) => nextColor(c, "president"));
+  };
 
   const resetVotes = () => {
     if (numSeats === null) return;
@@ -628,6 +648,26 @@ export default function Home() {
               >
                 Ajouter la loi aux lois votées
               </button>
+
+              <button
+                onClick={() => setIsSeatSelectionMode((v) => !v)}
+                className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
+                  isSeatSelectionMode ? "bg-blue-700 hover:bg-blue-800" : "bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {isSeatSelectionMode ? "Mode sélection: ON" : "Mode sélection: OFF"}
+              </button>
+
+              <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center gap-2">
+                <span className="text-sm text-gray-700 dark:text-gray-300">Couleur cercle</span>
+                <input
+                  type="color"
+                  value={selectionRingColor}
+                  onChange={(e) => setSelectionRingColor(e.target.value)}
+                  className="h-6 w-10 cursor-pointer"
+                />
+              </label>
+
               <button
                 onClick={resetVotes}
                 className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition"
@@ -735,6 +775,8 @@ export default function Home() {
               enclumeStatus={enclumeStatus}
               enclumeStartedAt={enclumeStartedAt}
               enclumeDurationMinutes={enclumeDurationMinutes}
+              selectedSeatOverlays={selectedSeatOverlays}
+              selectedPresidentOverlay={selectedPresidentOverlay}
             />
             <button
               onClick={() => setNumSeats(null)}

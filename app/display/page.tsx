@@ -51,6 +51,8 @@ type DisplayState = {
   enclumeStatus?: EnclumeStatus;
   enclumeStartedAt?: number | null;
   enclumeDurationMinutes?: number;
+  selectedSeatOverlays?: Record<number, string>;
+  selectedPresidentOverlay?: string | null;
 };
 
 export default function DisplayPage() {
@@ -164,6 +166,8 @@ export default function DisplayPage() {
           enclumeStatus={state.enclumeStatus ?? "idle"}
           enclumeStartedAt={state.enclumeStartedAt ?? null}
           enclumeDurationMinutes={state.enclumeDurationMinutes ?? 4}
+          selectedSeatOverlays={state.selectedSeatOverlays ?? {}}
+          selectedPresidentOverlay={state.selectedPresidentOverlay ?? null}
           readOnly
         />
       </div>

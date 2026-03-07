@@ -53,6 +53,8 @@ interface HemicycleProps {
   enclumeStatus?: EnclumeStatus;
   enclumeStartedAt?: number | null;
   enclumeDurationMinutes?: number;
+  selectedSeatOverlays?: Record<number, string>;
+  selectedPresidentOverlay?: string | null;
 }
 
 export default function Hemicycle({
@@ -88,6 +90,8 @@ export default function Hemicycle({
   enclumeStatus = "idle",
   enclumeStartedAt = null,
   enclumeDurationMinutes = 4,
+  selectedSeatOverlays = {},
+  selectedPresidentOverlay = null,
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -354,19 +358,42 @@ export default function Hemicycle({
       <g transform="translate(250 220) scale(1.12) translate(-250 -220)">
         <path d="M 100 176 A 196 196 0 0 1 400 176" fill="none" stroke="#ccc" strokeWidth="2" className="dark:stroke-gray-600" />
         {seats.map((seat) => (
-          <circle
-            key={seat.index}
-            cx={seat.x}
-            cy={seat.y}
-            r="12"
-            fill={colorMap[seat.color].fill}
-            stroke={colorMap[seat.color].stroke}
-            strokeWidth="2"
-            className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
-            onClick={svgOnly || readOnly ? undefined : () => onToggleSeat(seat.index)}
-            title={`Siège ${seat.index + 1}`}
-          />
+          <g key={seat.index}>
+            {selectedSeatOverlays[seat.index] ? (
+              <circle
+                cx={seat.x}
+                cy={seat.y}
+                r="16"
+                fill="none"
+                stroke={selectedSeatOverlays[seat.index]}
+                strokeWidth="3"
+                pointerEvents="none"
+              />
+            ) : null}
+            <circle
+              cx={seat.x}
+              cy={seat.y}
+              r="12"
+              fill={colorMap[seat.color].fill}
+              stroke={colorMap[seat.color].stroke}
+              strokeWidth="2"
+              className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
+              onClick={svgOnly || readOnly ? undefined : () => onToggleSeat(seat.index)}
+              title={`Siège ${seat.index + 1}`}
+            />
+          </g>
         ))}
+        {selectedPresidentOverlay ? (
+          <circle
+            cx="250"
+            cy={presidentY}
+            r="18"
+            fill="none"
+            stroke={selectedPresidentOverlay}
+            strokeWidth="3"
+            pointerEvents="none"
+          />
+        ) : null}
         <circle
           cx="250"
           cy={presidentY}
