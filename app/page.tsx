@@ -827,7 +827,7 @@ export default function Home() {
 
               <div className="flex flex-col gap-2">
                 <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center gap-2">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Couleur cercle</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Couleur Parti</span>
                   <input
                     type="color"
                     value={selectionRingColor}
@@ -841,7 +841,7 @@ export default function Home() {
                     isGoldOutlineMode ? "bg-amber-700 hover:bg-amber-800" : "bg-amber-600 hover:bg-amber-700"
                   }`}
                 >
-                  Pourtour or : {isGoldOutlineMode ? "ON" : "OFF"}
+                  Président de Parti : {isGoldOutlineMode ? "ON" : "OFF"}
                 </button>
               </div>
 
@@ -877,7 +877,7 @@ export default function Home() {
 
                 <button
                   onClick={resetVotes}
-                  className="px-2.5 py-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-md transition"
+                 className="px-2.5 py-1.5 text-xs bg-violet-700 hover:bg-violet-800 text-white font-semibold rounded-md transition"
                 >
                   Reset des voix
                 </button>
