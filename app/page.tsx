@@ -54,6 +54,8 @@ type VetoMode = (typeof VETO_OPTIONS)[number];
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
 
+type ConstitutionalStatus = "conforme" | "nonConforme" | "nonStatue";
+
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -69,10 +71,10 @@ export default function Home() {
   const [crisisDescription, setCrisisDescription] = useState("");
   const [provinces, setProvinces] = useState<ProvinceState>({
     "201D": "Indépendant",
-    "202D-Plateau": "Indépendant",
-    "202D-Profond": "Indépendant",
-    "204D": "Indépendant",
-    "Provinces des Plasticiens": "Indépendant",
+    "202D-Plateau": "Stable",
+    "202D-Profond": "Stable",
+    "204D": "Équilibre",
+    "Provinces des Plasticiens": "Contestation",
     "Etat de Tori Valu": "Indépendant",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
@@ -80,7 +82,7 @@ export default function Home() {
     type: "success" | "error";
     message: string;
   } | null>(null);
-  const [isControlValidated, setIsControlValidated] = useState(false);
+  const [isControlValidated, setIsControlValidated] = useState<ConstitutionalStatus>("nonStatue");
   const [requiredMajority, setRequiredMajority] = useState<"simple" | "super">("simple");
   const [superMajorityRatio, setSuperMajorityRatio] = useState<string>("3/5");
   const [vetoMode, setVetoMode] = useState<VetoMode>("none");
@@ -212,9 +214,7 @@ export default function Home() {
   };
 
   const canSaveLaw = useMemo(() => {
-    // Autorisé si conforme constitutionnellement
-    if (isControlValidated) return true;
-    // Exception: loi sous Enclume et effectivement adoptée
+    if (isControlValidated === "conforme") return true;
     return useEnclumeLaw && enclumeStatus === "adopted";
   }, [isControlValidated, useEnclumeLaw, enclumeStatus]);
 
@@ -510,21 +510,30 @@ export default function Home() {
                 <div className="flex flex-wrap gap-2 justify-center">
                   <button
                     type="button"
-                    onClick={() => setIsControlValidated(true)}
+                    onClick={() => setIsControlValidated("conforme")}
                     className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                      isControlValidated ? "bg-emerald-600" : "bg-emerald-500 hover:bg-emerald-600"
+                      isControlValidated === "conforme" ? "bg-emerald-600" : "bg-emerald-500 hover:bg-emerald-600"
                     }`}
                   >
                     Loi conforme
                   </button>
                   <button
                     type="button"
-                    onClick={() => setIsControlValidated(false)}
+                    onClick={() => setIsControlValidated("nonConforme")}
                     className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                      !isControlValidated ? "bg-rose-600" : "bg-rose-500 hover:bg-rose-600"
+                      isControlValidated === "nonConforme" ? "bg-rose-600" : "bg-rose-500 hover:bg-rose-600"
                     }`}
                   >
                     Loi non-conforme
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsControlValidated("nonStatue")}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      isControlValidated === "nonStatue" ? "bg-gray-600" : "bg-gray-500 hover:bg-gray-600"
+                    }`}
+                  >
+                    Cour n&apos;a pas statué
                   </button>
                 </div>
               </div>

@@ -44,7 +44,7 @@ interface HemicycleProps {
   isCrisis?: boolean;
   crisisDescription?: string;
   provinces?: ProvinceState;
-  isControlValidated?: boolean;
+  isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
   vetoMode?: "none" | "president" | "player";
@@ -81,7 +81,7 @@ export default function Hemicycle({
     "Provinces des Plasticiens": "Indépendant",
     "Etat de Tori Valu": "Indépendant",
   },
-  isControlValidated = false,
+  isControlValidated = "nonConforme",
   requiredMajority = "simple",
   superMajorityRatio = "3/5",
   vetoMode = "none",
@@ -608,28 +608,38 @@ export default function Hemicycle({
                 ) : (
                   <div
                     className={`rounded-lg p-4 border text-center ${
-                      isControlValidated
+                      isControlValidated === "conforme"
                         ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
-                        : "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
+                        : isControlValidated === "nonConforme"
+                        ? "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
+                        : "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
                     }`}
                   >
                     <div
                       className={`text-sm font-medium ${
-                        isControlValidated
+                        isControlValidated === "conforme"
                           ? "text-emerald-700 dark:text-emerald-300"
-                          : "text-rose-700 dark:text-rose-300"
+                          : isControlValidated === "nonConforme"
+                          ? "text-rose-700 dark:text-rose-300"
+                          : "text-gray-700 dark:text-gray-300"
                       }`}
                     >
                       Avis de la Cour Constitutionnelle
                     </div>
                     <div
                       className={`text-3xl font-bold mt-2 ${
-                        isControlValidated
+                        isControlValidated === "conforme"
                           ? "text-emerald-700 dark:text-emerald-300"
-                          : "text-rose-700 dark:text-rose-300"
+                          : isControlValidated === "nonConforme"
+                          ? "text-rose-700 dark:text-rose-300"
+                          : "text-gray-700 dark:text-gray-300"
                       }`}
                     >
-                      {isControlValidated ? "Loi conforme à la Constitution" : "Loi non-conforme à la Constitution"}
+                      {isControlValidated === "conforme"
+                        ? "Loi conforme à la Constitution"
+                        : isControlValidated === "nonConforme"
+                        ? "Loi non-conforme à la Constitution"
+                        : "La Cour n’a pas statué"}
                     </div>
                     <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
                       {requiredMajority === "super"
@@ -637,11 +647,7 @@ export default function Hemicycle({
                         : "Majorité Simple nécessaire"}
                     </div>
                     <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                      {vetoMode === "president"
-                        ? "Droit de véto : Président"
-                        : vetoMode === "player"
-                        ? ""
-                        : ""}
+                      {vetoMode === "president" ? "Droit de véto : Président" : ""}
                     </div>
                   </div>
                 )}

@@ -42,7 +42,7 @@ type DisplayState = {
   crisisDescription?: string;
   provinces?: ProvinceState;
   passedLaws?: Array<{ title: string; text: string; abrogee?: boolean; organique?: boolean }>;
-  isControlValidated?: boolean;
+  isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
   vetoMode?: "none" | "president" | "player";
@@ -157,7 +157,7 @@ export default function DisplayPage() {
               "Etat de Tori Valu": "Indépendant",
             }
           }
-          isControlValidated={state.isControlValidated ?? false}
+          isControlValidated={state.isControlValidated ?? "nonConforme"}
           requiredMajority={state.requiredMajority ?? "simple"}
           superMajorityRatio={state.superMajorityRatio ?? "3/5"}
           vetoMode={state.vetoMode ?? "none"}
