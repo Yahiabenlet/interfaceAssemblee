@@ -480,7 +480,7 @@ export default function Hemicycle({
 
   if (svgOnly) return <div className="w-screen h-screen flex items-center justify-center bg-black">{hemicycleOrSecretBlock}</div>;
 
-  const clampedBudget = Math.max(-3, Math.min(3, budgetGauge));
+  const clampedBudget = Math.max(-5, Math.min(5, budgetGauge));
   const negativeBoxes = Math.max(0, -clampedBudget);
   const positiveBoxes = Math.max(0, clampedBudget);
 
@@ -528,43 +528,50 @@ export default function Hemicycle({
                     </span>
                   </div>
 
-                  {/* case blanche toujours centrée */}
-                  <div className="grid grid-cols-[repeat(3,minmax(0,1fr))_auto_repeat(3,minmax(0,1fr))] items-center gap-1 max-w-[220px] mx-auto">
-                    {/* zone négative (3 slots fixes) */}
-                    <div className="col-span-3 grid grid-cols-3 gap-1 justify-items-end">
-                      {Array.from({ length: 3 }).map((_, i) =>
-                        i >= 3 - negativeBoxes ? (
+                  {/* 11 colonnes de largeur identique => espace uniforme */}
+                  <div className="grid grid-cols-11 gap-0 max-w-[220px] mx-auto justify-items-center">
+                    {Array.from({ length: 11 }).map((_, idx) => {
+                      const center = 5; // colonne centrale (0..10)
+                      const distance = idx - center;
+
+                      if (distance === 0) {
+                        return (
                           <div
-                            key={`budget-neg-${i}`}
+                            key={`budget-center-${idx}`}
+                            className="h-4 w-4 rounded-sm border border-gray-400 bg-white"
+                            title="Équilibre"
+                          />
+                        );
+                      }
+
+                      if (distance < 0) {
+                        const needed = -clampedBudget; // nb rouges à afficher
+                        const slotFromCenter = -distance; // 1..5
+                        const show = clampedBudget < 0 && slotFromCenter <= needed;
+                        return show ? (
+                          <div
+                            key={`budget-neg-${idx}`}
                             className="h-4 w-4 rounded-sm border border-red-700 bg-red-500"
                             title="Déficit"
                           />
                         ) : (
-                          <div key={`budget-neg-empty-${i}`} className="h-4 w-4" />
-                        )
-                      )}
-                    </div>
+                          <div key={`budget-neg-empty-${idx}`} className="h-4 w-4" />
+                        );
+                      }
 
-                    {/* case blanche centrale */}
-                    <div
-                      className="h-4 w-4 rounded-sm border border-gray-400 bg-white"
-                      title="Équilibre"
-                    />
-
-                    {/* zone positive (3 slots fixes) */}
-                    <div className="col-span-3 grid grid-cols-3 gap-1 justify-items-start">
-                      {Array.from({ length: 3 }).map((_, i) =>
-                        i < positiveBoxes ? (
-                          <div
-                            key={`budget-pos-${i}`}
-                            className="h-4 w-4 rounded-sm border border-green-700 bg-green-500"
-                            title="Excédent"
-                          />
-                        ) : (
-                          <div key={`budget-pos-empty-${i}`} className="h-4 w-4" />
-                        )
-                      )}
-                    </div>
+                      const needed = clampedBudget; // nb vertes à afficher
+                      const slotFromCenter = distance; // 1..5
+                      const show = clampedBudget > 0 && slotFromCenter <= needed;
+                      return show ? (
+                        <div
+                          key={`budget-pos-${idx}`}
+                          className="h-4 w-4 rounded-sm border border-green-700 bg-green-500"
+                          title="Excédent"
+                        />
+                      ) : (
+                        <div key={`budget-pos-empty-${idx}`} className="h-4 w-4" />
+                      );
+                    })}
                   </div>
                 </div>
               </div>
