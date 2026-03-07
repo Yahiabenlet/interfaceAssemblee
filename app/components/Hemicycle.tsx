@@ -16,14 +16,7 @@ type ProvinceControl =
     | "Contrôle Total"
     | "En Guerre";
 
-type ProvinceState = {
-  "201D": ProvinceControl;
-  "202D-Plateau": ProvinceControl;
-  "202D-Profond": ProvinceControl;
-  "204D": ProvinceControl;
-  "Provinces des Plasticiens": ProvinceControl;
-  "Etat de Tori Valu": ProvinceControl;
-};
+type ProvinceState = Record<string, ProvinceControl>;
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
 
@@ -549,7 +542,7 @@ export default function Hemicycle({
                     Niveau de Contrôle des Provinces
                   </h3>
                   <div className="space-y-2">
-                    {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
+                    {(Object.keys(provinces) as string[]).map((name) => (
                       <div key={name} className="flex items-center justify-between gap-2">
                         <span className="text-xs text-gray-700 dark:text-gray-300">{name}</span>
                         <span className={`text-xs font-semibold ${getProvinceControlColor(provinces[name])}`}>

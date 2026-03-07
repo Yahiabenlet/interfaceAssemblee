@@ -17,14 +17,7 @@ type ProvinceControl =
   | "9"
   | "Contrôle Total";
 
-type ProvinceState = {
-  "201D": ProvinceControl;
-  "202D-Plateau": ProvinceControl;
-  "202D-Profond": ProvinceControl;
-  "204D": ProvinceControl;
-  "Provinces des Plasticiens": ProvinceControl;
-  "Etat de Tori Valu": ProvinceControl;
-};
+type ProvinceState = Record<string, ProvinceControl>;
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
 

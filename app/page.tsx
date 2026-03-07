@@ -17,14 +17,7 @@ type ProvinceControl =
     | "Contrôle Total"
     | "En Guerre";
 
-type ProvinceState = {
-  "201D": ProvinceControl;
-  "202D-Plateau": ProvinceControl;
-  "202D-Profond": ProvinceControl;
-  "204D": ProvinceControl;
-  "Provinces des Plasticiens": ProvinceControl;
-  "Etat de Tori Valu": ProvinceControl;
-};
+type ProvinceState = Record<string, ProvinceControl>;
 
 type PassedLaw = {
   title: string;
@@ -96,6 +89,7 @@ export default function Home() {
   const [selectedSeatOverlays, setSelectedSeatOverlays] = useState<Record<number, string>>({});
   const [selectedPresidentOverlay, setSelectedPresidentOverlay] = useState<string | null>(null);
   const [isEraseMode, setIsEraseMode] = useState(false);
+  const [newProvinceName, setNewProvinceName] = useState("");
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -405,6 +399,24 @@ export default function Home() {
     setPresidentColor((prev) => (prev === "orange" ? "red" : prev));
   }, [isNoConfidenceMotion]);
 
+  const addProvince = () => {
+    const name = newProvinceName.trim();
+    if (!name) return;
+    setProvinces((prev) => {
+      if (prev[name]) return prev;
+      return { ...prev, [name]: "Indépendant" };
+    });
+    setNewProvinceName("");
+  };
+
+  const removeProvince = (name: string) => {
+    setProvinces((prev) => {
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
       <div className="max-w-7xl mx-auto">
@@ -472,9 +484,26 @@ export default function Home() {
                   Niveau de Contrôle des Provinces
                 </h3>
 
+                <div className="mb-3 grid grid-cols-[1fr_auto] gap-2">
+                  <input
+                    type="text"
+                    value={newProvinceName}
+                    onChange={(e) => setNewProvinceName(e.target.value)}
+                    className="px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Ajouter une province..."
+                  />
+                  <button
+                    type="button"
+                    onClick={addProvince}
+                    className="px-3 py-1.5 text-xs font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition"
+                  >
+                    Ajouter
+                  </button>
+                </div>
+
                 <div className="space-y-3">
-                  {(Object.keys(provinces) as Array<keyof ProvinceState>).map((name) => (
-                    <div key={name} className="grid grid-cols-[1fr_140px] gap-2 items-center">
+                  {(Object.keys(provinces) as string[]).map((name) => (
+                    <div key={name} className="grid grid-cols-[1fr_140px_auto] gap-2 items-center">
                       <span className="text-sm text-gray-700 dark:text-gray-300">{name}</span>
                       <select
                         value={provinces[name]}
@@ -492,6 +521,13 @@ export default function Home() {
                           </option>
                         ))}
                       </select>
+                      <button
+                        type="button"
+                        onClick={() => removeProvince(name)}
+                        className="px-2 py-1.5 text-xs font-semibold rounded-md text-white bg-red-600 hover:bg-red-700 transition"
+                      >
+                        Supprimer
+                      </button>
                     </div>
                   ))}
                 </div>
