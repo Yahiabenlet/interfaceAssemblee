@@ -452,6 +452,16 @@ export default function Hemicycle({
         <text x="250" y={presidentY + 32} textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
           Président
         </text>
+        {isSecretBallot && !hideAssemblyWhenSecretBallot ? (
+          <text
+            x="250"
+            y={presidentY + 48}
+            textAnchor="middle"
+            className="fill-gray-700 dark:fill-gray-200 text-[10px] font-semibold"
+          >
+            Vote à bulletin secret
+          </text>
+        ) : null}
       </g>
     </svg>
   );

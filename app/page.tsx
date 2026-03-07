@@ -983,8 +983,6 @@ export default function Home() {
               )}
             </div>
 
-
-
             <Hemicycle
               numSeats={numSeats}
               title={title}
@@ -1016,12 +1014,6 @@ export default function Home() {
               isSecretBallot={isSecretBallot}
               hideAssemblyWhenSecretBallot={false}
             />
-            <button
-              onClick={() => setNumSeats(null)}
-              className="mt-8 mx-auto block px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition"
-            >
-              Modifier le nombre de sièges
-            </button>
           </div>
         )}
       </div>
