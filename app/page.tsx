@@ -859,18 +859,20 @@ export default function Home() {
                 </button>
               </div>
 
-              <button
-                onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
-              >
-                Ouvrir l'historique des lois votées
-              </button>
-              <button
-                onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
-              >
-                Ouvrir l’affichage plein écran
-              </button>
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
+                >
+                  Ouvrir l'historique des lois votées
+                </button>
+                <button
+                  onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
+                >
+                  Ouvrir l’affichage plein écran
+                </button>
+              </div>
             </div>
 
             {lawFeedback && (
