@@ -33,6 +33,7 @@ interface HemicycleProps {
   economyGauge?: number;
   socialGauge?: number;
   securityGauge?: number;
+  budgetGauge?: number;
   countrySituation?: string;
   isCrisis?: boolean;
   crisisDescription?: string;
@@ -67,6 +68,7 @@ export default function Hemicycle({
   economyGauge = 0,
   socialGauge = 0,
   securityGauge = 0,
+  budgetGauge = 0,
   countrySituation = "",
   isCrisis = false,
   crisisDescription = "",
@@ -478,6 +480,10 @@ export default function Hemicycle({
 
   if (svgOnly) return <div className="w-screen h-screen flex items-center justify-center bg-black">{hemicycleOrSecretBlock}</div>;
 
+  const clampedBudget = Math.max(-3, Math.min(3, budgetGauge));
+  const negativeBoxes = Math.max(0, -clampedBudget);
+  const positiveBoxes = Math.max(0, clampedBudget);
+
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
@@ -511,6 +517,54 @@ export default function Hemicycle({
                   </div>
                   <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
                     <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Budget</span>
+                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      {clampedBudget > 0 ? `+${clampedBudget}` : clampedBudget}
+                    </span>
+                  </div>
+
+                  {/* case blanche toujours centrée */}
+                  <div className="grid grid-cols-[repeat(3,minmax(0,1fr))_auto_repeat(3,minmax(0,1fr))] items-center gap-1 max-w-[220px] mx-auto">
+                    {/* zone négative (3 slots fixes) */}
+                    <div className="col-span-3 grid grid-cols-3 gap-1 justify-items-end">
+                      {Array.from({ length: 3 }).map((_, i) =>
+                        i >= 3 - negativeBoxes ? (
+                          <div
+                            key={`budget-neg-${i}`}
+                            className="h-4 w-4 rounded-sm border border-red-700 bg-red-500"
+                            title="Déficit"
+                          />
+                        ) : (
+                          <div key={`budget-neg-empty-${i}`} className="h-4 w-4" />
+                        )
+                      )}
+                    </div>
+
+                    {/* case blanche centrale */}
+                    <div
+                      className="h-4 w-4 rounded-sm border border-gray-400 bg-white"
+                      title="Équilibre"
+                    />
+
+                    {/* zone positive (3 slots fixes) */}
+                    <div className="col-span-3 grid grid-cols-3 gap-1 justify-items-start">
+                      {Array.from({ length: 3 }).map((_, i) =>
+                        i < positiveBoxes ? (
+                          <div
+                            key={`budget-pos-${i}`}
+                            className="h-4 w-4 rounded-sm border border-green-700 bg-green-500"
+                            title="Excédent"
+                          />
+                        ) : (
+                          <div key={`budget-pos-empty-${i}`} className="h-4 w-4" />
+                        )
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

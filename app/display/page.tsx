@@ -30,6 +30,7 @@ type DisplayState = {
   economyGauge?: number;
   socialGauge?: number;
   securityGauge?: number;
+  budgetGauge?: number;
   countrySituation?: string;
   isCrisis?: boolean;
   crisisDescription?: string;
@@ -140,6 +141,7 @@ export default function DisplayPage() {
           economyGauge={state.economyGauge ?? 0}
           socialGauge={state.socialGauge ?? 0}
           securityGauge={state.securityGauge ?? 0}
+          budgetGauge={state.budgetGauge ?? 0}
           countrySituation={state.countrySituation ?? ""}
           isCrisis={state.isCrisis ?? false}
           crisisDescription={state.crisisDescription ?? ""}

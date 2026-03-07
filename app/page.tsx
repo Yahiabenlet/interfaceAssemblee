@@ -59,6 +59,7 @@ export default function Home() {
   const [economyGauge, setEconomyGauge] = useState(5);
   const [socialGauge, setSocialGauge] = useState(5);
   const [securityGauge, setSecurityGauge] = useState(5);
+  const [budgetGauge, setBudgetGauge] = useState(0);
   const [countrySituation, setCountrySituation] = useState("");
   const [isCrisis, setIsCrisis] = useState(false);
   const [crisisDescription, setCrisisDescription] = useState("");
@@ -327,6 +328,7 @@ export default function Home() {
       economyGauge,
       socialGauge,
       securityGauge,
+      budgetGauge,
       countrySituation,
       isCrisis,
       crisisDescription,
@@ -360,6 +362,7 @@ export default function Home() {
     economyGauge,
     socialGauge,
     securityGauge,
+    budgetGauge,
     countrySituation,
     isCrisis,
     crisisDescription,
@@ -725,7 +728,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-green-200 dark:border-green-900">
                 <label className="block text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
                   Économie ({economyGauge}/10)
@@ -766,6 +769,20 @@ export default function Home() {
                   value={securityGauge}
                   onChange={(e) => setSecurityGauge(Number(e.target.value))}
                   className="w-full accent-blue-500"
+                />
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Budget ({budgetGauge > 0 ? `+${budgetGauge}` : budgetGauge})
+                </label>
+                <input
+                  type="range"
+                  min={-3}
+                  max={3}
+                  step={1}
+                  value={budgetGauge}
+                  onChange={(e) => setBudgetGauge(Number(e.target.value))}
+                  className="w-full accent-slate-500"
                 />
               </div>
             </div>
@@ -994,6 +1011,7 @@ export default function Home() {
               economyGauge={economyGauge}
               socialGauge={socialGauge}
               securityGauge={securityGauge}
+              budgetGauge={budgetGauge}
               countrySituation={countrySituation}
               isCrisis={isCrisis}
               crisisDescription={crisisDescription}
