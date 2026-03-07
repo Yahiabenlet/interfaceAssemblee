@@ -15,15 +15,33 @@ export default function NotesPage() {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("hemicycleNotes");
-    if (saved !== null) {
+    const load = () => {
+      const saved = localStorage.getItem("hemicycleNotes");
+      if (saved == null) {
+        setNotes([]);
+        return;
+      }
       try {
         const parsed = JSON.parse(saved);
         setNotes(Array.isArray(parsed) ? parsed : []);
       } catch {
         setNotes([]);
       }
-    }
+    };
+
+    load();
+
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "hemicycleNotes") load();
+    };
+
+    window.addEventListener("storage", onStorage);
+    const interval = setInterval(load, 300);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
