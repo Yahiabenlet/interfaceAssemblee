@@ -1014,6 +1014,7 @@ export default function Home() {
               goldOutlinedSeats={goldOutlinedSeats}
               goldOutlinedPresident={goldOutlinedPresident}
               isSecretBallot={isSecretBallot}
+              hideAssemblyWhenSecretBallot={false}
             />
             <button
               onClick={() => setNumSeats(null)}

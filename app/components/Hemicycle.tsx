@@ -51,6 +51,7 @@ interface HemicycleProps {
   goldOutlinedSeats?: number[];
   goldOutlinedPresident?: boolean;
   isSecretBallot?: boolean;
+  hideAssemblyWhenSecretBallot?: boolean;
 }
 
 export default function Hemicycle({
@@ -91,6 +92,7 @@ export default function Hemicycle({
   goldOutlinedSeats = [],
   goldOutlinedPresident = false,
   isSecretBallot = false,
+  hideAssemblyWhenSecretBallot = true,
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -454,7 +456,7 @@ export default function Hemicycle({
     </svg>
   );
 
-  const hemicycleOrSecretBlock = isSecretBallot ? (
+  const hemicycleOrSecretBlock = isSecretBallot && hideAssemblyWhenSecretBallot ? (
     <div className="w-full aspect-[500/360] border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
       <div className="text-center px-4">
         <p className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100">Vote à bulletin secret</p>

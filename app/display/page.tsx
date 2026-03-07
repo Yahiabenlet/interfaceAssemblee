@@ -167,6 +167,7 @@ export default function DisplayPage() {
           goldOutlinedSeats={state.goldOutlinedSeats ?? []}
           goldOutlinedPresident={state.goldOutlinedPresident ?? false}
           isSecretBallot={state.isSecretBallot ?? false}
+          hideAssemblyWhenSecretBallot
           readOnly
         />
       </div>
