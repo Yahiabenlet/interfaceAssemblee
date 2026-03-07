@@ -90,6 +90,9 @@ export default function Home() {
   const [selectedPresidentOverlay, setSelectedPresidentOverlay] = useState<string | null>(null);
   const [isEraseMode, setIsEraseMode] = useState(false);
   const [newProvinceName, setNewProvinceName] = useState("");
+  const [isGoldOutlineMode, setIsGoldOutlineMode] = useState(false);
+  const [goldOutlinedSeats, setGoldOutlinedSeats] = useState<number[]>([]);
+  const [goldOutlinedPresident, setGoldOutlinedPresident] = useState(false);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -154,6 +157,13 @@ export default function Home() {
   };
 
   const toggleSeat = (index: number) => {
+    if (isGoldOutlineMode) {
+      setGoldOutlinedSeats((prev) =>
+        prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+      );
+      return;
+    }
+
     if (isSeatSelectionMode && !isEraseMode) {
       setSelectedSeatOverlays((prev) => {
         const next = { ...prev };
@@ -181,6 +191,11 @@ export default function Home() {
   };
 
   const togglePresident = () => {
+    if (isGoldOutlineMode) {
+      setGoldOutlinedPresident((prev) => !prev);
+      return;
+    }
+
     if (isSeatSelectionMode && !isEraseMode) {
       setSelectedPresidentOverlay((prev) => (prev ? null : selectionRingColor));
       return;
@@ -205,6 +220,8 @@ export default function Home() {
   const resetSelections = () => {
     setSelectedSeatOverlays({});
     setSelectedPresidentOverlay(null);
+    setGoldOutlinedSeats([]);
+    setGoldOutlinedPresident(false);
   };
 
   const canSaveLaw = useMemo(() => {
@@ -325,6 +342,8 @@ export default function Home() {
       enclumeDurationMinutes,
       selectedSeatOverlays,
       selectedPresidentOverlay,
+      goldOutlinedSeats,
+      goldOutlinedPresident,
       isEraseMode,
     };
 
@@ -355,6 +374,8 @@ export default function Home() {
     enclumeDurationMinutes,
     selectedSeatOverlays,
     selectedPresidentOverlay,
+    goldOutlinedSeats,
+    goldOutlinedPresident,
     isEraseMode,
   ]);
 
@@ -804,15 +825,25 @@ export default function Home() {
                 Adopter la loi
               </button>
 
-              <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center gap-2">
-                <span className="text-sm text-gray-700 dark:text-gray-300">Couleur cercle</span>
-                <input
-                  type="color"
-                  value={selectionRingColor}
-                  onChange={(e) => setSelectionRingColor(e.target.value)}
-                  className="h-6 w-10 cursor-pointer"
-                />
-              </label>
+              <div className="flex flex-col gap-2">
+                <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center gap-2">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Couleur cercle</span>
+                  <input
+                    type="color"
+                    value={selectionRingColor}
+                    onChange={(e) => setSelectionRingColor(e.target.value)}
+                    className="h-6 w-10 cursor-pointer"
+                  />
+                </label>
+                <button
+                  onClick={() => setIsGoldOutlineMode((v) => !v)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                    isGoldOutlineMode ? "bg-amber-700 hover:bg-amber-800" : "bg-amber-600 hover:bg-amber-700"
+                  }`}
+                >
+                  Pourtour or : {isGoldOutlineMode ? "ON" : "OFF"}
+                </button>
+              </div>
 
               {/* Boutons superposés et compacts */}
               <div className="flex flex-col gap-1.5">
@@ -969,6 +1000,8 @@ export default function Home() {
               enclumeDurationMinutes={enclumeDurationMinutes}
               selectedSeatOverlays={selectedSeatOverlays}
               selectedPresidentOverlay={selectedPresidentOverlay}
+              goldOutlinedSeats={goldOutlinedSeats}
+              goldOutlinedPresident={goldOutlinedPresident}
             />
             <button
               onClick={() => setNumSeats(null)}

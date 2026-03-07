@@ -48,6 +48,8 @@ interface HemicycleProps {
   enclumeDurationMinutes?: number;
   selectedSeatOverlays?: Record<number, string>;
   selectedPresidentOverlay?: string | null;
+  goldOutlinedSeats?: number[];
+  goldOutlinedPresident?: boolean;
 }
 
 export default function Hemicycle({
@@ -85,6 +87,8 @@ export default function Hemicycle({
   enclumeDurationMinutes = 4,
   selectedSeatOverlays = {},
   selectedPresidentOverlay = null,
+  goldOutlinedSeats = [],
+  goldOutlinedPresident = false,
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -365,6 +369,8 @@ export default function Hemicycle({
     }));
   }, [seats, selectedSeatOverlays, selectedPresidentOverlay, presidentY]);
 
+  const goldSeatSet = useMemo(() => new Set(goldOutlinedSeats), [goldOutlinedSeats]);
+
   const svgBlock = (
     <svg
       viewBox="0 0 500 360"
@@ -420,8 +426,8 @@ export default function Hemicycle({
               cy={seat.y}
               r="12"
               fill={colorMap[seat.color].fill}
-              stroke={colorMap[seat.color].stroke}
-              strokeWidth="2"
+              stroke={goldSeatSet.has(seat.index) ? "#d4af37" : colorMap[seat.color].stroke}
+              strokeWidth={goldSeatSet.has(seat.index) ? "3" : "2"}
               className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
               onClick={svgOnly || readOnly ? undefined : () => onToggleSeat(seat.index)}
               title={`Siège ${seat.index + 1}`}
@@ -434,8 +440,8 @@ export default function Hemicycle({
           cy={presidentY}
           r="13"
           fill={colorMap[presidentColor].fill}
-          stroke={presidentBorder.stroke}
-          strokeWidth={presidentBorder.strokeWidth}
+          stroke={goldOutlinedPresident ? "#d4af37" : presidentBorder.stroke}
+          strokeWidth={goldOutlinedPresident ? 3 : presidentBorder.strokeWidth}
           className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
           onClick={svgOnly || readOnly ? undefined : onTogglePresident}
         />

@@ -46,6 +46,8 @@ type DisplayState = {
   enclumeDurationMinutes?: number;
   selectedSeatOverlays?: Record<number, string>;
   selectedPresidentOverlay?: string | null;
+  goldOutlinedSeats?: number[];
+  goldOutlinedPresident?: boolean;
 };
 
 export default function DisplayPage() {
@@ -161,6 +163,8 @@ export default function DisplayPage() {
           enclumeDurationMinutes={state.enclumeDurationMinutes ?? 4}
           selectedSeatOverlays={state.selectedSeatOverlays ?? {}}
           selectedPresidentOverlay={state.selectedPresidentOverlay ?? null}
+          goldOutlinedSeats={state.goldOutlinedSeats ?? []}
+          goldOutlinedPresident={state.goldOutlinedPresident ?? false}
           readOnly
         />
       </div>
