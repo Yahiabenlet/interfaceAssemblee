@@ -678,15 +678,6 @@ export default function Home() {
                 Ajouter la loi aux lois votées
               </button>
 
-              <button
-                onClick={() => setIsSeatSelectionMode((v) => !v)}
-                className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
-                  isSeatSelectionMode ? "bg-blue-700 hover:bg-blue-800" : "bg-blue-600 hover:bg-blue-700"
-                }`}
-              >
-                {isSeatSelectionMode ? "Mode sélection: ON" : "Mode sélection: OFF"}
-              </button>
-
               <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center gap-2">
                 <span className="text-sm text-gray-700 dark:text-gray-300">Couleur cercle</span>
                 <input
@@ -697,28 +688,40 @@ export default function Home() {
                 />
               </label>
 
-              <button
-                onClick={() => setIsEraseMode((v) => !v)}
-                className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
-                  isEraseMode ? "bg-rose-700 hover:bg-rose-800" : "bg-rose-600 hover:bg-rose-700"
-                }`}
-              >
-                {isEraseMode ? "Mode effacement: ON" : "Mode effacement: OFF"}
-              </button>
+              {/* Boutons superposés et compacts */}
+              <div className="flex flex-col gap-1.5">
+                <button
+                  onClick={() => setIsSeatSelectionMode((v) => !v)}
+                  className={`px-2.5 py-1.5 text-xs text-white font-semibold rounded-md transition ${
+                    isSeatSelectionMode ? "bg-blue-700 hover:bg-blue-800" : "bg-blue-600 hover:bg-blue-700"
+                  }`}
+                >
+                  {isSeatSelectionMode ? "Mode sélection: ON" : "Mode sélection: OFF"}
+                </button>
 
-              <button
-                onClick={resetVotes}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition"
-              >
-                Reset des voix
-              </button>
+                <button
+                  onClick={() => setIsEraseMode((v) => !v)}
+                  className={`px-2.5 py-1.5 text-xs text-white font-semibold rounded-md transition ${
+                    isEraseMode ? "bg-rose-700 hover:bg-rose-800" : "bg-rose-600 hover:bg-rose-700"
+                  }`}
+                >
+                  {isEraseMode ? "Mode effacement: ON" : "Mode effacement: OFF"}
+                </button>
 
-              <button
-                onClick={resetSelections}
-                className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition"
-              >
-                Reset des partis politiques
-              </button>
+                <button
+                  onClick={resetVotes}
+                  className="px-2.5 py-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-md transition"
+                >
+                  Reset des voix
+                </button>
+
+                <button
+                  onClick={resetSelections}
+                  className="px-2.5 py-1.5 text-xs bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-md transition"
+                >
+                  Reset des partis politiques
+                </button>
+              </div>
 
               <button
                 onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
