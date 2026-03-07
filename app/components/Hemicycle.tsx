@@ -163,7 +163,7 @@ export default function Hemicycle({
       return {
         label: "Loi de l’Enclume en cours (chronomètre actif)",
         tone: "text-amber-700 dark:text-amber-300",
-        bg: "bg-amber-50 dark:bg-amber-950",
+        bg: "bg-amber-50 dark:bg-emerald-950",
       };
     }
 
@@ -176,7 +176,7 @@ export default function Hemicycle({
         return {
           label: "Vote en cours",
           tone: "text-amber-700 dark:text-amber-300",
-          bg: "bg-amber-50 dark:bg-amber-950",
+          bg: "bg-amber-50 dark:bg-emerald-950",
         };
       }
 
@@ -202,7 +202,7 @@ export default function Hemicycle({
             ? "Droit de véto du Président utilisé"
             : "Un droit de véto a été utilisé par un parlementaire",
         tone: "text-amber-700 dark:text-amber-300",
-        bg: "bg-amber-50 dark:bg-amber-950",
+        bg: "bg-amber-50 dark:bg-emerald-950",
       };
     }
 
@@ -211,7 +211,7 @@ export default function Hemicycle({
       return {
         label: "Un droit de véto a été utilisé",
         tone: "text-amber-700 dark:text-amber-300",
-        bg: "bg-amber-50 dark:bg-amber-950",
+        bg: "bg-amber-50 dark:bg-emerald-950",
       };
     }
 
@@ -350,26 +350,78 @@ export default function Hemicycle({
     strokeWidth: 3,
   };
 
+  const overlayGroups = useMemo(() => {
+    const grouped = new Map<string, Array<{ x: number; y: number; r: number }>>();
+
+    seats.forEach((seat) => {
+      const color = selectedSeatOverlays[seat.index];
+      if (!color) return;
+      if (!grouped.has(color)) grouped.set(color, []);
+      grouped.get(color)!.push({ x: seat.x, y: seat.y, r: 15 });
+    });
+
+    if (selectedPresidentOverlay) {
+      if (!grouped.has(selectedPresidentOverlay)) grouped.set(selectedPresidentOverlay, []);
+      grouped.get(selectedPresidentOverlay)!.push({ x: 250, y: presidentY, r: 16 });
+    }
+
+    return Array.from(grouped.entries()).map(([color, points], idx) => ({
+      id: `overlay-blob-${idx}`,
+      color,
+      points,
+    }));
+  }, [seats, selectedSeatOverlays, selectedPresidentOverlay, presidentY]);
+
   const svgBlock = (
     <svg
       viewBox="0 0 500 360"
       className="w-full h-auto border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700"
     >
+      <defs>
+        {overlayGroups.map((g) => (
+          <filter key={g.id} id={g.id} x="-40%" y="-40%" width="180%" height="180%">
+            <feMorphology in="SourceGraphic" operator="dilate" radius="8" result="dilated" />
+            <feGaussianBlur in="dilated" stdDeviation="4.5" result="blurred" />
+            <feColorMatrix
+              in="blurred"
+              type="matrix"
+              values="
+                1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 28 -10
+              "
+              result="goo"
+            />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        ))}
+      </defs>
+
       <g transform="translate(250 220) scale(1.12) translate(-250 -220)">
         <path d="M 100 176 A 196 196 0 0 1 400 176" fill="none" stroke="#ccc" strokeWidth="2" className="dark:stroke-gray-600" />
+
+        {overlayGroups.map((g) => (
+          <g
+            key={g.id}
+            filter={`url(#${g.id})`}
+            style={{ mixBlendMode: "lighten" }}
+            opacity={0.5}
+            pointerEvents="none"
+          >
+            {/* base fill pour éviter les trous */}
+            {g.points.map((p, i) => (
+              <circle key={`${g.id}-base-${i}`} cx={p.x} cy={p.y} r={p.r + 6} fill={g.color} />
+            ))}
+            {/* couche fusionnée */}
+            {g.points.map((p, i) => (
+              <circle key={`${g.id}-${i}`} cx={p.x} cy={p.y} r={p.r} fill={g.color} />
+            ))}
+          </g>
+        ))}
+
         {seats.map((seat) => (
           <g key={seat.index}>
-            {selectedSeatOverlays[seat.index] ? (
-              <circle
-                cx={seat.x}
-                cy={seat.y}
-                r="16"
-                fill="none"
-                stroke={selectedSeatOverlays[seat.index]}
-                strokeWidth="3"
-                pointerEvents="none"
-              />
-            ) : null}
             <circle
               cx={seat.x}
               cy={seat.y}
@@ -383,17 +435,7 @@ export default function Hemicycle({
             />
           </g>
         ))}
-        {selectedPresidentOverlay ? (
-          <circle
-            cx="250"
-            cy={presidentY}
-            r="18"
-            fill="none"
-            stroke={selectedPresidentOverlay}
-            strokeWidth="3"
-            pointerEvents="none"
-          />
-        ) : null}
+
         <circle
           cx="250"
           cy={presidentY}
