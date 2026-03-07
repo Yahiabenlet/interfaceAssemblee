@@ -30,6 +30,7 @@ type PassedLaw = {
   title: string;
   text: string;
   abrogee?: boolean;
+  adopteeSousEnclume?: boolean;
 };
 
 const CONTROL_OPTIONS: ProvinceControl[] = [
@@ -153,10 +154,23 @@ export default function Home() {
       return;
     }
 
-    setPassedLaws((prev) => [{ title: lawTitle || "Sans titre", text: lawText || "Sans texte", abrogee: false }, ...prev]);
+    const adoptedUnderEnclume = useEnclumeLaw && enclumeStatus === "adopted";
+
+    setPassedLaws((prev) => [
+      {
+        title: lawTitle || "Sans titre",
+        text: lawText || "Sans texte",
+        abrogee: false,
+        adopteeSousEnclume: adoptedUnderEnclume,
+      },
+      ...prev,
+    ]);
+
     setLawFeedback({
       type: "success",
-      message: `Loi ajoutée${lawTitle ? ` : ${lawTitle}` : ""}.`,
+      message: `Loi ajoutée${lawTitle ? ` : ${lawTitle}` : ""}${
+        adoptedUnderEnclume ? " (adoptée sous loi de l’Enclume)." : "."
+      }`,
     });
   };
 
@@ -277,6 +291,11 @@ export default function Home() {
   }, [useEnclumeLaw, enclumeStatus, enclumeStartedAt, enclumeDurationMs]);
 
   const canRejectEnclume = useMemo(
+    () => useEnclumeLaw && enclumeStatus === "running",
+    [useEnclumeLaw, enclumeStatus]
+  );
+
+  const canAdoptEnclume = useMemo(
     () => useEnclumeLaw && enclumeStatus === "running",
     [useEnclumeLaw, enclumeStatus]
   );
@@ -462,6 +481,18 @@ export default function Home() {
                   </button>
                   <button
                     type="button"
+                    onClick={() => setEnclumeStatus("adopted")}
+                    disabled={!canAdoptEnclume}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      canAdoptEnclume
+                        ? "bg-emerald-600 hover:bg-emerald-700"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    Adopter la loi de l&apos;Enclume
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => setEnclumeStatus("rejected")}
                     disabled={!canRejectEnclume}
                     className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
@@ -638,6 +669,11 @@ export default function Home() {
                             {law.title || "Sans titre"}{" "}
                             {law.abrogee ? <span className="text-red-700 dark:text-red-300">(Abrogée)</span> : null}
                           </p>
+                          {law.adopteeSousEnclume ? (
+                            <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
+                              Adoptée sous loi de l’Enclume
+                            </p>
+                          ) : null}
                           <p className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
                             {law.text || "Sans texte"}
                           </p>

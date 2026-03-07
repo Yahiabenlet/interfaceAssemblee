@@ -6,6 +6,7 @@ type PassedLaw = {
   title: string;
   text: string;
   abrogee?: boolean;
+  adopteeSousEnclume?: boolean;
 };
 
 export default function NotesPage() {
@@ -83,6 +84,11 @@ export default function NotesPage() {
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white break-words">
                         {law.title || "Sans titre"}
                       </h3>
+                      {law.adopteeSousEnclume ? (
+                        <p className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                          Adoptée sous loi de l’Enclume
+                        </p>
+                      ) : null}
                       <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
                         {law.text || "Sans texte"}
                       </p>
@@ -109,6 +115,11 @@ export default function NotesPage() {
                         {law.title || "Sans titre"}{" "}
                         <span className="text-red-700 dark:text-red-300">(Abrogée)</span>
                       </h3>
+                      {law.adopteeSousEnclume ? (
+                        <p className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                          Adoptée sous loi de l’Enclume
+                        </p>
+                      ) : null}
                       <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
                         {law.text || "Sans texte"}
                       </p>
