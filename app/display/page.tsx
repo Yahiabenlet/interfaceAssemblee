@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Hemicycle from "../components/Hemicycle";
 
-type SeatColor = "white" | "green" | "red" | "orange";
+type SeatColor = "white" | "green" | "red" | "orange" | "black";
 type ProvinceControl =
   | "Indépendant"
   | "Autonomie"

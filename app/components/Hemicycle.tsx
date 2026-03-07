@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-type SeatColor = "white" | "green" | "red" | "orange";
+type SeatColor = "white" | "green" | "red" | "orange" | "black";
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
@@ -100,13 +100,15 @@ export default function Hemicycle({
 
   const counts = useMemo(() => {
     const all = [...seatColors, presidentColor];
+    const registered = all.filter((c) => c !== "black"); // inscrits effectifs
     return {
-      white: all.filter((c) => c === "white").length,
-      green: all.filter((c) => c === "green").length,
-      red: all.filter((c) => c === "red").length,
-      orange: all.filter((c) => c === "orange").length,
+      white: registered.filter((c) => c === "white").length,
+      green: registered.filter((c) => c === "green").length,
+      red: registered.filter((c) => c === "red").length,
+      orange: registered.filter((c) => c === "orange").length,
+      black: all.filter((c) => c === "black").length,
       // Les vétos (orange) comptent comme contre
-      against: all.filter((c) => c === "red" || c === "orange").length,
+      against: registered.filter((c) => c === "red" || c === "orange").length,
     };
   }, [seatColors, presidentColor]);
 
@@ -132,10 +134,11 @@ export default function Hemicycle({
 
   const majorityStatus = useMemo(() => {
     const all = [...seatColors, presidentColor];
-    const hasSeatVeto = all.some((c) => c === "orange");
+    const registered = all.filter((c) => c !== "black");
+    const hasSeatVeto = registered.some((c) => c === "orange");
 
-    const pour = all.filter((c) => c === "green").length;
-    const contre = all.filter((c) => c === "red" || c === "orange").length;
+    const pour = registered.filter((c) => c === "green").length;
+    const contre = registered.filter((c) => c === "red" || c === "orange").length;
     const exprimes = pour + contre;
 
     if (useEnclumeLaw && !isNoConfidenceMotion) {
@@ -161,9 +164,9 @@ export default function Hemicycle({
     }
 
     if (isNoConfidenceMotion) {
-      const inscrits = all.length;
+      const inscrits = registered.length;
       const seuilAbsolu = Math.floor(inscrits / 2) + 1;
-      const allExpressed = all.every((c) => c !== "white");
+      const allExpressed = registered.every((c) => c !== "white");
 
       if (!allExpressed) {
         return {
@@ -335,6 +338,7 @@ export default function Hemicycle({
     green: { fill: "#22c55e", stroke: "#15803d" },
     red: { fill: "#ef4444", stroke: "#b91c1c" },
     orange: { fill: "#f59e0b", stroke: "#b45309" },
+    black: { fill: "#111827", stroke: "#000000" },
   };
 
   const presidentBorder = {
@@ -609,7 +613,7 @@ export default function Hemicycle({
         </div>
       </div>
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge → Orange)
+        Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge → Orange → Noir)
       </p>
     </div>
   );

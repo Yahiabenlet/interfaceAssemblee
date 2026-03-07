@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Hemicycle from "./components/Hemicycle";
 
-type SeatColor = "white" | "green" | "red" | "orange";
+type SeatColor = "white" | "green" | "red" | "orange" | "black";
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
@@ -95,16 +95,16 @@ export default function Home() {
   );
 
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
-    const seatCycleNoVeto: SeatColor[] = ["white", "green", "red"];
-    const seatCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange"];
+    const seatCycleNoVeto: SeatColor[] = ["white", "green", "red", "black"];
+    const seatCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange", "black"];
 
-    const presidentCycleNoVeto: SeatColor[] = ["white", "green", "red"];
-    const presidentCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange"];
-    const presidentCycleWithPresidentVeto: SeatColor[] = ["white", "green", "orange"];
+    const presidentCycleNoVeto: SeatColor[] = ["white", "green", "red", "black"];
+    const presidentCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange", "black"];
+    const presidentCycleWithPresidentVeto: SeatColor[] = ["white", "green", "orange", "black"];
 
-    // Motion de censure: pas d'orange, uniquement blanc/vert/rouge
+    // Motion de censure: pas d'orange, uniquement blanc/vert/rouge/noir
     if (isNoConfidenceMotion) {
-      const forcedCycle: SeatColor[] = ["white", "green", "red"];
+      const forcedCycle: SeatColor[] = ["white", "green", "red", "black"];
       return forcedCycle[(forcedCycle.indexOf(current) + 1) % forcedCycle.length];
     }
 
