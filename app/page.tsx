@@ -1119,10 +1119,14 @@ export default function Home() {
 
                 {isSecretBallot && (
                   <button
-                    onClick={() => setRevealSecretResults(true)}
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition"
+                    onClick={() => setRevealSecretResults((v) => !v)}
+                    className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
+                      revealSecretResults
+                        ? "bg-amber-600 hover:bg-amber-700"
+                        : "bg-emerald-600 hover:bg-emerald-700"
+                    }`}
                   >
-                    Afficher les résultats
+                    {revealSecretResults ? "Masquer les résultats" : "Afficher les résultats"}
                   </button>
                 )}
               </div>
