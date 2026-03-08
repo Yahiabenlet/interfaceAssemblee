@@ -95,6 +95,15 @@ export default function Home() {
   const [goldOutlinedSeats, setGoldOutlinedSeats] = useState<number[]>([]);
   const [goldOutlinedPresident, setGoldOutlinedPresident] = useState(false);
   const [isSecretBallot, setIsSecretBallot] = useState(false);
+  const [proposal1Title, setProposal1Title] = useState("");
+  const [proposal1Text, setProposal1Text] = useState("");
+  const [proposal2Title, setProposal2Title] = useState("");
+  const [proposal2Text, setProposal2Text] = useState("");
+  const [proposal3Title, setProposal3Title] = useState("");
+  const [proposal3Text, setProposal3Text] = useState("");
+  const [proposal1Organic, setProposal1Organic] = useState(false);
+  const [proposal2Organic, setProposal2Organic] = useState(false);
+  const [proposal3Organic, setProposal3Organic] = useState(false);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -349,6 +358,11 @@ export default function Home() {
       goldOutlinedPresident,
       isEraseMode,
       isSecretBallot,
+      proposals: [
+        { title: proposal1Title, text: proposal1Text, organique: proposal1Organic },
+        { title: proposal2Title, text: proposal2Text, organique: proposal2Organic },
+        { title: proposal3Title, text: proposal3Text, organique: proposal3Organic },
+      ],
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -383,6 +397,15 @@ export default function Home() {
     goldOutlinedPresident,
     isEraseMode,
     isSecretBallot,
+    proposal1Title,
+    proposal1Text,
+    proposal2Title,
+    proposal2Text,
+    proposal3Title,
+    proposal3Text,
+    proposal1Organic,
+    proposal2Organic,
+    proposal3Organic,
   ]);
 
   useEffect(() => {
@@ -827,6 +850,101 @@ export default function Home() {
               </div>
             )}
 
+            <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                  Proposition de loi 1
+                </h3>
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={proposal1Title}
+                    onChange={(e) => setProposal1Title(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Titre de la proposition"
+                  />
+                  <textarea
+                    value={proposal1Text}
+                    onChange={(e) => setProposal1Text(e.target.value)}
+                    rows={4}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Texte de la proposition"
+                  />
+                  <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                    <input
+                      type="checkbox"
+                      checked={proposal1Organic}
+                      onChange={(e) => setProposal1Organic(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    Loi organique
+                  </label>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                  Proposition de loi 2
+                </h3>
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={proposal2Title}
+                    onChange={(e) => setProposal2Title(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Titre de la proposition"
+                  />
+                  <textarea
+                    value={proposal2Text}
+                    onChange={(e) => setProposal2Text(e.target.value)}
+                    rows={4}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Texte de la proposition"
+                  />
+                  <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                    <input
+                      type="checkbox"
+                      checked={proposal2Organic}
+                      onChange={(e) => setProposal2Organic(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    Loi organique
+                  </label>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                  Proposition de loi 3
+                </h3>
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={proposal3Title}
+                    onChange={(e) => setProposal3Title(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Titre de la proposition"
+                  />
+                  <textarea
+                    value={proposal3Text}
+                    onChange={(e) => setProposal3Text(e.target.value)}
+                    rows={4}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="Texte de la proposition"
+                  />
+                  <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                    <input
+                      type="checkbox"
+                      checked={proposal3Organic}
+                      onChange={(e) => setProposal3Organic(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    Loi organique
+                  </label>
+                </div>
+              </div>
+            </div>
+
             <div className="mb-4 flex justify-end gap-3">
               <button
                 onClick={addCurrentLawToPassed}
@@ -922,6 +1040,12 @@ export default function Home() {
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
                 >
                   Ouvrir l’affichage plein écran
+                </button>
+                <button
+                  onClick={() => window.open("/propositions", "_blank", "noopener,noreferrer")}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
+                >
+                  Ouvrir les 3 propositions
                 </button>
                 <button
                   onClick={() => setIsSecretBallot((v) => !v)}
