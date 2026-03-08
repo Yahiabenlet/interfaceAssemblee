@@ -9,6 +9,7 @@ type PassedLaw = {
   adopteeSousEnclume?: boolean;
   organique?: boolean;
   nonConforme?: boolean;
+  decret?: boolean;
 };
 
 export default function NotesPage() {
@@ -99,6 +100,7 @@ export default function NotesPage() {
 
   const activeLaws = useMemo(() => notes.filter((law) => !law.abrogee), [notes]);
   const repealedLaws = useMemo(() => notes.filter((law) => law.abrogee), [notes]);
+  const decrets = useMemo(() => notes.filter((law) => law.decret && !law.abrogee), [notes]);
 
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
@@ -106,7 +108,7 @@ export default function NotesPage() {
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Lois précédemment votées</h1>
 
         <div className="w-full h-[70vh] overflow-auto px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-full">
             <div className="rounded-lg border border-emerald-300 dark:border-emerald-800 bg-emerald-50/60 dark:bg-emerald-950/20 p-3">
               <h2 className="text-lg font-semibold text-emerald-800 dark:text-emerald-300 mb-3">
                 Lois en vigueur ({activeLaws.length})
@@ -179,6 +181,32 @@ export default function NotesPage() {
                           Loi non conforme à la Constitution
                         </p>
                       ) : null}
+                      <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
+                        {law.text || "Sans texte"}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-950/30 p-3">
+              <h2 className="text-lg font-semibold text-amber-800 dark:text-amber-300 mb-3">
+                Décrets en vigueur ({decrets.length})
+              </h2>
+              {decrets.length === 0 ? (
+                <p className="text-sm text-gray-700 dark:text-gray-300">Aucun décret en vigueur.</p>
+              ) : (
+                <div className="space-y-4">
+                  {decrets.map((law, idx) => (
+                    <div
+                      key={`decret-${law.title}-${idx}`}
+                      className="rounded-lg border p-3 border-amber-300 dark:border-amber-700 bg-amber-100 dark:bg-amber-950/40"
+                    >
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white break-words">
+                        {law.title || "Sans titre"}
+                      </h3>
+                      <p className="mt-1 text-xs font-semibold text-amber-800 dark:text-amber-300">Décret</p>
                       <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
                         {law.text || "Sans texte"}
                       </p>

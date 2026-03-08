@@ -52,6 +52,7 @@ type DisplayState = {
   isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
+  isDecretMode?: boolean;
   vetoMode?: "none" | "president" | "player";
   isNoConfidenceMotion?: boolean;
   useEnclumeLaw?: boolean;
@@ -208,6 +209,7 @@ export default function DisplayPage() {
           isControlValidated={state.isControlValidated ?? "nonConforme"}
           requiredMajority={state.requiredMajority ?? "simple"}
           superMajorityRatio={state.superMajorityRatio ?? "3/5"}
+          isDecretMode={state.isDecretMode ?? false}
           vetoMode={state.vetoMode ?? "none"}
           isNoConfidenceMotion={state.isNoConfidenceMotion ?? false}
           useEnclumeLaw={state.useEnclumeLaw ?? false}

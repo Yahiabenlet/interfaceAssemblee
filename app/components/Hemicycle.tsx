@@ -62,6 +62,7 @@ interface HemicycleProps {
   isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
+  isDecretMode?: boolean;
   vetoMode?: "none" | "president" | "player";
   isNoConfidenceMotion?: boolean;
   useEnclumeLaw?: boolean;
@@ -116,6 +117,7 @@ export default function Hemicycle({
   isControlValidated = "nonConforme",
   requiredMajority = "simple",
   superMajorityRatio = "3/5",
+  isDecretMode = false,
   vetoMode = "none",
   isNoConfidenceMotion = false,
   useEnclumeLaw = false,
@@ -186,6 +188,29 @@ export default function Hemicycle({
     const pour = registered.filter((c) => c === "green").length;
     const contre = registered.filter((c) => c === "red" || c === "orange").length;
     const exprimes = pour + contre;
+
+    if (isDecretMode && !isNoConfidenceMotion && !useEnclumeLaw) {
+      if (exprimes === 0) {
+        return {
+          label: `Décret en cours — nécessite ${superMajorityRatio} de votes contre pour être bloqué`,
+          tone: "text-amber-700 dark:text-amber-300",
+          bg: "bg-amber-50 dark:bg-amber-950",
+        };
+      }
+      const ratioContre = contre / exprimes;
+      if (ratioContre >= superThreshold) {
+        return {
+          label: `Décret rejeté (supermajorité contre atteinte : ${superMajorityRatio})`,
+          tone: "text-rose-700 dark:text-rose-300",
+          bg: "bg-rose-50 dark:bg-rose-950",
+        };
+      }
+      return {
+        label: `Décret adopté (contre < ${superMajorityRatio})`,
+        tone: "text-emerald-700 dark:text-emerald-300",
+        bg: "bg-emerald-50 dark:bg-emerald-950",
+      };
+    }
 
     if (useEnclumeLaw && !isNoConfidenceMotion) {
       if (enclumeStatus === "adopted") {
@@ -303,7 +328,7 @@ export default function Hemicycle({
       tone: "text-gray-700 dark:text-gray-200",
       bg: "bg-rose-50 dark:bg-rose-950",
     };
-  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion, useEnclumeLaw, enclumeStatus]);
+  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion, useEnclumeLaw, enclumeStatus, isDecretMode]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
@@ -666,6 +691,21 @@ export default function Hemicycle({
                           ? "Résultat : Rejetée"
                           : "Vote en attente de l'issue du chronomètre"}
                       </div>
+                    </div>
+                  </div>
+                ) : isDecretMode ? (
+                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                    <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                      Décret — Rappel des règles
+                    </div>
+                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
+                      Un décret est appliqué immédiatement
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                      Il faut une supermajorité de votes contre pour le bloquer
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                      Seuil actuel : {superMajorityRatio}
                     </div>
                   </div>
                 ) : (

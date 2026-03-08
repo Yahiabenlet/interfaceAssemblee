@@ -143,6 +143,7 @@ export default function Home() {
   const [candidateColors, setCandidateColors] = useState<string[]>(["#4f46e5", "#7c3aed"]);
   const [activeCandidateIndex, setActiveCandidateIndex] = useState(0);
   const [allowAntiConstitutionalAmendment, setAllowAntiConstitutionalAmendment] = useState(false);
+  const [isDecretMode, setIsDecretMode] = useState(false);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -451,6 +452,7 @@ export default function Home() {
       candidateNames,
       candidateColors,
       activeCandidateIndex,
+      isDecretMode,
       proposals: [
         { title: proposal1Title, text: proposal1Text, organique: proposal1Organic, decret: proposal1Decret },
         { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
@@ -509,6 +511,7 @@ export default function Home() {
     proposal1Decret,
     proposal2Decret,
     proposal3Decret,
+    isDecretMode,
   ]);
 
   useEffect(() => {
@@ -813,7 +816,7 @@ export default function Home() {
 
               <div className="text-center">
                 <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Type de majorité requis
+                  Type de loi et majorité requise
                 </p>
                 <div className="flex flex-wrap gap-2 justify-center">
                   <button
@@ -889,6 +892,15 @@ export default function Home() {
                     }`}
                   >
                     Rejeter la loi de l&apos;Enclume
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsDecretMode((v) => !v)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                      isDecretMode ? "bg-amber-700 hover:bg-amber-800" : "bg-amber-600 hover:bg-amber-700"
+                    }`}
+                  >
+                    Décret : {isDecretMode ? "Activé" : "Désactivé"}
                   </button>
                 </div>
 
@@ -1430,6 +1442,7 @@ export default function Home() {
               electionMode={electionMode}
               candidateNames={candidateNames.slice(0, candidateCount)}
               candidateColors={candidateColors.slice(0, candidateCount)}
+              isDecretMode={isDecretMode}
             />
           </div>
         )}
