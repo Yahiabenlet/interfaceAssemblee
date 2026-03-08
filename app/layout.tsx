@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Visualisation de l'hémicycle",
+  title: "Parlement de Gérionie",
   description: "Créé par Yahia Ben Letaief",
 };
 

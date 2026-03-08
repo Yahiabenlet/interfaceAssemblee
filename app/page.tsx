@@ -662,7 +662,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Provinces + Généralités sur la ligne du dessous */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
                 <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
@@ -735,7 +734,7 @@ export default function Home() {
 
                 <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
-                    Généralités Régionales
+                    Relations Internationales
                   </h3>
                   <div className="space-y-3">
                     {(Object.keys(regionalStates) as string[]).map((name) => (

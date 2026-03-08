@@ -735,7 +735,6 @@ export default function Hemicycle({
                 <div className="flex justify-center items-start self-start">{hemicycleOrSecretBlock}</div>
               </div>
 
-              {/* Colonne droite : Provinces + Généralités + Jauges (+ Election/Historique) */}
               <div className="space-y-4">
                 <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
@@ -755,7 +754,7 @@ export default function Hemicycle({
 
                 <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
-                    Généralités Régionales
+                    Relations Internationales
                   </h3>
                   <div className="space-y-2">
                     {(Object.keys(regionalStates) as string[]).map((name) => (
