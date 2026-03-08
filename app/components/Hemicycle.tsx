@@ -657,107 +657,111 @@ export default function Hemicycle({
                   </div>
                 </div>
 
-                {isNoConfidenceMotion ? (
-                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-                    <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                      Motion de censure — Rappel des règles
-                    </div>
-                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
-                      Majorité absolue requise
-                    </div>
-                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
-                      50% + 1 voix des inscrits
-                    </div>
-                    {useEnclumeLaw && (
-                      <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
-                        <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                          Chronomètre Loi de l’Enclume ({enclumeDurationMinutes}:00 max)
+                {!electionMode && (
+                  <>
+                    {isNoConfidenceMotion ? (
+                      <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                        <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                          Motion de censure — Rappel des règles
                         </div>
-                        <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
+                        <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
+                          Majorité absolue requise
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                          50% + 1 voix des inscrits
+                        </div>
+                        {useEnclumeLaw && (
+                          <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
+                            <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                              Chronomètre Loi de l’Enclume ({enclumeDurationMinutes}:00 max)
+                            </div>
+                            <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
+                          </div>
+                        )}
+                      </div>
+                    ) : useEnclumeLaw ? (
+                      <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                        <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-300">
+                          Loi de l&apos;Enclume — Rappel des règles
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
+                          Loi adoptée sans vote, engageant la responsabilité du président
+                        </div>
+                        <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                          Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée avant la fin du chronomètre
+                        </div>
+                        <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
+                          <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                            Chronomètre ({enclumeDurationMinutes}:00)
+                          </div>
+                          <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
+                          <div className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                            {enclumeStatus === "adopted"
+                              ? "Résultat : Adoptée"
+                              : enclumeStatus === "rejected"
+                              ? "Résultat : Rejetée"
+                              : "Vote en attente de l'issue du chronomètre"}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        className={`rounded-lg p-4 border text-center ${
+                          isControlValidated === "conforme"
+                            ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
+                            : isControlValidated === "nonConforme"
+                            ? "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
+                            : "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                        }`}
+                      >
+                        <div
+                          className={`text-sm font-medium ${
+                            isControlValidated === "conforme"
+                              ? "text-emerald-700 dark:text-emerald-300"
+                              : isControlValidated === "nonConforme"
+                              ? "text-rose-700 dark:text-rose-300"
+                              : "text-gray-700 dark:text-gray-300"
+                          }`}
+                        >
+                          Avis de la Cour Constitutionnelle
+                        </div>
+                        <div
+                          className={`text-3xl font-bold mt-2 ${
+                            isControlValidated === "conforme"
+                              ? "text-emerald-700 dark:text-emerald-300"
+                              : isControlValidated === "nonConforme"
+                              ? "text-rose-700 dark:text-rose-300"
+                              : "text-gray-700 dark:text-gray-300"
+                          }`}
+                        >
+                          {isControlValidated === "conforme"
+                            ? "Loi conforme à la Constitution"
+                            : isControlValidated === "nonConforme"
+                            ? "Loi non-conforme à la Constitution"
+                            : "La Cour n’a pas statué"}
+                        </div>
+                        <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                          {requiredMajority === "super"
+                            ? `Super Majorité nécessaire (${superMajorityRatio})`
+                            : "Majorité Simple nécessaire"}
+                        </div>
+                        <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                          {vetoMode === "president" ? "Droit de véto : Président" : ""}
+                        </div>
                       </div>
                     )}
-                  </div>
-                ) : useEnclumeLaw ? (
-                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-300">
-                      Loi de l&apos;Enclume — Rappel des règles
-                    </div>
-                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
-                      Loi adoptée sans vote, engageant la responsabilité du président
-                    </div>
-                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
-                      Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée avant la fin du chronomètre
-                    </div>
-                    <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
-                      <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                        Chronomètre ({enclumeDurationMinutes}:00)
-                      </div>
-                      <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
-                      <div className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
-                        {enclumeStatus === "adopted"
-                          ? "Résultat : Adoptée"
-                          : enclumeStatus === "rejected"
-                          ? "Résultat : Rejetée"
-                          : "Vote en attente de l'issue du chronomètre"}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={`rounded-lg p-4 border text-center ${
-                      isControlValidated === "conforme"
-                        ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
-                        : isControlValidated === "nonConforme"
-                        ? "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
-                        : "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                    }`}
-                  >
-                    <div
-                      className={`text-sm font-medium ${
-                        isControlValidated === "conforme"
-                          ? "text-emerald-700 dark:text-emerald-300"
-                          : isControlValidated === "nonConforme"
-                          ? "text-rose-700 dark:text-rose-300"
-                          : "text-gray-700 dark:text-gray-300"
-                      }`}
-                    >
-                      Avis de la Cour Constitutionnelle
-                    </div>
-                    <div
-                      className={`text-3xl font-bold mt-2 ${
-                        isControlValidated === "conforme"
-                          ? "text-emerald-700 dark:text-emerald-300"
-                          : isControlValidated === "nonConforme"
-                          ? "text-rose-700 dark:text-rose-300"
-                          : "text-gray-700 dark:text-gray-300"
-                      }`}
-                    >
-                      {isControlValidated === "conforme"
-                        ? "Loi conforme à la Constitution"
-                        : isControlValidated === "nonConforme"
-                        ? "Loi non-conforme à la Constitution"
-                        : "La Cour n’a pas statué"}
-                    </div>
-                    <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                      {requiredMajority === "super"
-                        ? `Super Majorité nécessaire (${superMajorityRatio})`
-                        : "Majorité Simple nécessaire"}
-                    </div>
-                    <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                      {vetoMode === "president" ? "Droit de véto : Président" : ""}
-                    </div>
-                  </div>
-                )}
 
-                {!isNoConfidenceMotion && !useEnclumeLaw && (
-                  <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                    <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
-                      {title || "Proposition de loi"}
-                    </h2>
-                    <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
-                      {paragraph || "Texte de loi"}
-                    </p>
-                  </div>
+                    {!isNoConfidenceMotion && !useEnclumeLaw && (
+                      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
+                          {title || "Proposition de loi"}
+                        </h2>
+                        <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+                          {paragraph || "Texte de loi"}
+                        </p>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
