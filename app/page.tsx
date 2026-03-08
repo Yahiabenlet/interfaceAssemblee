@@ -1317,6 +1317,12 @@ export default function Home() {
                   Ouvrir les 3 propositions
                 </button>
                 <button
+                  onClick={() => window.open("/depart", "_blank", "noopener,noreferrer")}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
+                >
+                  Ouvrir la situation de départ
+                </button>
+                <button
                   onClick={() =>
                     setIsSecretBallot((v) => {
                       const next = !v;
