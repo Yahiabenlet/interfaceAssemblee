@@ -108,6 +108,7 @@ export default function Home() {
   const [candidateCount, setCandidateCount] = useState(2);
   const [candidateNames, setCandidateNames] = useState<string[]>(["Candidat 1", "Candidat 2"]);
   const [candidateColors, setCandidateColors] = useState<string[]>(["#4f46e5", "#7c3aed"]);
+  const [activeCandidateIndex, setActiveCandidateIndex] = useState(0);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -126,6 +127,7 @@ export default function Home() {
       while (next.length < candidateCount) next.push(palette[next.length % palette.length]);
       return next;
     });
+    setActiveCandidateIndex((prev) => Math.min(prev, Math.max(0, candidateCount - 1)));
   }, [candidateCount]);
 
   const setCandidateName = (idx: number, value: string) => {
@@ -146,7 +148,9 @@ export default function Home() {
 
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
     if (electionMode) {
-      return current === "green" ? "white" : "green";
+      const active = candidateColors[activeCandidateIndex] ?? candidateColors[0] ?? "#4f46e5";
+      const currentNorm = current.toLowerCase();
+      return currentNorm === active.toLowerCase() ? "white" : (active as SeatColor);
     }
 
     const seatCycleNoVeto: SeatColor[] = ["white", "green", "red", "black"];
@@ -400,6 +404,7 @@ export default function Home() {
       candidateCount,
       candidateNames,
       candidateColors,
+      activeCandidateIndex,
       proposals: [
         { title: proposal1Title, text: proposal1Text, organique: proposal1Organic },
         { title: proposal2Title, text: proposal2Text, organique: proposal2Organic },
@@ -443,6 +448,7 @@ export default function Home() {
     candidateCount,
     candidateNames,
     candidateColors,
+    activeCandidateIndex,
     proposal1Title,
     proposal1Text,
     proposal2Title,
@@ -1153,6 +1159,25 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+
+              {electionMode && (
+                <div className="mt-3 max-w-sm mx-auto">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 text-center">
+                    Candidat actif pour le clic
+                  </label>
+                  <select
+                    value={activeCandidateIndex}
+                    onChange={(e) => setActiveCandidateIndex(Number(e.target.value))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    {candidateNames.slice(0, candidateCount).map((name, idx) => (
+                      <option key={`active-cand-${idx}`} value={idx}>
+                        {name?.trim() || `Candidat ${idx + 1}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
             <Hemicycle

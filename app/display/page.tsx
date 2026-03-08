@@ -54,6 +54,7 @@ type DisplayState = {
   candidateCount?: number;
   candidateNames?: string[];
   candidateColors?: string[];
+  activeCandidateIndex?: number;
 };
 
 export default function DisplayPage() {

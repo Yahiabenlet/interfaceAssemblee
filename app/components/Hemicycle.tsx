@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-type SeatColor = "white" | "green" | "red" | "orange" | "black";
+type SeatColor = "white" | "green" | "red" | "orange" | "black" | string;
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
@@ -354,6 +354,13 @@ export default function Hemicycle({
     black: { fill: "#111827", stroke: "#000000" },
   };
 
+  const resolveSeatVisual = (color: SeatColor): { fill: string; stroke: string } => {
+    const mapped = colorMap[color];
+    if (mapped) return mapped;
+    // Fallback pour couleurs dynamiques (mode élection : hex, rgb, etc.)
+    return { fill: color, stroke: "#111827" };
+  };
+
   const presidentBorder = {
     stroke: "#d4af37",
     strokeWidth: 3,
@@ -431,32 +438,41 @@ export default function Hemicycle({
           </g>
         ))}
 
-        {seats.map((seat) => (
-          <g key={seat.index}>
-            <circle
-              cx={seat.x}
-              cy={seat.y}
-              r="12"
-              fill={colorMap[seat.color].fill}
-              stroke={goldSeatSet.has(seat.index) ? "#d4af37" : colorMap[seat.color].stroke}
-              strokeWidth={goldSeatSet.has(seat.index) ? "3" : "2"}
-              className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
-              onClick={svgOnly || readOnly ? undefined : () => onToggleSeat(seat.index)}
-              title={`Siège ${seat.index + 1}`}
-            />
-          </g>
-        ))}
+        {seats.map((seat) => {
+          const seatVisual = resolveSeatVisual(seat.color);
+          return (
+            <g key={seat.index}>
+              <circle
+                cx={seat.x}
+                cy={seat.y}
+                r="12"
+                fill={seatVisual.fill}
+                stroke={goldSeatSet.has(seat.index) ? "#d4af37" : seatVisual.stroke}
+                strokeWidth={goldSeatSet.has(seat.index) ? "3" : "2"}
+                className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
+                onClick={svgOnly || readOnly ? undefined : () => onToggleSeat(seat.index)}
+                title={`Siège ${seat.index + 1}`}
+              />
+            </g>
+          );
+        })}
 
-        <circle
-          cx="250"
-          cy={presidentY}
-          r="13"
-          fill={colorMap[presidentColor].fill}
-          stroke={goldOutlinedPresident ? "#d4af37" : presidentBorder.stroke}
-          strokeWidth={goldOutlinedPresident ? 3 : presidentBorder.strokeWidth}
-          className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
-          onClick={svgOnly || readOnly ? undefined : onTogglePresident}
-        />
+        {(() => {
+          const presidentVisual = resolveSeatVisual(presidentColor);
+          return (
+            <circle
+              cx="250"
+              cy={presidentY}
+              r="13"
+              fill={presidentVisual.fill}
+              stroke={goldOutlinedPresident ? "#d4af37" : presidentBorder.stroke}
+              strokeWidth={goldOutlinedPresident ? 3 : presidentBorder.strokeWidth}
+              className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
+              onClick={svgOnly || readOnly ? undefined : onTogglePresident}
+            />
+          );
+        })()}
+
         <text x="250" y={presidentY + 32} textAnchor="middle" className="fill-gray-700 dark:fill-gray-200 text-xs">
           Président
         </text>
@@ -504,15 +520,12 @@ export default function Hemicycle({
   }, [candidateColors, normalizedCandidates]);
 
   const electionResults = useMemo(() => {
-    const expressed = [...seatColors, presidentColor].filter((c) => c === "green").length;
-    const count = normalizedCandidates.length;
-    const base = Math.floor(expressed / count);
-    const rem = expressed % count;
-    return normalizedCandidates.map((name, i) => ({
-      name,
-      color: normalizedCandidateColors[i],
-      votes: base + (i < rem ? 1 : 0),
-    }));
+    const all = [...seatColors, presidentColor].filter((c) => c !== "white" && c !== "black");
+    return normalizedCandidates.map((name, i) => {
+      const color = (normalizedCandidateColors[i] ?? "").toLowerCase();
+      const votes = all.filter((c) => c.toLowerCase() === color).length;
+      return { name, color: normalizedCandidateColors[i], votes };
+    });
   }, [seatColors, presidentColor, normalizedCandidates, normalizedCandidateColors]);
 
   return (
@@ -827,7 +840,7 @@ export default function Hemicycle({
       </div>
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
         {electionMode
-          ? "Mode élection : cliquez pour exprimer une voix (Blanc ↔ Vert)"
+          ? "Mode élection : cliquez pour attribuer la voix au candidat actif (clic à nouveau pour annuler)"
           : "Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge → Orange → Noir)"}
       </p>
     </div>
