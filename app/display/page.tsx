@@ -7,6 +7,11 @@ type SeatColor = "white" | "green" | "red" | "orange" | "black" | string;
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
+    | "Allié"
+    | "Indifférent"
+    | "Rivalité"
+    | "Antagoniste"
+    | "Fantoche"
     | "Sédition"
     | "Insoumission"
     | "Contestation"

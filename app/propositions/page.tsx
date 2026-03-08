@@ -6,6 +6,11 @@ type Proposal = { title: string; text: string; organique?: boolean };
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
+    | "Allié"
+    | "Indifférent"
+    | "Rivalité"
+    | "Antagoniste"
+    | "Fantoche"
     | "Sédition"
     | "Insoumission"
     | "Contestation"
@@ -31,9 +36,11 @@ type ProposalsState = {
 };
 
 const getProvinceControlColor = (value: ProvinceControl): string => {
-  if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
-  if (value === "Autonomie") return "text-green-700 dark:text-green-300";
-  if (value === "En Guerre" || value === "Sédition" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+  if (value === "Indépendant" || value === "Indifférent") return "text-blue-700 dark:text-blue-300";
+  if (value === "Autonomie" || value === "Allié" || value === "Fantoche") return "text-green-700 dark:text-green-300";
+  if (value === "En Guerre" || value === "Sédition" || value === "Contrôle Total" || value === "Rivalité" || value === "Antagoniste") {
+    return "text-red-700 dark:text-red-300";
+  }
   return "text-gray-700 dark:text-gray-300";
 };
 

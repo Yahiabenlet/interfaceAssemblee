@@ -7,6 +7,11 @@ type SeatColor = "white" | "green" | "red" | "orange" | "black";
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
+    | "Allié"
+    | "Indifférent"
+    | "Rivalité"
+    | "Antagoniste"
+    | "Fantoche"
     | "Sédition"
     | "Insoumission"
     | "Contestation"
@@ -30,6 +35,11 @@ type PassedLaw = {
 const CONTROL_OPTIONS: ProvinceControl[] = [
     "Indépendant",
     "Autonomie",
+    "Allié",
+    "Indifférent",
+    "Rivalité",
+    "Antagoniste",
+    "Fantoche",
     "Sédition",
     "Insoumission",
     "Contestation",

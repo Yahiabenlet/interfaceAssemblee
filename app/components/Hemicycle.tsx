@@ -6,6 +6,11 @@ type SeatColor = "white" | "green" | "red" | "orange" | "black" | string;
 type ProvinceControl =
     | "Indépendant"
     | "Autonomie"
+    | "Allié"
+    | "Indifférent"
+    | "Rivalité"
+    | "Antagoniste"
+    | "Fantoche"
     | "Sédition"
     | "Insoumission"
     | "Contestation"
@@ -874,8 +879,10 @@ export default function Hemicycle({
 }
 
 const getProvinceControlColor = (value: ProvinceControl): string => {
-  if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
-  if (value === "Autonomie") return "text-green-700 dark:text-green-300";
-  if (value === "Contrôle Total" || value ==="Sédition" || value === "En Guerre") return "text-red-700 dark:text-red-300";
+  if (value === "Indépendant" || value === "Indifférent") return "text-blue-700 dark:text-blue-300";
+  if (value === "Autonomie" || value === "Allié" || value === "Fantoche") return "text-green-700 dark:text-green-300";
+  if (value === "Contrôle Total" || value === "Sédition" || value === "En Guerre" || value === "Rivalité" || value === "Antagoniste") {
+    return "text-red-700 dark:text-red-300";
+  }
   return "text-gray-700 dark:text-gray-300";
 };
