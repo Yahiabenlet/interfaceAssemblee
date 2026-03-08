@@ -14,6 +14,7 @@ type ProvinceControl =
   | "Stable"
   | "Prospère"
   | "Pacifié"
+  | "Zone de Non-Droit"
   | "Rayonnante"
   | "Contrôle Total";
 
@@ -49,8 +50,9 @@ const PROVINCE_CONTROL_OPTIONS: ProvinceControl[] = [
   "Équilibre",
   "Stable",
   "Prospère",
-  "Rayonnante",
   "Pacifié",
+  "Zone de Non-Droit",
+  "Rayonnante",
   "Contrôle Total",
 ];
 

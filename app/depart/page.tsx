@@ -59,11 +59,15 @@ export default function DepartPage() {
             <p><strong>Niveau de Contrôle des Provinces :</strong></p>
             <p>
               <span className="text-gray-700 dark:text-gray-300">Équilibre</span> ➔{" "}
-              <span className="text-gray-700 dark:text-gray-300">Stable</span> ➔{" "}
+              <span className="text-blue-700 dark:text-blue-300 font-semibold">Stable</span> ➔{" "}
               <span className="text-green-700 dark:text-green-300 font-semibold">Prospère</span> ➔{" "}
               <span className="text-green-700 dark:text-green-300 font-semibold">Rayonnante</span>
             </p>
-            <p className="mb-2">Impact : Augmente le Budget à chaque tour car les impôts rentrent parfaitement.</p>
+            <p className="mb-2">
+              Impact : Augmente le{" "}
+              <span className="font-bold text-white">Budget</span>{" "}
+              à chaque tour car la bureaucratie fonctionne parfaitement.
+            </p>
             <p>
               <span className="text-gray-700 dark:text-gray-300">Équilibre</span> ➔{" "}
               <span className="text-orange-700 dark:text-orange-300 font-semibold">Contestation</span> ➔{" "}
@@ -91,11 +95,18 @@ export default function DepartPage() {
 
             <p><strong>Intégration d’une Province récemment annexée :</strong></p>
             <p>
+                <span className="text-red-700 dark:text-red-300 font-semibold">Zone de Non-Droit</span> ➔{" "}
               <span className="text-orange-700 dark:text-orange-300 font-semibold">Insoumission</span> ➔{" "}
               <span className="text-orange-700 dark:text-orange-300 font-semibold">Contestation</span> ➔{" "}
               <span className="text-green-700 dark:text-green-300 font-semibold">Pacifiée</span> ➔{" "}
               <span className="text-red-700 dark:text-red-300 font-semibold">Contrôle total</span> ➔{" "}
               <span className="text-gray-700 dark:text-gray-300">Equilibre</span>.
+            </p>
+            <p className="mt-1">
+              Impact : Garder une province récemment annexée au même niveau de contrôle coûte{" "}
+              <span className="font-bold text-white">1 de Budget</span>, et coûte{" "}
+              <span className="font-bold text-white">2 de Budget</span> pour réduire le niveau d’insurrection.
+              Sinon, baisse du niveau de controle de 1 à chaque cycle.
             </p>
           </section>
 
@@ -103,29 +114,53 @@ export default function DepartPage() {
             <h2 className="font-bold mb-2">Liste des Provinces</h2>
 
             <p><strong>La Capitale (<span className="text-green-700 dark:text-green-300">Prospère</span>)</strong> : Siège du pouvoir politique, ici tout est jeu d’influence et de politique. Quand la Capitale éternue, la République s’enrhume.</p>
-            <p className="mb-2">Impact : Budget -2 si la province passe en dessous de Stable. Soutien : Les Conservateur et Radicaux.</p>
+            <p className="mb-2">
+              Impact :{" "}
+              <span className="font-bold text-white">Budget</span>{" "}
+              -2 si la province passe en dessous de{" "}
+              <span className="text-blue-700 dark:text-blue-300 font-semibold">Stable</span>. Soutien : Les Conservateur et Radicaux.
+            </p>
 
             <p><strong>Le Plateau (<span className="text-gray-700 dark:text-gray-300">Equilibre</span>)</strong> : Carrefour des routes commerciales, Province plutôt libérale, elle est la province la plus riche de la République.</p>
-            <p className="mb-2">Impact : Tant qu’elle est plus haute que Stable, Économie {">"} 3 hors Crise. Soutien : Les Libéraux et Radicaux.</p>
+            <p className="mb-2">
+              Impact : Tant qu’elle est plus haute que{" "}
+              <span className="text-blue-700 dark:text-blue-300 font-semibold">Stable</span>,{" "}
+              <span className="text-green-700 dark:text-green-300 font-semibold">Économie</span>{" "}
+              {">"} 3 hors Crise. Soutien : Les Libéraux et Radicaux.
+            </p>
 
-            <p><strong>Les Hauteurs Profondes (<span className="text-gray-700 dark:text-gray-300">Stable</span>)</strong> : Province minière et militaire. Elle est fidèle, mais exigeante en budget.</p>
-            <p className="mb-2">Impact : Fournit un point de Sécurité par Budget Dépensé. Soutient : Les Nationalistes et Militaristes.</p>
+            <p><strong>Les Hauteurs Profondes (<span className="text-blue-700 dark:text-blue-300">Stable</span>)</strong> : Province minière et militaire. Elle est fidèle, mais exigeante en budget.</p>
+            <p className="mb-2">
+              Impact : Fournit un point de{" "}
+              <span className="text-blue-700 dark:text-blue-300 font-semibold">Sécurité</span>{" "}
+              par{" "}
+              <span className="font-bold text-white">Budget</span>{" "}
+              Dépensé. Soutient : Les Nationalistes et Militaristes.
+            </p>
 
             <p><strong>Vallée de l’Armoire (<span className="text-orange-700 dark:text-orange-300">Contestation</span>)</strong> : Le grenier à blé du pays. Si elle bascule en contestation, le peuple a faim.</p>
-            <p className="mb-2">Impact : Chaque tour en contestation, Social -1. Soutien : Les Populistes et Socialistes.</p>
+            <p className="mb-2">
+              Impact : Chaque tour en contestation,{" "}
+              <span className="text-red-700 dark:text-red-300 font-semibold">Social</span>{" "}
+              -1. Soutien : Les Populistes et Socialistes.
+            </p>
 
             <p><strong>Provinces des Plasticiens (<span className="text-orange-700 dark:text-orange-300">Contestation</span>)</strong> : Province du peuple plasticien, une minorité qui ne s’est jamais réellement intégrée.</p>
             <p className="mb-2">Impact : Les lois restrictives ou nationalistes font baisser son statut vers Sédition et des Crises peuvent naître ici. Soutien : Les Écolos et Progressistes.</p>
 
-            <p><strong>Archipel des Eldrazi (<span className="text-green-700 dark:text-green-300">Autonome</span>)</strong> : Province d’outre-mer qui flirte avec l&apos;idée de devenir indépendante, mais source de convoitise.</p>
-            <p>Impact : Budget -1 par tour tant qu’elle n’est pas indépendante.</p>
+            <p><strong>Archipel des Eldrazi (<span className="text-blue-700 dark:text-blue-300">Autonome</span>)</strong> : Province d’outre-mer qui flirte avec l&apos;idée de devenir indépendante, mais source de convoitise.</p>
+            <p>
+              Impact :{" "}
+              <span className="font-bold text-white">Budget</span>{" "}
+              -1 par tour tant qu’elle n’est pas indépendante.
+            </p>
           </section>
 
           <section className="rounded-lg border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900">
             <h2 className="font-bold mb-2">Listes des Pays</h2>
 
             <p><strong>L’Outre-Porte (<span className="text-orange-700 dark:text-orange-300">Prudent</span>)</strong> : Jeune royaume indépendant, le pays est séparé entre deux peuples, dont un proche de nous. Le concept de Grande République de Gérionie considère l’Outre-Porte comme incluse dans nos frontières naturelles.</p>
-            <p className="mt-2"><strong>L’Alliance des Etats d’Elimat (<span className="text-gray-700 dark:text-gray-300">Indifférent</span>)</strong> : Grande puissance régionale, son hégémonie économique et militaire est telle que ce pays est le gendarme du monde et personne ne pourrait imaginer l’économie mondiale si celle d’Elimat venait à s’effondrer.</p>
+            <p className="mt-2"><strong>L’Alliance des Etats d’Elimat (<span className="text-gray-700 dark:text-gray-300">Indifférent</span>)</strong> :  Superpuissance régionale, son hégémonie économique et militaire est telle que ce pays est le gendarme du monde et personne n&apos;ose imaginer l'état de l’économie mondiale si celle d’Elimat venait à s’effondrer.</p>
             <p className="mt-2"><strong>Etat de Tori Value (<span className="text-orange-700 dark:text-orange-300">Rivalité</span>)</strong> : Rival historique de la République de Gérionie, cela fait 3 décennies que les deux états n’ont pas combattu. Revendique l’archipel des Eldrazi.</p>
             <p className="mt-2"><strong>Junte des Emirats du Sud (<span className="text-green-700 dark:text-green-300">Coopératif</span>)</strong> : Junte dirigé par un émir atypique, qui s’est pris d’affection pour votre république singulière. Bien que l’émir n’hésite pas à financer des projets pharaoniques sur votre territoire, son peuple souffre de son régime absolutiste et dictatorial.</p>
           </section>
@@ -134,4 +169,3 @@ export default function DepartPage() {
     </div>
   );
 }
-

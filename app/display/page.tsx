@@ -14,6 +14,7 @@ type ProvinceControl =
   | "Stable"
   | "Prospère"
   | "Pacifié"
+  | "Zone de Non-Droit"
   | "Rayonnante"
   | "Contrôle Total";
 
