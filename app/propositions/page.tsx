@@ -87,12 +87,25 @@ export default function PropositionsPage() {
   useEffect(() => {
     const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "f") {
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase();
+      const isTyping = tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable;
+
+      if (isTyping) return;
+
+      const key = e.key.toLowerCase();
+      if (key === "f") {
         e.preventDefault();
         if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
         else document.exitFullscreen?.();
+        return;
       }
+
+      if (e.key === "1") window.open("/display", "_blank", "noopener,noreferrer");
+      if (e.key === "2") window.open("/propositions", "_blank", "noopener,noreferrer");
+      if (e.key === "3") window.open("/notes", "_blank", "noopener,noreferrer");
     };
+
     document.addEventListener("fullscreenchange", onFullscreenChange);
     window.addEventListener("keydown", onKeyDown);
     return () => {
@@ -108,16 +121,6 @@ export default function PropositionsPage() {
 
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
-      <div className="absolute top-4 right-4 z-50">
-        <button
-          onClick={toggleFullscreen}
-          className="px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
-          title="Basculer plein écran (touche F)"
-        >
-          {isFullscreen ? "Quitter plein écran" : "Plein écran"}
-        </button>
-      </div>
-
       <div className="w-full max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Ordre Du Jour</h1>
 

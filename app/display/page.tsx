@@ -88,14 +88,23 @@ export default function DisplayPage() {
     const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "f") {
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase();
+      const isTyping = tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable;
+
+      if (isTyping) return;
+
+      const key = e.key.toLowerCase();
+      if (key === "f") {
         e.preventDefault();
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen?.();
-        } else {
-          document.exitFullscreen?.();
-        }
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+        return;
       }
+
+      if (e.key === "1") window.open("/display", "_blank", "noopener,noreferrer");
+      if (e.key === "2") window.open("/propositions", "_blank", "noopener,noreferrer");
+      if (e.key === "3") window.open("/notes", "_blank", "noopener,noreferrer");
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
@@ -118,23 +127,6 @@ export default function DisplayPage() {
 
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
-      <div className="absolute top-4 right-4 z-50 flex gap-2">
-        <button
-          onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
-          className="px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
-          title="Ouvrir l'historique des lois adoptées"
-        >
-          Historique des lois
-        </button>
-        <button
-          onClick={toggleFullscreen}
-          className="px-4 py-2 bg-black/60 hover:bg-black/80 text-white rounded-md border border-white/30 transition"
-          title="Basculer plein écran (touche F)"
-        >
-          {isFullscreen ? "Quitter plein écran" : "Plein écran"}
-        </button>
-      </div>
-
       <div className="w-full max-w-7xl">
         <Hemicycle
           numSeats={state.numSeats}
