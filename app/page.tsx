@@ -953,8 +953,8 @@ export default function Home() {
                 </label>
                 <input
                   type="range"
-                  min={-3}
-                  max={3}
+                  min={-7}
+                  max={7}
                   step={1}
                   value={budgetGauge}
                   onChange={(e) => setBudgetGauge(Number(e.target.value))}

@@ -535,7 +535,7 @@ export default function Hemicycle({
 
   if (svgOnly) return <div className="w-screen h-screen flex items-center justify-center bg-black">{hemicycleOrSecretBlock}</div>;
 
-  const clampedBudget = Math.max(-5, Math.min(5, budgetGauge));
+  const clampedBudget = Math.max(-7, Math.min(7, budgetGauge));
   const negativeBoxes = Math.max(0, -clampedBudget);
   const positiveBoxes = Math.max(0, clampedBudget);
 
@@ -609,10 +609,10 @@ export default function Hemicycle({
                     </span>
                   </div>
 
-                  {/* 11 colonnes de largeur identique => espace uniforme */}
-                  <div className="grid grid-cols-11 gap-0 max-w-[220px] mx-auto justify-items-center">
-                    {Array.from({ length: 11 }).map((_, idx) => {
-                      const center = 5; // colonne centrale (0..10)
+                  {/* 15 colonnes de largeur identique => espace uniforme */}
+                  <div className="grid grid-cols-15 gap-0 max-w-[300px] mx-auto justify-items-center">
+                    {Array.from({ length: 15 }).map((_, idx) => {
+                      const center = 7; // colonne centrale (0..14)
                       const distance = idx - center;
 
                       if (distance === 0) {
@@ -627,7 +627,7 @@ export default function Hemicycle({
 
                       if (distance < 0) {
                         const needed = -clampedBudget; // nb rouges à afficher
-                        const slotFromCenter = -distance; // 1..5
+                        const slotFromCenter = -distance; // 1..7
                         const show = clampedBudget < 0 && slotFromCenter <= needed;
                         return show ? (
                           <div
@@ -641,7 +641,7 @@ export default function Hemicycle({
                       }
 
                       const needed = clampedBudget; // nb vertes à afficher
-                      const slotFromCenter = distance; // 1..5
+                      const slotFromCenter = distance; // 1..7
                       const show = clampedBudget > 0 && slotFromCenter <= needed;
                       return show ? (
                         <div
