@@ -95,6 +95,7 @@ export default function Home() {
   const [goldOutlinedSeats, setGoldOutlinedSeats] = useState<number[]>([]);
   const [goldOutlinedPresident, setGoldOutlinedPresident] = useState(false);
   const [isSecretBallot, setIsSecretBallot] = useState(false);
+  const [revealSecretResults, setRevealSecretResults] = useState(false);
   const [proposal1Title, setProposal1Title] = useState("");
   const [proposal1Text, setProposal1Text] = useState("");
   const [proposal2Title, setProposal2Title] = useState("");
@@ -400,6 +401,7 @@ export default function Home() {
       goldOutlinedPresident,
       isEraseMode,
       isSecretBallot,
+      revealSecretResults,
       electionMode,
       candidateCount,
       candidateNames,
@@ -444,6 +446,7 @@ export default function Home() {
     goldOutlinedPresident,
     isEraseMode,
     isSecretBallot,
+    revealSecretResults,
     electionMode,
     candidateCount,
     candidateNames,
@@ -1100,13 +1103,28 @@ export default function Home() {
                   Ouvrir les 3 propositions
                 </button>
                 <button
-                  onClick={() => setIsSecretBallot((v) => !v)}
+                  onClick={() =>
+                    setIsSecretBallot((v) => {
+                      const next = !v;
+                      if (!next) setRevealSecretResults(false);
+                      return next;
+                    })
+                  }
                   className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
                     isSecretBallot ? "bg-gray-700 hover:bg-gray-800" : "bg-gray-600 hover:bg-gray-700"
                   }`}
                 >
                   {isSecretBallot ? "Désactiver le bulletin secret" : "Activer le bulletin secret"}
                 </button>
+
+                {isSecretBallot && (
+                  <button
+                    onClick={() => setRevealSecretResults(true)}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition"
+                  >
+                    Afficher les résultats
+                  </button>
+                )}
               </div>
             </div>
 
@@ -1211,6 +1229,7 @@ export default function Home() {
               goldOutlinedPresident={goldOutlinedPresident}
               isSecretBallot={isSecretBallot}
               hideAssemblyWhenSecretBallot={false}
+              revealSecretResults={revealSecretResults}
               electionMode={electionMode}
               candidateNames={candidateNames.slice(0, candidateCount)}
               candidateColors={candidateColors.slice(0, candidateCount)}

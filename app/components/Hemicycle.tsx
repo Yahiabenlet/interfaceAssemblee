@@ -53,6 +53,7 @@ interface HemicycleProps {
   goldOutlinedPresident?: boolean;
   isSecretBallot?: boolean;
   hideAssemblyWhenSecretBallot?: boolean;
+  revealSecretResults?: boolean;
   electionMode?: boolean;
   candidateNames?: string[];
   candidateColors?: string[];
@@ -98,6 +99,7 @@ export default function Hemicycle({
   goldOutlinedPresident = false,
   isSecretBallot = false,
   hideAssemblyWhenSecretBallot = true,
+  revealSecretResults = false,
   electionMode = false,
   candidateNames = ["Candidat 1"],
   candidateColors = ["#4f46e5"],
@@ -528,6 +530,8 @@ export default function Hemicycle({
     });
   }, [seatColors, presidentColor, normalizedCandidates, normalizedCandidateColors]);
 
+  const isSecretCounting = isSecretBallot && !revealSecretResults;
+
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
@@ -806,7 +810,15 @@ export default function Hemicycle({
 
             <div className="mt-8 grid">
               <div className="w-full max-w-3xl justify-self-start">
-                {electionMode ? (
+                {isSecretCounting ? (
+                  <div className="w-full grid grid-cols-1">
+                    <div className="p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px] bg-amber-50 dark:bg-amber-950">
+                      <div className="text-base md:text-lg font-semibold text-amber-700 dark:text-amber-300">
+                        Dépouillement en cours
+                      </div>
+                    </div>
+                  </div>
+                ) : electionMode ? (
                   <div
                     className={`w-full grid grid-cols-1 ${
                       normalizedCandidates.length >= 3 ? "md:grid-cols-4" : "md:grid-cols-2"
