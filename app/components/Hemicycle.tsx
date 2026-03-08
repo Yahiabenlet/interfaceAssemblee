@@ -13,16 +13,18 @@ type ProvinceControl =
   | "Stable"
   | "Prospère"
   | "Pacifié"
+  | "Rayonnante"
   | "Contrôle Total";
 
 type RegionalStateControl =
-  | "Allié"
-  | "Coopératif"
-  | "Indifférent"
-  | "Rivalité"
+  | "En Guerre"
   | "Antagoniste"
-  | "Fantoche"
-  | "En Guerre";
+  | "Rival"
+  | "Prudent"
+  | "Indifférent"
+  | "Coopératif"
+  | "Allié"
+  | "Fantoche";
 
 type ProvinceState = Record<string, ProvinceControl>;
 type RegionalState = Record<string, RegionalStateControl>;
@@ -108,7 +110,7 @@ export default function Hemicycle({
   regionalStates = {
     "L’Outre-Porte": "Indifférent",
     "Alliance des Etats d'Elimat": "Indifférent",
-    "Etat de Tori Value": "Rivalité",
+    "Etat de Tori Value": "Rival",
     "Junte des Emirats du Sud": "Coopératif",
   },
   isControlValidated = "nonConforme",
@@ -958,17 +960,19 @@ export default function Hemicycle({
 }
 
 const getProvinceControlColor = (value: ProvinceControl): string => {
-  if (value === "Autonomie" || value === "Prospère" || value === "Pacifié") return "text-green-700 dark:text-green-300";
-  if (value === "Sécession" || value === "Sédition" || value === "Insoumission" || value === "Contrôle Total") {
+  if (value === "Autonomie" || value === "Prospère" || value === "Pacifié" || value === "Rayonnante") return "text-green-700 dark:text-green-300";
+  if (value === "Insoumission" || value === "Contestation") return "text-orange-700 dark:text-orange-300";
+  if (value === "Sécession" || value === "Sédition" || value === "Contrôle Total") {
     return "text-red-700 dark:text-red-300";
   }
   return "text-gray-700 dark:text-gray-300";
 };
 
 const getRegionalStateColor = (value: RegionalStateControl): string => {
-  if (value === "Allié" || value === "Fantoche" || value === "Coopératif") return "text-green-700 dark:text-green-300";
-  if (value === "Indifférent") return "text-blue-700 dark:text-blue-300";
-  if (value === "Rivalité" || value === "Antagoniste" || value === "En Guerre") return "text-red-700 dark:text-red-300";
+  if (value === "En Guerre" || value === "Antagoniste") return "text-red-700 dark:text-red-300";
+  if (value === "Rival" || value === "Prudent") return "text-orange-700 dark:text-orange-300";
+  if (value === "Coopératif" || value === "Allié") return "text-green-700 dark:text-green-300";
+  if (value === "Fantoche") return "text-blue-700 dark:text-blue-300";
   return "text-gray-700 dark:text-gray-300";
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type Proposal = { title: string; text: string; organique?: boolean };
 type ProvinceControl =
@@ -13,16 +13,18 @@ type ProvinceControl =
   | "Stable"
   | "Prospère"
   | "Pacifié"
+  | "Rayonnante"
   | "Contrôle Total";
 
 type RegionalStateControl =
-  | "Allié"
-  | "Coopératif"
-  | "Indifférent"
-  | "Rivalité"
+  | "En Guerre"
   | "Antagoniste"
-  | "Fantoche"
-  | "En Guerre";
+  | "Rival"
+  | "Prudent"
+  | "Indifférent"
+  | "Coopératif"
+  | "Allié"
+  | "Fantoche";
 
 type ProvinceState = Record<string, ProvinceControl>;
 type RegionalState = Record<string, RegionalStateControl>;
@@ -41,15 +43,18 @@ type ProposalsState = {
 };
 
 const getProvinceControlColor = (value: ProvinceControl): string => {
-  if (value === "Autonomie" || value === "Prospère" || value === "Pacifié") return "text-green-700 dark:text-green-300";
-  if (value === "Sécession" || value === "Sédition" || value === "Insoumission" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+  if (value === "Autonomie" || value === "Prospère" || value === "Pacifié" || value === "Rayonnante") return "text-green-700 dark:text-green-300";
+  if (value === "Insoumission" || value === "Contestation") return "text-orange-700 dark:text-orange-300";
+  if (value === "Sécession" || value === "Sédition" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
   return "text-gray-700 dark:text-gray-300";
 };
 
 const getRegionalStateColor = (value: RegionalStateControl): string => {
-  if (value === "Allié" || value === "Fantoche" || value === "Coopératif") return "text-green-700 dark:text-green-300";
-  if (value === "Indifférent") return "text-blue-700 dark:text-blue-300";
-  return "text-red-700 dark:text-red-300";
+  if (value === "En Guerre" || value === "Antagoniste") return "text-red-700 dark:text-red-300";
+  if (value === "Rival" || value === "Prudent") return "text-orange-700 dark:text-orange-300";
+  if (value === "Coopératif" || value === "Allié") return "text-green-700 dark:text-green-300";
+  if (value === "Fantoche") return "text-blue-700 dark:text-blue-300";
+  return "text-gray-700 dark:text-gray-300";
 };
 
 export default function PropositionsPage() {
@@ -70,7 +75,7 @@ export default function PropositionsPage() {
   const [securityGauge, setSecurityGauge] = useState(0);
   const [budgetGauge, setBudgetGauge] = useState(0);
 
-  const clampedBudget = useMemo(() => Math.max(-5, Math.min(5, budgetGauge)), [budgetGauge]);
+  const clampedBudget = Math.max(-5, Math.min(5, budgetGauge));
 
   useEffect(() => {
     const load = () => {
@@ -152,7 +157,7 @@ export default function PropositionsPage() {
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
       <div className="w-full max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Ordre Du Jour</h1>
+        <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Ordre Du Jour</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {proposals.map((p, i) => (
@@ -216,73 +221,6 @@ export default function PropositionsPage() {
                     </div>
                   ))
                 )}
-              </div>
-            </div>
-
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">Jauges de la République</h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
-                    <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
-                  </div>
-                  <div className="w-full h-4 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
-                    <div className="h-full bg-green-500 transition-all" style={{ width: `${(economyGauge / 10) * 100}%` }} />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
-                    <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
-                  </div>
-                  <div className="w-full h-4 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
-                    <div className="h-full bg-red-500 transition-all" style={{ width: `${(socialGauge / 10) * 100}%` }} />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
-                    <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
-                  </div>
-                  <div className="w-full h-4 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
-                    <div className="h-full bg-blue-500 transition-all" style={{ width: `${(securityGauge / 10) * 100}%` }} />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Budget</span>
-                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-                      {clampedBudget > 0 ? `+${clampedBudget}` : clampedBudget}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-11 gap-0 w-full max-w-none justify-items-center">
-                    {Array.from({ length: 11 }).map((_, idx) => {
-                      const center = 5;
-                      const distance = idx - center;
-                      if (distance === 0) {
-                        return <div key={`b-center-${idx}`} className="h-4 w-4 rounded-sm border border-gray-400 bg-white" />;
-                      }
-                      if (distance < 0) {
-                        const show = clampedBudget < 0 && -distance <= -clampedBudget;
-                        return show ? (
-                          <div key={`b-neg-${idx}`} className="h-4 w-4 rounded-sm border border-red-700 bg-red-500" />
-                        ) : (
-                          <div key={`b-neg-empty-${idx}`} className="h-4 w-4" />
-                        );
-                      }
-                      const show = clampedBudget > 0 && distance <= clampedBudget;
-                      return show ? (
-                        <div key={`b-pos-${idx}`} className="h-4 w-4 rounded-sm border border-green-700 bg-green-500" />
-                      ) : (
-                        <div key={`b-pos-empty-${idx}`} className="h-4 w-4" />
-                      );
-                    })}
-                  </div>
-                </div>
               </div>
             </div>
           </div>

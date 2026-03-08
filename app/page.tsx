@@ -14,16 +14,18 @@ type ProvinceControl =
   | "Stable"
   | "Prospère"
   | "Pacifié"
+  | "Rayonnante"
   | "Contrôle Total";
 
 type RegionalStateControl =
-  | "Allié"
-  | "Coopératif"
-  | "Indifférent"
-  | "Rivalité"
+  | "En Guerre"
   | "Antagoniste"
-  | "Fantoche"
-  | "En Guerre";
+  | "Rival"
+  | "Prudent"
+  | "Indifférent"
+  | "Coopératif"
+  | "Allié"
+  | "Fantoche";
 
 type ProvinceState = Record<string, ProvinceControl>;
 type RegionalState = Record<string, RegionalStateControl>;
@@ -38,26 +40,28 @@ type PassedLaw = {
 };
 
 const PROVINCE_CONTROL_OPTIONS: ProvinceControl[] = [
-  "Sécession",
   "Autonomie",
+  "Sécession",
   "Sédition",
   "Insoumission",
   "Contestation",
   "Équilibre",
   "Stable",
   "Prospère",
+  "Rayonnante",
   "Pacifié",
   "Contrôle Total",
 ];
 
 const REGIONAL_STATE_OPTIONS: RegionalStateControl[] = [
-  "Allié",
-  "Coopératif",
-  "Indifférent",
-  "Rivalité",
-  "Antagoniste",
-  "Fantoche",
   "En Guerre",
+  "Antagoniste",
+  "Rival",
+  "Prudent",
+  "Indifférent",
+  "Coopératif",
+  "Allié",
+  "Fantoche",
 ];
 
 const SUPER_MAJORITY_OPTIONS = ["3/5", "2/3", "7/10" ,"3/4"] as const;
@@ -93,7 +97,7 @@ export default function Home() {
   const [regionalStates, setRegionalStates] = useState<RegionalState>({
     "L’Outre-Porte": "Indifférent",
     "Alliance des Etats d'Elimat": "Indifférent",
-    "Etat de Tori Value": "Rivalité",
+    "Etat de Tori Value": "Rival",
     "Junte des Emirats du Sud": "Coopératif",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
@@ -597,7 +601,7 @@ export default function Home() {
       )}
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white">
-          Tableau de bord parlementaire
+          Parlement de Gérionie
         </h1>
 
         {numSeats === null ? (

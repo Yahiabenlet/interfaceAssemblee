@@ -14,16 +14,18 @@ type ProvinceControl =
   | "Stable"
   | "Prospère"
   | "Pacifié"
+  | "Rayonnante"
   | "Contrôle Total";
 
 type RegionalStateControl =
-  | "Allié"
-  | "Coopératif"
-  | "Indifférent"
-  | "Rivalité"
+  | "En Guerre"
   | "Antagoniste"
-  | "Fantoche"
-  | "En Guerre";
+  | "Rival"
+  | "Prudent"
+  | "Indifférent"
+  | "Coopératif"
+  | "Allié"
+  | "Fantoche";
 
 type ProvinceState = Record<string, ProvinceControl>;
 type RegionalState = Record<string, RegionalStateControl>;
@@ -198,7 +200,7 @@ export default function DisplayPage() {
             state.regionalStates ?? {
               "L’Outre-Porte": "Indifférent",
               "Alliance des Etats d'Elimat": "Indifférent",
-              "Etat de Tori Value": "Rivalité",
+              "Etat de Tori Value": "Rival",
               "Junte des Emirats du Sud": "Coopératif",
             }
           }
