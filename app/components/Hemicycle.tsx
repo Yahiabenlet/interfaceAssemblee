@@ -38,6 +38,7 @@ type PassedLaw = {
   adopteeSousEnclume?: boolean;
   organique?: boolean;
   nonConforme?: boolean;
+  decret?: boolean;
 };
 
 interface HemicycleProps {
@@ -927,6 +928,11 @@ export default function Hemicycle({
                           <div className="mt-1 text-[10px] text-gray-600 dark:text-gray-300">
                             {law.abrogee ? "Statut : Abrogée" : "Statut : En vigueur"}
                           </div>
+                          {law.decret ? (
+                            <div className="mt-1 text-[10px] font-semibold text-amber-700 dark:text-amber-300">
+                              Décret
+                            </div>
+                          ) : null}
                         </div>
                       ))}
                     </div>

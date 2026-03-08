@@ -37,6 +37,7 @@ type PassedLaw = {
   adopteeSousEnclume?: boolean;
   organique?: boolean;
   nonConforme?: boolean;
+  decret?: boolean;
 };
 
 const PROVINCE_CONTROL_OPTIONS: ProvinceControl[] = [
@@ -347,6 +348,7 @@ export default function Home() {
     const adoptedUnderEnclume = useEnclumeLaw && enclumeStatus === "adopted";
     const isOrganicLaw = requiredMajority === "super";
     const isNonConforme = isControlValidated === "nonConforme";
+    const isDecret = isDecretMode;
 
     setPassedLaws((prev) => [
       {
@@ -356,6 +358,7 @@ export default function Home() {
         adopteeSousEnclume: adoptedUnderEnclume,
         organique: isOrganicLaw,
         nonConforme: isNonConforme,
+        decret: isDecret,
       },
       ...prev,
     ]);
@@ -363,7 +366,9 @@ export default function Home() {
     setLawFeedback({
       type: "success",
       message: `Loi ajoutée${lawTitle ? ` : ${lawTitle}` : ""}${
-        adoptedUnderEnclume
+        isDecret
+          ? " (Décret)."
+          : adoptedUnderEnclume
           ? " (Adoptée sous loi de l’Enclume)."
           : isOrganicLaw
           ? " (Loi Organique)."
@@ -1043,6 +1048,11 @@ export default function Home() {
                           <p className="text-xs text-gray-600 dark:text-gray-300">
                             {law.abrogee ? "Statut : Abrogée" : "Statut : En vigueur"}
                           </p>
+                          {law.decret ? (
+                            <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
+                              Décret
+                            </p>
+                          ) : null}
                         </div>
                         <button
                           type="button"
