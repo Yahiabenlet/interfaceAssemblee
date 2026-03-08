@@ -569,95 +569,8 @@ export default function Hemicycle({
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 items-start min-w-[980px]">
+          {/* Colonne gauche : Situation + Essentiel + (Avis/Enclume/Motion/Proposition) */}
           <div className="space-y-4">
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges de la République </h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
-                    <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
-                  </div>
-                  <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
-                    <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
-                    <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
-                  </div>
-                  <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
-                    <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
-                    <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
-                  </div>
-                  <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
-                    <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Budget</span>
-                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-                      {clampedBudget > 0 ? `+${clampedBudget}` : clampedBudget}
-                    </span>
-                  </div>
-
-                  {/* 15 colonnes de largeur identique => espace uniforme */}
-                  <div className="grid grid-cols-15 gap-0 max-w-[300px] mx-auto justify-items-center">
-                    {Array.from({ length: 15 }).map((_, idx) => {
-                      const center = 7; // colonne centrale (0..14)
-                      const distance = idx - center;
-
-                      if (distance === 0) {
-                        return (
-                          <div
-                            key={`budget-center-${idx}`}
-                            className="h-4 w-4 rounded-sm border border-gray-400 bg-white"
-                            title="Équilibre"
-                          />
-                        );
-                      }
-
-                      if (distance < 0) {
-                        const needed = -clampedBudget; // nb rouges à afficher
-                        const slotFromCenter = -distance; // 1..7
-                        const show = clampedBudget < 0 && slotFromCenter <= needed;
-                        return show ? (
-                          <div
-                            key={`budget-neg-${idx}`}
-                            className="h-4 w-4 rounded-sm border border-red-700 bg-red-500"
-                            title="Déficit"
-                          />
-                        ) : (
-                          <div key={`budget-neg-empty-${idx}`} className="h-4 w-4" />
-                        );
-                      }
-
-                      const needed = clampedBudget; // nb vertes à afficher
-                      const slotFromCenter = distance; // 1..7
-                      const show = clampedBudget > 0 && slotFromCenter <= needed;
-                      return show ? (
-                        <div
-                          key={`budget-pos-${idx}`}
-                          className="h-4 w-4 rounded-sm border border-green-700 bg-green-500"
-                          title="Excédent"
-                        />
-                      ) : (
-                        <div key={`budget-pos-empty-${idx}`} className="h-4 w-4" />
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div
               className={`rounded-lg p-4 border ${
                 isCrisis
@@ -693,6 +606,127 @@ export default function Hemicycle({
                 {countrySituation || "Aucune information renseignée."}
               </p>
             </div>
+
+            {electionMode && (
+              <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                  Élection — Rappel des règles
+                </div>
+                <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
+                  Scrutin uninominal majoritaire à deux tour
+                </div>
+                <div className="mt-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                  1 siège = 1 voix
+                </div>
+              </div>
+            )}
+
+            {!electionMode && (
+              <>
+                {isNoConfidenceMotion ? (
+                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                    <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                      Motion de censure — Rappel des règles
+                    </div>
+                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
+                      Majorité absolue requise
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                      50% + 1 voix des inscrits
+                    </div>
+                    {useEnclumeLaw && (
+                      <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
+                        <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                          Chronomètre Loi de l’Enclume ({enclumeDurationMinutes}:00 max)
+                        </div>
+                        <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
+                      </div>
+                    )}
+                  </div>
+                ) : useEnclumeLaw ? (
+                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-300">
+                      Loi de l&apos;Enclume — Rappel des règles
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
+                      Loi adoptée sans vote, engageant la responsabilité du président
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                      Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée avant la fin du chronomètre
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
+                      <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                        Chronomètre ({enclumeDurationMinutes}:00)
+                      </div>
+                      <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
+                      <div className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                        {enclumeStatus === "adopted"
+                          ? "Résultat : Adoptée"
+                          : enclumeStatus === "rejected"
+                          ? "Résultat : Rejetée"
+                          : "Vote en attente de l'issue du chronomètre"}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className={`rounded-lg p-4 border text-center ${
+                      isControlValidated === "conforme"
+                        ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
+                        : isControlValidated === "nonConforme"
+                        ? "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
+                        : "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                    }`}
+                  >
+                    <div
+                      className={`text-sm font-medium ${
+                        isControlValidated === "conforme"
+                          ? "text-emerald-700 dark:text-emerald-300"
+                          : isControlValidated === "nonConforme"
+                          ? "text-rose-700 dark:text-rose-300"
+                          : "text-gray-700 dark:text-gray-300"
+                      }`}
+                    >
+                      Avis de la Cour Constitutionnelle
+                    </div>
+                    <div
+                      className={`text-3xl font-bold mt-2 ${
+                        isControlValidated === "conforme"
+                          ? "text-emerald-700 dark:text-emerald-300"
+                          : isControlValidated === "nonConforme"
+                          ? "text-rose-700 dark:text-rose-300"
+                          : "text-gray-700 dark:text-gray-300"
+                      }`}
+                    >
+                      {isControlValidated === "conforme"
+                        ? "Loi conforme à la Constitution"
+                        : isControlValidated === "nonConforme"
+                        ? "Loi non-conforme à la Constitution"
+                        : "La Cour n’a pas statué"}
+                    </div>
+                    <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                      {requiredMajority === "super"
+                        ? `Super Majorité nécessaire (${superMajorityRatio})`
+                        : "Majorité Simple nécessaire"}
+                    </div>
+                    <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                      {vetoMode === "president" ? "Droit de véto : Président" : ""}
+                    </div>
+                  </div>
+                )}
+
+                {!isNoConfidenceMotion && !useEnclumeLaw && (
+                  <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                    <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
+                      {title || "Proposition de loi"}
+                    </h2>
+                    <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+                      {paragraph || "Texte de loi"}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
           <div>
@@ -701,6 +735,7 @@ export default function Hemicycle({
                 <div className="flex justify-center items-start self-start">{hemicycleOrSecretBlock}</div>
               </div>
 
+              {/* Colonne droite : Provinces + Généralités + Jauges (+ Election/Historique) */}
               <div className="space-y-4">
                 <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
@@ -734,19 +769,93 @@ export default function Hemicycle({
                   </div>
                 </div>
 
-                {electionMode && (
-                  <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-                    <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                      Élection — Rappel des règles
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges de la République </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
+                        <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
+                      </div>
+                      <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
+                        <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
+                      </div>
                     </div>
-                    <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
-                      Scrutin uninominal majoritaire à deux tour
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
+                        <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
+                      </div>
+                      <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
+                        <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
+                      </div>
                     </div>
-                    <div className="mt-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
-                      1 siège = 1 voix
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
+                        <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
+                      </div>
+                      <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
+                        <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Budget</span>
+                        <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                          {clampedBudget > 0 ? `+${clampedBudget}` : clampedBudget}
+                        </span>
+                      </div>
+
+                      {/* 15 colonnes de largeur identique => espace uniforme */}
+                      <div className="grid grid-cols-15 gap-0 max-w-[300px] mx-auto justify-items-center">
+                        {Array.from({ length: 15 }).map((_, idx) => {
+                          const center = 7; // colonne centrale (0..14)
+                          const distance = idx - center;
+
+                          if (distance === 0) {
+                            return (
+                              <div
+                                key={`budget-center-${idx}`}
+                                className="h-4 w-4 rounded-sm border border-gray-400 bg-white"
+                                title="Équilibre"
+                              />
+                            );
+                          }
+
+                          if (distance < 0) {
+                            const needed = -clampedBudget; // nb rouges à afficher
+                            const slotFromCenter = -distance; // 1..7
+                            const show = clampedBudget < 0 && slotFromCenter <= needed;
+                            return show ? (
+                              <div
+                                key={`budget-neg-${idx}`}
+                                className="h-4 w-4 rounded-sm border border-red-700 bg-red-500"
+                                title="Déficit"
+                              />
+                            ) : (
+                              <div key={`budget-neg-empty-${idx}`} className="h-4 w-4" />
+                            );
+                          }
+
+                          const needed = clampedBudget; // nb vertes à afficher
+                          const slotFromCenter = distance; // 1..7
+                          const show = clampedBudget > 0 && slotFromCenter <= needed;
+                          return show ? (
+                            <div
+                              key={`budget-pos-${idx}`}
+                              className="h-4 w-4 rounded-sm border border-green-700 bg-green-500"
+                              title="Excédent"
+                            />
+                          ) : (
+                            <div key={`budget-pos-empty-${idx}`} className="h-4 w-4" />
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                )}
+                </div>
 
                 {!electionMode && passedLaws.length > 0 && (
                   <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
@@ -783,113 +892,6 @@ export default function Hemicycle({
                       ))}
                     </div>
                   </div>
-                )}
-
-                {!electionMode && (
-                  <>
-                    {isNoConfidenceMotion ? (
-                      <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-                        <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                          Motion de censure — Rappel des règles
-                        </div>
-                        <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
-                          Majorité absolue requise
-                        </div>
-                        <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
-                          50% + 1 voix des inscrits
-                        </div>
-                        {useEnclumeLaw && (
-                          <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
-                            <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                              Chronomètre Loi de l’Enclume ({enclumeDurationMinutes}:00 max)
-                            </div>
-                            <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
-                          </div>
-                        )}
-                      </div>
-                    ) : useEnclumeLaw ? (
-                      <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-                        <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-300">
-                          Loi de l&apos;Enclume — Rappel des règles
-                        </div>
-                        <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
-                          Loi adoptée sans vote, engageant la responsabilité du président
-                        </div>
-                        <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
-                          Exception : La loi n&apos;est pas adopté si une motion de censure est adoptée avant la fin du chronomètre
-                        </div>
-                        <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700">
-                          <div className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                            Chronomètre ({enclumeDurationMinutes}:00)
-                          </div>
-                          <div className="text-2xl font-bold text-amber-900 dark:text-amber-200">{enclumeTimerLabel}</div>
-                          <div className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
-                            {enclumeStatus === "adopted"
-                              ? "Résultat : Adoptée"
-                              : enclumeStatus === "rejected"
-                              ? "Résultat : Rejetée"
-                              : "Vote en attente de l'issue du chronomètre"}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className={`rounded-lg p-4 border text-center ${
-                          isControlValidated === "conforme"
-                            ? "bg-emerald-50 dark:bg-emerald-900 border-emerald-200 dark:border-emerald-800"
-                            : isControlValidated === "nonConforme"
-                            ? "bg-rose-50 dark:bg-rose-900 border-rose-200 dark:border-rose-800"
-                            : "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                        }`}
-                      >
-                        <div
-                          className={`text-sm font-medium ${
-                            isControlValidated === "conforme"
-                              ? "text-emerald-700 dark:text-emerald-300"
-                              : isControlValidated === "nonConforme"
-                              ? "text-rose-700 dark:text-rose-300"
-                              : "text-gray-700 dark:text-gray-300"
-                          }`}
-                        >
-                          Avis de la Cour Constitutionnelle
-                        </div>
-                        <div
-                          className={`text-3xl font-bold mt-2 ${
-                            isControlValidated === "conforme"
-                              ? "text-emerald-700 dark:text-emerald-300"
-                              : isControlValidated === "nonConforme"
-                              ? "text-rose-700 dark:text-rose-300"
-                              : "text-gray-700 dark:text-gray-300"
-                          }`}
-                        >
-                          {isControlValidated === "conforme"
-                            ? "Loi conforme à la Constitution"
-                            : isControlValidated === "nonConforme"
-                            ? "Loi non-conforme à la Constitution"
-                            : "La Cour n’a pas statué"}
-                        </div>
-                        <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                          {requiredMajority === "super"
-                            ? `Super Majorité nécessaire (${superMajorityRatio})`
-                            : "Majorité Simple nécessaire"}
-                        </div>
-                        <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                          {vetoMode === "president" ? "Droit de véto : Président" : ""}
-                        </div>
-                      </div>
-                    )}
-
-                    {!isNoConfidenceMotion && !useEnclumeLaw && (
-                      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
-                          {title || "Proposition de loi"}
-                        </h2>
-                        <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
-                          {paragraph || "Texte de loi"}
-                        </p>
-                      </div>
-                    )}
-                  </>
                 )}
               </div>
             </div>
