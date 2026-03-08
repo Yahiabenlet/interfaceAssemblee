@@ -33,6 +33,7 @@ type PassedLaw = {
   abrogee?: boolean;
   adopteeSousEnclume?: boolean;
   organique?: boolean;
+  nonConforme?: boolean;
 };
 
 const PROVINCE_CONTROL_OPTIONS: ProvinceControl[] = [
@@ -128,6 +129,7 @@ export default function Home() {
   const [candidateNames, setCandidateNames] = useState<string[]>(["Candidat 1", "Candidat 2"]);
   const [candidateColors, setCandidateColors] = useState<string[]>(["#4f46e5", "#7c3aed"]);
   const [activeCandidateIndex, setActiveCandidateIndex] = useState(0);
+  const [allowAntiConstitutionalAmendment, setAllowAntiConstitutionalAmendment] = useState(false);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -297,9 +299,15 @@ export default function Home() {
   };
 
   const canSaveLaw = useMemo(() => {
-    if (isControlValidated === "conforme" || isControlValidated === "nonStatue") return true;
+    if (
+      isControlValidated === "conforme" ||
+      isControlValidated === "nonStatue" ||
+      allowAntiConstitutionalAmendment
+    ) {
+      return true;
+    }
     return useEnclumeLaw && enclumeStatus === "adopted";
-  }, [isControlValidated, useEnclumeLaw, enclumeStatus]);
+  }, [isControlValidated, useEnclumeLaw, enclumeStatus, allowAntiConstitutionalAmendment]);
 
   const addCurrentLawToPassed = () => {
     const lawTitle = title.trim();
@@ -324,6 +332,7 @@ export default function Home() {
 
     const adoptedUnderEnclume = useEnclumeLaw && enclumeStatus === "adopted";
     const isOrganicLaw = requiredMajority === "super";
+    const isNonConforme = isControlValidated === "nonConforme";
 
     setPassedLaws((prev) => [
       {
@@ -332,6 +341,7 @@ export default function Home() {
         abrogee: false,
         adopteeSousEnclume: adoptedUnderEnclume,
         organique: isOrganicLaw,
+        nonConforme: isNonConforme,
       },
       ...prev,
     ]);
@@ -343,6 +353,8 @@ export default function Home() {
           ? " (Adoptée sous loi de l’Enclume)."
           : isOrganicLaw
           ? " (Loi Organique)."
+          : isNonConforme
+          ? " (Loi non conforme)."
           : "."
       }`,
     });
@@ -564,6 +576,19 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
+      {lawFeedback && (
+        <div className="fixed top-4 right-4 z-50">
+          <div
+            className={`px-4 py-3 rounded-lg shadow-lg text-sm font-semibold border ${
+              lawFeedback.type === "success"
+                ? "bg-emerald-50 border-emerald-300 text-emerald-800 dark:bg-emerald-950 dark:border-emerald-700 dark:text-emerald-200"
+                : "bg-rose-50 border-rose-300 text-rose-800 dark:bg-rose-950 dark:border-rose-700 dark:text-rose-200"
+            }`}
+          >
+            {lawFeedback.message}
+          </div>
+        </div>
+      )}
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white">
           Tableau de bord parlementaire
@@ -968,6 +993,48 @@ export default function Home() {
               </div>
             )}
 
+            {/* Nouveau bloc : au-dessus des propositions de loi */}
+            <div className="mb-4 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                Lois adoptées ({passedLaws.length})
+              </h3>
+
+              {passedLaws.length === 0 ? (
+                <p className="text-sm text-gray-600 dark:text-gray-300">Aucune loi adoptée pour le moment.</p>
+              ) : (
+                <div className="space-y-2 max-h-56 overflow-auto pr-1">
+                  {passedLaws.map((law, idx) => (
+                    <div
+                      key={`dashboard-law-${idx}-${law.title}`}
+                      className="rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                            {law.title || "Sans titre"}
+                          </p>
+                          <p className="text-xs text-gray-600 dark:text-gray-300">
+                            {law.abrogee ? "Statut : Abrogée" : "Statut : En vigueur"}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => toggleLawAbrogation(idx)}
+                          className={`px-2 py-1 text-xs font-semibold rounded-md text-white transition ${
+                            law.abrogee
+                              ? "bg-indigo-600 hover:bg-indigo-700"
+                              : "bg-rose-600 hover:bg-rose-700"
+                          }`}
+                        >
+                          {law.abrogee ? "Réinstituer" : "Abroger"}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
@@ -1064,44 +1131,35 @@ export default function Home() {
             </div>
 
             <div className="mb-4 flex justify-end gap-3">
-              <button
-                onClick={addCurrentLawToPassed}
-                disabled={!canSaveLaw}
-                className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
-                  canSaveLaw
-                    ? "bg-emerald-600 hover:bg-emerald-700"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-                title={
-                  canSaveLaw
-                    ? "Adopter la loi"
-                    : "Loi non conforme à la Constitution (sauf Enclume adoptée)"
-                }
-              >
-                Adopter la loi
-              </button>
-
               <div className="flex flex-col gap-2">
-                <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center gap-2">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Couleur Parti</span>
-                  <input
-                    type="color"
-                    value={selectionRingColor}
-                    onChange={(e) => setSelectionRingColor(e.target.value)}
-                    className="h-6 w-10 cursor-pointer"
-                  />
-                </label>
                 <button
-                  onClick={() => setIsGoldOutlineMode((v) => !v)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                    isGoldOutlineMode ? "bg-amber-700 hover:bg-amber-800" : "bg-amber-600 hover:bg-amber-700"
+                  onClick={addCurrentLawToPassed}
+                  disabled={!canSaveLaw}
+                  className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
+                    canSaveLaw
+                      ? "bg-emerald-600 hover:bg-emerald-700"
+                      : "bg-gray-400 cursor-not-allowed"
                   }`}
+                  title={
+                    canSaveLaw
+                      ? "Adopter la loi"
+                      : "Loi non conforme à la Constitution (sauf Enclume adoptée ou amendement anti constitutionnel)"
+                  }
                 >
-                  Président de Parti : {isGoldOutlineMode ? "ON" : "OFF"}
+                  Adopter la loi
                 </button>
+
+                <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg inline-flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  <input
+                    type="checkbox"
+                    checked={allowAntiConstitutionalAmendment}
+                    onChange={(e) => setAllowAntiConstitutionalAmendment(e.target.checked)}
+                    className="h-4 w-4"
+                  />
+                  Amendement anti constitutionnel
+                </label>
               </div>
 
-              {/* Boutons superposés et compacts */}
               <div className="flex flex-col gap-1.5">
                 <button
                   onClick={toggleSelectionMode}

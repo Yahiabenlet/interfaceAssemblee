@@ -8,6 +8,7 @@ type PassedLaw = {
   abrogee?: boolean;
   adopteeSousEnclume?: boolean;
   organique?: boolean;
+  nonConforme?: boolean;
 };
 
 export default function NotesPage() {
@@ -132,6 +133,11 @@ export default function NotesPage() {
                           Loi organique (supermajorité requise)
                         </p>
                       ) : null}
+                      {law.nonConforme ? (
+                        <p className="mt-1 text-xs font-semibold text-rose-700 dark:text-rose-300">
+                          Loi non conforme à la Constitution
+                        </p>
+                      ) : null}
                       <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
                         {law.text || "Sans texte"}
                       </p>
@@ -166,6 +172,11 @@ export default function NotesPage() {
                       {law.organique ? (
                         <p className="mt-1 text-xs font-semibold text-violet-700 dark:text-violet-300">
                           Loi organique (supermajorité requise)
+                        </p>
+                      ) : null}
+                      {law.nonConforme ? (
+                        <p className="mt-1 text-xs font-semibold text-rose-700 dark:text-rose-300">
+                          Loi non conforme à la Constitution
                         </p>
                       ) : null}
                       <p className="mt-2 text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">

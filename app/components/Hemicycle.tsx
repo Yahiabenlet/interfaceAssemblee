@@ -28,6 +28,15 @@ type RegionalState = Record<string, RegionalStateControl>;
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
 
+type PassedLaw = {
+  title: string;
+  text: string;
+  abrogee?: boolean;
+  adopteeSousEnclume?: boolean;
+  organique?: boolean;
+  nonConforme?: boolean;
+};
+
 interface HemicycleProps {
   numSeats: number;
   title: string;
@@ -66,6 +75,8 @@ interface HemicycleProps {
   electionMode?: boolean;
   candidateNames?: string[];
   candidateColors?: string[];
+  passedLaws?: PassedLaw[];
+  onToggleLawAbrogation?: (index: number) => void;
 }
 
 export default function Hemicycle({
@@ -114,6 +125,8 @@ export default function Hemicycle({
   electionMode = false,
   candidateNames = ["Candidat 1"],
   candidateColors = ["#4f46e5"],
+  passedLaws = [],
+  onToggleLawAbrogation,
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -543,6 +556,8 @@ export default function Hemicycle({
 
   const isSecretCounting = isSecretBallot && !revealSecretResults;
 
+  const canManageLawsFromHere = Boolean(onToggleLawAbrogation);
+
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
@@ -722,6 +737,43 @@ export default function Hemicycle({
                     </div>
                     <div className="mt-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
                       1 siège = 1 voix
+                    </div>
+                  </div>
+                )}
+
+                {!electionMode && passedLaws.length > 0 && (
+                  <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                    <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                      Historique des lois
+                    </h3>
+                    <div className="space-y-2 max-h-52 overflow-auto pr-1">
+                      {passedLaws.map((law, idx) => (
+                        <div
+                          key={`hist-law-${idx}-${law.title}`}
+                          className="rounded border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-black/20 p-2"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs font-semibold text-gray-800 dark:text-gray-100 break-words">
+                              {law.title || "Sans titre"}
+                            </span>
+                            <button
+                              type="button"
+                              disabled={!canManageLawsFromHere}
+                              onClick={() => onToggleLawAbrogation?.(idx)}
+                              className={`px-2 py-1 text-[10px] font-semibold rounded-md text-white transition ${
+                                law.abrogee
+                                  ? "bg-indigo-600 hover:bg-indigo-700"
+                                  : "bg-rose-600 hover:bg-rose-700"
+                              } ${!canManageLawsFromHere ? "opacity-60 cursor-not-allowed" : ""}`}
+                            >
+                              {law.abrogee ? "Réinstituer" : "Abroger"}
+                            </button>
+                          </div>
+                          <div className="mt-1 text-[10px] text-gray-600 dark:text-gray-300">
+                            {law.abrogee ? "Statut : Abrogée" : "Statut : En vigueur"}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}

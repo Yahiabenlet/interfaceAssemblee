@@ -44,7 +44,7 @@ type DisplayState = {
   crisisDescription?: string;
   provinces?: ProvinceState;
   regionalStates?: RegionalState;
-  passedLaws?: Array<{ title: string; text: string; abrogee?: boolean; organique?: boolean }>;
+  passedLaws?: Array<{ title: string; text: string; abrogee?: boolean; organique?: boolean; nonConforme?: boolean }>;
   isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
@@ -144,6 +144,25 @@ export default function DisplayPage() {
     }
   };
 
+  const toggleLawAbrogationFromDisplay = (index: number) => {
+    const raw = localStorage.getItem("hemicycleState");
+    if (!raw) return;
+
+    try {
+      const parsed = JSON.parse(raw) as DisplayState;
+      const laws = Array.isArray(parsed.passedLaws) ? [...parsed.passedLaws] : [];
+      if (index < 0 || index >= laws.length) return;
+
+      const current = laws[index];
+      laws[index] = { ...current, abrogee: !current.abrogee };
+
+      const nextState = { ...parsed, passedLaws: laws };
+      localStorage.setItem("hemicycleState", JSON.stringify(nextState));
+      localStorage.setItem("hemicycleNotes", JSON.stringify(laws));
+      setState(nextState);
+    } catch {}
+  };
+
   if (!state) return <div className="w-screen h-screen bg-black" />;
 
   return (
@@ -197,6 +216,8 @@ export default function DisplayPage() {
           electionMode={state.electionMode ?? false}
           candidateNames={(state.candidateNames ?? ["Candidat 1"]).slice(0, state.candidateCount ?? 1)}
           candidateColors={(state.candidateColors ?? ["#4f46e5"]).slice(0, state.candidateCount ?? 1)}
+          passedLaws={state.passedLaws ?? []}
+          onToggleLawAbrogation={toggleLawAbrogationFromDisplay}
           readOnly
         />
       </div>
