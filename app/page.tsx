@@ -596,34 +596,39 @@ export default function Home() {
           </div>
         ) : (
           <div>
-            <div className="mb-4 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 items-start">
-              <div className="space-y-4">
-                <div className="w-full">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Loi :
-                  </label>
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    placeholder="Entrez le nom d'une Loi"
-                  />
+            <div className="mb-4 space-y-4">
+              {/* Loi + Texte de loi pleine largeur */}
+              <div className="w-full bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <div className="space-y-4">
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Loi :
+                    </label>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      placeholder="Entrez le nom d'une Loi"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Texte de loi :
+                    </label>
+                    <textarea
+                      value={paragraph}
+                      onChange={(e) => setParagraph(e.target.value)}
+                      rows={3}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      placeholder="Entrez le texte de loi"
+                    />
+                  </div>
                 </div>
-                <div className="w-full">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Texte de loi :
-                  </label>
-                  <textarea
-                    value={paragraph}
-                    onChange={(e) => setParagraph(e.target.value)}
-                    rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    placeholder="Entrez le texte de loi"
-                  />
-                </div>
+              </div>
 
-                {/* déplacé : niveau des provinces sous Loi/Texte */}
+              {/* Provinces + Généralités sur la ligne du dessous */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
                 <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
                     Niveau de Contrôle des Provinces
@@ -692,37 +697,36 @@ export default function Home() {
                     ))}
                   </div>
                 </div>
-              </div>
 
-              {/* déplacé : généralités dans la colonne de droite */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
-                  Généralités Régionales
-                </h3>
-                <div className="space-y-3">
-                  {(Object.keys(regionalStates) as string[]).map((name) => (
-                    <div key={name} className="grid grid-cols-[1fr_140px_auto] gap-2 items-center">
-                      <span className="min-w-0 px-2 py-1.5 text-sm text-gray-900 dark:text-white">{name}</span>
-                      <select
-                        value={regionalStates[name]}
-                        onChange={(e) =>
-                          setRegionalStates((prev) => ({ ...prev, [name]: e.target.value as RegionalStateControl }))
-                        }
-                        className="px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                      >
-                        {REGIONAL_STATE_OPTIONS.map((option) => (
-                          <option key={option} value={option}>{option}</option>
-                        ))}
-                      </select>
-                      <button
-                        type="button"
-                        onClick={() => annexRegionalState(name)}
-                        className="px-2 py-1.5 text-xs font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition"
-                      >
-                        Annexion
-                      </button>
-                    </div>
-                  ))}
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                    Généralités Régionales
+                  </h3>
+                  <div className="space-y-3">
+                    {(Object.keys(regionalStates) as string[]).map((name) => (
+                      <div key={name} className="grid grid-cols-[1fr_140px_auto] gap-2 items-center">
+                        <span className="min-w-0 px-2 py-1.5 text-sm text-gray-900 dark:text-white">{name}</span>
+                        <select
+                          value={regionalStates[name]}
+                          onChange={(e) =>
+                            setRegionalStates((prev) => ({ ...prev, [name]: e.target.value as RegionalStateControl }))
+                          }
+                          className="px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        >
+                          {REGIONAL_STATE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                          ))}
+                        </select>
+                        <button
+                          type="button"
+                          onClick={() => annexRegionalState(name)}
+                          className="px-2 py-1.5 text-xs font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition"
+                        >
+                          Annexion
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
