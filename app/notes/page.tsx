@@ -45,16 +45,28 @@ export default function NotesPage() {
   }, []);
 
   useEffect(() => {
-    const enterFullscreen = async () => {
-      try {
-        if (!document.fullscreenElement) {
-          await document.documentElement.requestFullscreen?.();
-        }
-      } catch {}
-    };
-    enterFullscreen();
+    // Auto fullscreen si ouvert avec ?fs=1
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("fs") === "1") {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    } else {
+      const enterFullscreen = async () => {
+        try {
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen?.();
+          }
+        } catch {}
+      };
+      enterFullscreen();
+    }
 
     const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+
+    const openWithFs = (path: string) => {
+      const fs = !!document.fullscreenElement;
+      const url = fs ? `${path}?fs=1` : path;
+      window.open(url, "_blank", "noopener,noreferrer");
+    };
 
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -71,9 +83,9 @@ export default function NotesPage() {
         return;
       }
 
-      if (e.key === "1") window.open("/display", "_blank", "noopener,noreferrer");
-      if (e.key === "2") window.open("/propositions", "_blank", "noopener,noreferrer");
-      if (e.key === "3") window.open("/notes", "_blank", "noopener,noreferrer");
+      if (e.key === "1") openWithFs("/display");
+      if (e.key === "2") openWithFs("/propositions");
+      if (e.key === "3") openWithFs("/notes");
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
