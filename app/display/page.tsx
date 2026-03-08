@@ -3,19 +3,19 @@
 import { useEffect, useState } from "react";
 import Hemicycle from "../components/Hemicycle";
 
-type SeatColor = "white" | "green" | "red" | "orange" | "black";
+type SeatColor = "white" | "green" | "red" | "orange" | "black" | string;
 type ProvinceControl =
-  | "Indépendant"
-  | "Autonomie"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "Contrôle Total";
+    | "Indépendant"
+    | "Autonomie"
+    | "Sédition"
+    | "Insoumission"
+    | "Contestation"
+    | "Équilibre"
+    | "Stable"
+    | "Prospère"
+    | "Pacifié"
+    | "Contrôle Total"
+    | "En Guerre";
 
 type ProvinceState = Record<string, ProvinceControl>;
 

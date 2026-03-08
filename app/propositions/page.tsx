@@ -4,17 +4,17 @@ import { useEffect, useMemo, useState } from "react";
 
 type Proposal = { title: string; text: string; organique?: boolean };
 type ProvinceControl =
-  | "Indépendant"
-  | "Autonomie"
-  | "Sédition"
-  | "Insoumission"
-  | "Contestation"
-  | "Équilibre"
-  | "Stable"
-  | "Prospère"
-  | "Pacifié"
-  | "Contrôle Total"
-  | "En Guerre";
+    | "Indépendant"
+    | "Autonomie"
+    | "Sédition"
+    | "Insoumission"
+    | "Contestation"
+    | "Équilibre"
+    | "Stable"
+    | "Prospère"
+    | "Pacifié"
+    | "Contrôle Total"
+    | "En Guerre";
 
 type ProvinceState = Record<string, ProvinceControl>;
 
@@ -30,13 +30,20 @@ type ProposalsState = {
   budgetGauge?: number;
 };
 
+const getProvinceControlColor = (value: ProvinceControl): string => {
+  if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
+  if (value === "Autonomie") return "text-green-700 dark:text-green-300";
+  if (value === "En Guerre" || value === "Sédition" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+  return "text-gray-700 dark:text-gray-300";
+};
+
 export default function PropositionsPage() {
   const [proposals, setProposals] = useState<Proposal[]>([
     { title: "", text: "", organique: false },
     { title: "", text: "", organique: false },
     { title: "", text: "", organique: false },
   ]);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [, setIsFullscreen] = useState(false);
 
   const [countrySituation, setCountrySituation] = useState("");
   const [isCrisis, setIsCrisis] = useState(false);
@@ -85,7 +92,6 @@ export default function PropositionsPage() {
   }, []);
 
   useEffect(() => {
-    // Auto fullscreen si ouvert avec ?fs=1
     const params = new URLSearchParams(window.location.search);
     if (params.get("fs") === "1") {
       document.documentElement.requestFullscreen?.().catch(() => {});
@@ -103,7 +109,6 @@ export default function PropositionsPage() {
       const target = e.target as HTMLElement | null;
       const tag = target?.tagName?.toLowerCase();
       const isTyping = tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable;
-
       if (isTyping) return;
 
       const key = e.key.toLowerCase();
@@ -126,11 +131,6 @@ export default function PropositionsPage() {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
-
-  const toggleFullscreen = async () => {
-    if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.();
-    else await document.exitFullscreen?.();
-  };
 
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
@@ -160,13 +160,11 @@ export default function PropositionsPage() {
           ))}
         </div>
 
-        {/* Nouvelle zone bas: gauche 1/3, droite 2/3 */}
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Gauche (1/3) */}
           <div className="lg:col-span-1 space-y-4">
             <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
               <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
-                Niveau de Contrôle des Provinces
+                Niveau de Contrôle des Provinces et Généralités Régionales
               </h3>
               <div className="space-y-2">
                 {(Object.keys(provinces) as string[]).length === 0 ? (
@@ -175,7 +173,9 @@ export default function PropositionsPage() {
                   (Object.keys(provinces) as string[]).map((name) => (
                     <div key={name} className="flex items-center justify-between gap-2">
                       <span className="text-xs text-gray-700 dark:text-gray-300">{name}</span>
-                      <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{provinces[name]}</span>
+                      <span className={`text-xs font-semibold ${getProvinceControlColor(provinces[name])}`}>
+                        {provinces[name]}
+                      </span>
                     </div>
                   ))
                 )}
@@ -184,14 +184,14 @@ export default function PropositionsPage() {
 
             <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
               <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">Jauges de la République</h3>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
                     <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
                   </div>
-                  <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
-                    <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
+                  <div className="w-full h-4 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
+                    <div className="h-full bg-green-500 transition-all" style={{ width: `${(economyGauge / 10) * 100}%` }} />
                   </div>
                 </div>
 
@@ -200,8 +200,8 @@ export default function PropositionsPage() {
                     <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
                     <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
                   </div>
-                  <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
-                    <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
+                  <div className="w-full h-4 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
+                    <div className="h-full bg-red-500 transition-all" style={{ width: `${(socialGauge / 10) * 100}%` }} />
                   </div>
                 </div>
 
@@ -210,8 +210,8 @@ export default function PropositionsPage() {
                     <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
                     <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
                   </div>
-                  <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
-                    <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
+                  <div className="w-full h-4 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
+                    <div className="h-full bg-blue-500 transition-all" style={{ width: `${(securityGauge / 10) * 100}%` }} />
                   </div>
                 </div>
 
@@ -222,7 +222,7 @@ export default function PropositionsPage() {
                       {clampedBudget > 0 ? `+${clampedBudget}` : clampedBudget}
                     </span>
                   </div>
-                  <div className="grid grid-cols-11 gap-0 max-w-[220px] justify-items-center">
+                  <div className="grid grid-cols-11 gap-0 w-full max-w-none justify-items-center">
                     {Array.from({ length: 11 }).map((_, idx) => {
                       const center = 5;
                       const distance = idx - center;
@@ -250,7 +250,6 @@ export default function PropositionsPage() {
             </div>
           </div>
 
-          {/* Droite (2/3) */}
           <div className="lg:col-span-2 space-y-4">
             <div
               className={`rounded-lg p-4 border ${

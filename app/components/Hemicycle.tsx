@@ -671,7 +671,7 @@ export default function Hemicycle({
               <div className="space-y-4">
                 <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
-                    Niveau de Contrôle des Provinces
+                    Niveau de Contrôle des Provinces et Généralités Régionales
                   </h3>
                   <div className="space-y-2">
                     {(Object.keys(provinces) as string[]).map((name) => (
@@ -876,6 +876,6 @@ export default function Hemicycle({
 const getProvinceControlColor = (value: ProvinceControl): string => {
   if (value === "Indépendant") return "text-blue-700 dark:text-blue-300";
   if (value === "Autonomie") return "text-green-700 dark:text-green-300";
-  if (value === "Contrôle Total") return "text-red-700 dark:text-red-300";
+  if (value === "Contrôle Total" || value ==="Sédition" || value === "En Guerre") return "text-red-700 dark:text-red-300";
   return "text-gray-700 dark:text-gray-300";
 };

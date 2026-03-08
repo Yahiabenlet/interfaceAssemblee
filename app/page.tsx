@@ -602,7 +602,7 @@ export default function Home() {
 
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
-                  Niveau de Contrôle des Provinces
+                  Niveau de Contrôle des Provinces et Généralités Régionales
                 </h3>
 
                 <div className="mb-3 grid grid-cols-[1fr_auto] gap-2">
