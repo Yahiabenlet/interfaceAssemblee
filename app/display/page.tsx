@@ -18,6 +18,7 @@ type ProvinceControl =
 
 type RegionalStateControl =
   | "Allié"
+  | "Coopératif"
   | "Indifférent"
   | "Rivalité"
   | "Antagoniste"
@@ -185,16 +186,20 @@ export default function DisplayPage() {
           crisisDescription={state.crisisDescription ?? ""}
           provinces={
             state.provinces ?? {
-              "201D": "Sécession",
-              "202D-Plateau": "Sécession",
-              "202D-Profond": "Sécession",
-              "204D": "Sécession",
-              "Provinces des Plasticiens": "Sécession",
+              "La Capitale": "Prospère",
+              "Le Plateau": "Équilibre",
+              "Les Hauteurs Profondes": "Stable",
+              "Vallée de l’Armoire": "Contestation",
+              "Provinces des Plasticiens": "Contestation",
+              "Archipel des Eldrazi": "Autonomie",
             }
           }
           regionalStates={
             state.regionalStates ?? {
-              "Etat de Tori Valu": "Indifférent",
+              "L’Outre-Porte": "Indifférent",
+              "Alliance des Etats d'Elimat": "Indifférent",
+              "Etat de Tori Value": "Rivalité",
+              "Junte des Emirats du Sud": "Coopératif",
             }
           }
           isControlValidated={state.isControlValidated ?? "nonConforme"}

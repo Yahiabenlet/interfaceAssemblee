@@ -17,6 +17,7 @@ type ProvinceControl =
 
 type RegionalStateControl =
   | "Allié"
+  | "Coopératif"
   | "Indifférent"
   | "Rivalité"
   | "Antagoniste"
@@ -46,7 +47,7 @@ const getProvinceControlColor = (value: ProvinceControl): string => {
 };
 
 const getRegionalStateColor = (value: RegionalStateControl): string => {
-  if (value === "Allié" || value === "Fantoche") return "text-green-700 dark:text-green-300";
+  if (value === "Allié" || value === "Fantoche" || value === "Coopératif") return "text-green-700 dark:text-green-300";
   if (value === "Indifférent") return "text-blue-700 dark:text-blue-300";
   return "text-red-700 dark:text-red-300";
 };

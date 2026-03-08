@@ -17,6 +17,7 @@ type ProvinceControl =
 
 type RegionalStateControl =
   | "Allié"
+  | "Coopératif"
   | "Indifférent"
   | "Rivalité"
   | "Antagoniste"
@@ -97,14 +98,18 @@ export default function Hemicycle({
   isCrisis = false,
   crisisDescription = "",
   provinces = {
-    "201D": "Sécession",
-    "202D-Plateau": "Sécession",
-    "202D-Profond": "Sécession",
-    "204D": "Sécession",
-    "Provinces des Plasticiens": "Sécession",
+    "La Capitale": "Prospère",
+    "Le Plateau": "Équilibre",
+    "Les Hauteurs Profondes": "Stable",
+    "Vallée de l’Armoire": "Contestation",
+    "Provinces des Plasticiens": "Contestation",
+    "Archipel des Eldrazi": "Autonomie",
   },
   regionalStates = {
-    "Etat de Tori Valu": "Indifférent",
+    "L’Outre-Porte": "Indifférent",
+    "Alliance des Etats d'Elimat": "Indifférent",
+    "Etat de Tori Value": "Rivalité",
+    "Junte des Emirats du Sud": "Coopératif",
   },
   isControlValidated = "nonConforme",
   requiredMajority = "simple",
@@ -961,7 +966,7 @@ const getProvinceControlColor = (value: ProvinceControl): string => {
 };
 
 const getRegionalStateColor = (value: RegionalStateControl): string => {
-  if (value === "Allié" || value === "Fantoche") return "text-green-700 dark:text-green-300";
+  if (value === "Allié" || value === "Fantoche" || value === "Coopératif") return "text-green-700 dark:text-green-300";
   if (value === "Indifférent") return "text-blue-700 dark:text-blue-300";
   if (value === "Rivalité" || value === "Antagoniste" || value === "En Guerre") return "text-red-700 dark:text-red-300";
   return "text-gray-700 dark:text-gray-300";

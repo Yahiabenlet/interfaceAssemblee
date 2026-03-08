@@ -18,6 +18,7 @@ type ProvinceControl =
 
 type RegionalStateControl =
   | "Allié"
+  | "Coopératif"
   | "Indifférent"
   | "Rivalité"
   | "Antagoniste"
@@ -51,6 +52,7 @@ const PROVINCE_CONTROL_OPTIONS: ProvinceControl[] = [
 
 const REGIONAL_STATE_OPTIONS: RegionalStateControl[] = [
   "Allié",
+  "Coopératif",
   "Indifférent",
   "Rivalité",
   "Antagoniste",
@@ -81,14 +83,18 @@ export default function Home() {
   const [isCrisis, setIsCrisis] = useState(false);
   const [crisisDescription, setCrisisDescription] = useState("");
   const [provinces, setProvinces] = useState<ProvinceState>({
-    "201D": "Sécession",
-    "202D-Plateau": "Stable",
-    "202D-Profond": "Stable",
-    "204D": "Équilibre",
+    "La Capitale": "Prospère",
+    "Le Plateau": "Équilibre",
+    "Les Hauteurs Profondes": "Stable",
+    "Vallée de l’Armoire": "Contestation",
     "Provinces des Plasticiens": "Contestation",
+    "Archipel des Eldrazi": "Autonomie",
   });
   const [regionalStates, setRegionalStates] = useState<RegionalState>({
-    "Etat de Tori Valu": "Indifférent",
+    "L’Outre-Porte": "Indifférent",
+    "Alliance des Etats d'Elimat": "Indifférent",
+    "Etat de Tori Value": "Rivalité",
+    "Junte des Emirats du Sud": "Coopératif",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
   const [lawFeedback, setLawFeedback] = useState<{
