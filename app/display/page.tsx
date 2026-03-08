@@ -48,6 +48,7 @@ type DisplayState = {
   provinces?: ProvinceState;
   regionalStates?: RegionalState;
   passedLaws?: Array<{ title: string; text: string; abrogee?: boolean; organique?: boolean; nonConforme?: boolean }>;
+  proposals?: Array<{ title: string; text: string; organique?: boolean; decret?: boolean }>;
   isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;

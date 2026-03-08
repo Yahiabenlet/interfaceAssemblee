@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type Proposal = { title: string; text: string; organique?: boolean };
+type Proposal = { title: string; text: string; organique?: boolean; decret?: boolean };
 type ProvinceControl =
   | "Sécession"
   | "Autonomie"
@@ -59,9 +59,9 @@ const getRegionalStateColor = (value: RegionalStateControl): string => {
 
 export default function PropositionsPage() {
   const [proposals, setProposals] = useState<Proposal[]>([
-    { title: "", text: "", organique: false },
-    { title: "", text: "", organique: false },
-    { title: "", text: "", organique: false },
+    { title: "", text: "", organique: false, decret: false },
+    { title: "", text: "", organique: false, decret: false },
+    { title: "", text: "", organique: false, decret: false },
   ]);
   const [, setIsFullscreen] = useState(false);
 
@@ -85,7 +85,7 @@ export default function PropositionsPage() {
         const parsed: ProposalsState = JSON.parse(raw);
 
         const next = (parsed.proposals ?? []).slice(0, 3);
-        while (next.length < 3) next.push({ title: "", text: "", organique: false });
+        while (next.length < 3) next.push({ title: "", text: "", organique: false, decret: false });
         setProposals(next);
 
         setCountrySituation(parsed.countrySituation ?? "");
@@ -164,7 +164,9 @@ export default function PropositionsPage() {
             <div
               key={`proposal-${i}`}
               className={`rounded-lg border p-4 ${
-                p.organique
+                p.decret
+                  ? "border-amber-300 dark:border-amber-700 bg-amber-100 dark:bg-amber-950/40"
+                  : p.organique
                   ? "border-violet-300 dark:border-violet-700 bg-violet-100 dark:bg-violet-950/40"
                   : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
               }`}
@@ -172,7 +174,9 @@ export default function PropositionsPage() {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white break-words">
                 {p.title || `Proposition ${i + 1}`}
               </h2>
-              {p.organique ? (
+              {p.decret ? (
+                <p className="mt-1 text-xs font-semibold text-amber-800 dark:text-amber-300">Décret</p>
+              ) : p.organique ? (
                 <p className="mt-1 text-xs font-semibold text-violet-800 dark:text-violet-300">Loi organique</p>
               ) : null}
               <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">

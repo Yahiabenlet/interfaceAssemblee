@@ -134,6 +134,9 @@ export default function Home() {
   const [proposal1Organic, setProposal1Organic] = useState(false);
   const [proposal2Organic, setProposal2Organic] = useState(false);
   const [proposal3Organic, setProposal3Organic] = useState(false);
+  const [proposal1Decret, setProposal1Decret] = useState(false);
+  const [proposal2Decret, setProposal2Decret] = useState(false);
+  const [proposal3Decret, setProposal3Decret] = useState(false);
   const [electionMode, setElectionMode] = useState(false);
   const [candidateCount, setCandidateCount] = useState(2);
   const [candidateNames, setCandidateNames] = useState<string[]>(["Candidat 1", "Candidat 2"]);
@@ -449,9 +452,9 @@ export default function Home() {
       candidateColors,
       activeCandidateIndex,
       proposals: [
-        { title: proposal1Title, text: proposal1Text, organique: proposal1Organic },
-        { title: proposal2Title, text: proposal2Text, organique: proposal2Organic },
-        { title: proposal3Title, text: proposal3Text, organique: proposal3Organic },
+        { title: proposal1Title, text: proposal1Text, organique: proposal1Organic, decret: proposal1Decret },
+        { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
+        { title: proposal3Title, text: proposal3Text, organique: proposal3Organic, decret: proposal3Decret },
       ],
     };
 
@@ -503,6 +506,9 @@ export default function Home() {
     proposal1Organic,
     proposal2Organic,
     proposal3Organic,
+    proposal1Decret,
+    proposal2Decret,
+    proposal3Decret,
   ]);
 
   useEffect(() => {
@@ -1064,15 +1070,26 @@ export default function Home() {
                     className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="Texte de la proposition"
                   />
-                  <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                    <input
-                      type="checkbox"
-                      checked={proposal1Organic}
-                      onChange={(e) => setProposal1Organic(e.target.checked)}
-                      className="h-4 w-4"
-                    />
-                    Loi organique
-                  </label>
+                  <div className="flex items-center gap-4">
+                    <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={proposal1Organic}
+                        onChange={(e) => setProposal1Organic(e.target.checked)}
+                        className="h-4 w-4"
+                      />
+                      Loi organique
+                    </label>
+                    <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={proposal1Decret}
+                        onChange={(e) => setProposal1Decret(e.target.checked)}
+                        className="h-4 w-4"
+                      />
+                      Décret
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -1095,15 +1112,26 @@ export default function Home() {
                     className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="Texte de la proposition"
                   />
-                  <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                    <input
-                      type="checkbox"
-                      checked={proposal2Organic}
-                      onChange={(e) => setProposal2Organic(e.target.checked)}
-                      className="h-4 w-4"
-                    />
-                    Loi organique
-                  </label>
+                  <div className="flex items-center gap-4">
+                    <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={proposal2Organic}
+                        onChange={(e) => setProposal2Organic(e.target.checked)}
+                        className="h-4 w-4"
+                      />
+                      Loi organique
+                    </label>
+                    <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={proposal2Decret}
+                        onChange={(e) => setProposal2Decret(e.target.checked)}
+                        className="h-4 w-4"
+                      />
+                      Décret
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -1126,15 +1154,26 @@ export default function Home() {
                     className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="Texte de la proposition"
                   />
-                  <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                    <input
-                      type="checkbox"
-                      checked={proposal3Organic}
-                      onChange={(e) => setProposal3Organic(e.target.checked)}
-                      className="h-4 w-4"
-                    />
-                    Loi organique
-                  </label>
+                  <div className="flex items-center gap-4">
+                    <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={proposal3Organic}
+                        onChange={(e) => setProposal3Organic(e.target.checked)}
+                        className="h-4 w-4"
+                      />
+                      Loi organique
+                    </label>
+                    <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                      <input
+                        type="checkbox"
+                        checked={proposal3Decret}
+                        onChange={(e) => setProposal3Decret(e.target.checked)}
+                        className="h-4 w-4"
+                      />
+                      Décret
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
