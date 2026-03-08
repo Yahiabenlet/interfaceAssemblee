@@ -812,14 +812,29 @@ export default function Hemicycle({
                     Niveau de Contrôle des Provinces
                   </h3>
                   <div className="space-y-2">
-                    {(Object.keys(provinces) as string[]).map((name) => (
-                      <div key={name} className="flex items-center justify-between gap-2">
-                        <span className="text-xs text-gray-700 dark:text-gray-300">{name}</span>
-                        <span className={`text-xs font-semibold ${getProvinceControlColor(provinces[name])}`}>
-                          {provinces[name]}
-                        </span>
-                      </div>
-                    ))}
+                    {(Object.keys(provinces) as string[]).map((name) => {
+                      const status = provinces[name];
+                      const dangerBackground =
+                        status === "Zone de Non-Droit" ||
+                        status === "Insurrection" ||
+                        status === "Défiance" ||
+                        status === "Pacifié" ||
+                        status === "Contrôle Total";
+
+                      return (
+                        <div
+                          key={name}
+                          className={`flex items-center justify-between gap-2 rounded px-2 py-1 ${
+                            dangerBackground ? "bg-red-100 dark:bg-red-950/40" : ""
+                          }`}
+                        >
+                          <span className="text-xs text-gray-700 dark:text-gray-300">{name}</span>
+                          <span className={`text-xs font-semibold ${getProvinceControlColor(status)}`}>
+                            {status}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
