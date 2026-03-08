@@ -53,6 +53,8 @@ interface HemicycleProps {
   goldOutlinedPresident?: boolean;
   isSecretBallot?: boolean;
   hideAssemblyWhenSecretBallot?: boolean;
+  electionMode?: boolean;
+  candidateNames?: string[];
 }
 
 export default function Hemicycle({
@@ -95,6 +97,8 @@ export default function Hemicycle({
   goldOutlinedPresident = false,
   isSecretBallot = false,
   hideAssemblyWhenSecretBallot = true,
+  electionMode = false,
+  candidateNames = ["Candidat 1"],
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -484,6 +488,22 @@ export default function Hemicycle({
   const negativeBoxes = Math.max(0, -clampedBudget);
   const positiveBoxes = Math.max(0, clampedBudget);
 
+  const normalizedCandidates = useMemo(() => {
+    const base = candidateNames.slice(0, 8).map((n, i) => (n?.trim() ? n.trim() : `Candidat ${i + 1}`));
+    return base.length > 0 ? base : ["Candidat 1"];
+  }, [candidateNames]);
+
+  const electionResults = useMemo(() => {
+    const expressed = [...seatColors, presidentColor].filter((c) => c === "green").length;
+    const count = normalizedCandidates.length;
+    const base = Math.floor(expressed / count);
+    const rem = expressed % count;
+    return normalizedCandidates.map((name, i) => ({
+      name,
+      votes: base + (i < rem ? 1 : 0),
+    }));
+  }, [seatColors, presidentColor, normalizedCandidates]);
+
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
@@ -744,28 +764,48 @@ export default function Hemicycle({
 
             <div className="mt-8 grid">
               <div className="w-full max-w-3xl justify-self-start">
-                <div className="w-full grid grid-cols-1 md:[grid-template-columns:minmax(0,2fr)_minmax(0,1fr)] gap-4">
-                  <div className={`p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px] ${majorityStatus.bg}`}>
-                    <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
+                {electionMode ? (
+                  <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {electionResults.map((c, idx) => (
+                      <div
+                        key={`cand-${idx}-${c.name}`}
+                        className="rounded-lg p-4 border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30 text-center"
+                      >
+                        <div className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 break-words">
+                          {c.name}
+                        </div>
+                        <div className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 mt-2">
+                          {c.votes}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="grid grid-rows-2 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
-                    <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
-                      <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
-                      <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
+                ) : (
+                  <div className="w-full grid grid-cols-1 md:[grid-template-columns:minmax(0,2fr)_minmax(0,1fr)] gap-4">
+                    <div className={`p-4 rounded-lg text-center md:h-full flex items-center justify-center md:min-w-[500px] ${majorityStatus.bg}`}>
+                      <div className={`text-base md:text-lg font-semibold ${majorityStatus.tone}`}>{majorityStatus.label}</div>
                     </div>
-                    <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
-                      <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
-                      <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.against}</div>
+                    <div className="grid grid-rows-2 gap-4 md:w-full md:max-w-[130px] md:justify-self-start">
+                      <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg text-center">
+                        <div className="text-sm font-medium text-green-600 dark:text-green-300">Votes Pour</div>
+                        <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{counts.green}</div>
+                      </div>
+                      <div className="bg-red-50 dark:bg-red-900 p-4 rounded-lg text-center">
+                        <div className="text-sm font-medium text-red-600 dark:text-red-300">Votes Contres</div>
+                        <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{counts.against}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge → Orange → Noir)
+        {electionMode
+          ? "Mode élection : cliquez pour exprimer une voix (Blanc ↔ Vert)"
+          : "Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge → Orange → Noir)"}
       </p>
     </div>
   );

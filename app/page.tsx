@@ -104,13 +104,36 @@ export default function Home() {
   const [proposal1Organic, setProposal1Organic] = useState(false);
   const [proposal2Organic, setProposal2Organic] = useState(false);
   const [proposal3Organic, setProposal3Organic] = useState(false);
+  const [electionMode, setElectionMode] = useState(false);
+  const [candidateCount, setCandidateCount] = useState(2);
+  const [candidateNames, setCandidateNames] = useState<string[]>(["Candidat 1", "Candidat 2"]);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
     [enclumeDurationMinutes]
   );
 
+  useEffect(() => {
+    setCandidateNames((prev) => {
+      const next = prev.slice(0, candidateCount);
+      while (next.length < candidateCount) next.push(`Candidat ${next.length + 1}`);
+      return next;
+    });
+  }, [candidateCount]);
+
+  const setCandidateName = (idx: number, value: string) => {
+    setCandidateNames((prev) => {
+      const next = [...prev];
+      next[idx] = value;
+      return next;
+    });
+  };
+
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
+    if (electionMode) {
+      return current === "green" ? "white" : "green";
+    }
+
     const seatCycleNoVeto: SeatColor[] = ["white", "green", "red", "black"];
     const seatCycleWithPlayerVeto: SeatColor[] = ["white", "green", "red", "orange", "black"];
 
@@ -358,6 +381,9 @@ export default function Home() {
       goldOutlinedPresident,
       isEraseMode,
       isSecretBallot,
+      electionMode,
+      candidateCount,
+      candidateNames,
       proposals: [
         { title: proposal1Title, text: proposal1Text, organique: proposal1Organic },
         { title: proposal2Title, text: proposal2Text, organique: proposal2Organic },
@@ -397,6 +423,9 @@ export default function Home() {
     goldOutlinedPresident,
     isEraseMode,
     isSecretBallot,
+    electionMode,
+    candidateCount,
+    candidateNames,
     proposal1Title,
     proposal1Text,
     proposal2Title,
@@ -1058,6 +1087,49 @@ export default function Home() {
               </div>
             </div>
 
+            <div className="mb-4 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                Mode élection
+              </h3>
+              <div className="flex flex-wrap gap-3 items-center justify-center">
+                <button
+                  type="button"
+                  onClick={() => setElectionMode((v) => !v)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                    electionMode ? "bg-indigo-700 hover:bg-indigo-800" : "bg-indigo-600 hover:bg-indigo-700"
+                  }`}
+                >
+                  {electionMode ? "Désactiver l'élection" : "Activer l'élection"}
+                </button>
+
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  Nombre de candidats ({candidateCount})
+                </label>
+                <input
+                  type="range"
+                  min={1}
+                  max={8}
+                  step={1}
+                  value={candidateCount}
+                  onChange={(e) => setCandidateCount(Number(e.target.value))}
+                  className="w-40 accent-indigo-500"
+                />
+              </div>
+
+              <div className="mt-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+                {candidateNames.slice(0, candidateCount).map((name, idx) => (
+                  <input
+                    key={`cand-name-${idx}`}
+                    type="text"
+                    value={name}
+                    onChange={(e) => setCandidateName(idx, e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder={`Candidat ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+
             {lawFeedback && (
               <div
                 className={`mb-4 rounded-lg border px-4 py-2 text-sm font-medium ${
@@ -1155,6 +1227,8 @@ export default function Home() {
               goldOutlinedPresident={goldOutlinedPresident}
               isSecretBallot={isSecretBallot}
               hideAssemblyWhenSecretBallot={false}
+              electionMode={electionMode}
+              candidateNames={candidateNames.slice(0, candidateCount)}
             />
           </div>
         )}

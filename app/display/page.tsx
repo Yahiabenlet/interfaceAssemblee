@@ -50,6 +50,9 @@ type DisplayState = {
   goldOutlinedSeats?: number[];
   goldOutlinedPresident?: boolean;
   isSecretBallot?: boolean;
+  electionMode?: boolean;
+  candidateCount?: number;
+  candidateNames?: string[];
 };
 
 export default function DisplayPage() {
@@ -170,6 +173,8 @@ export default function DisplayPage() {
           goldOutlinedPresident={state.goldOutlinedPresident ?? false}
           isSecretBallot={state.isSecretBallot ?? false}
           hideAssemblyWhenSecretBallot
+          electionMode={state.electionMode ?? false}
+          candidateNames={(state.candidateNames ?? ["Candidat 1"]).slice(0, state.candidateCount ?? 1)}
           readOnly
         />
       </div>
