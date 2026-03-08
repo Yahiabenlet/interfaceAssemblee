@@ -108,7 +108,7 @@ export default function Hemicycle({
     "Archipel des Eldrazi": "Autonomie",
   },
   regionalStates = {
-    "L’Outre-Porte": "Indifférent",
+    "L’Outre-Porte": "Prudent",
     "Alliance des Etats d'Elimat": "Indifférent",
     "Etat de Tori Value": "Rival",
     "Junte des Emirats du Sud": "Coopératif",

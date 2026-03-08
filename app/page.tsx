@@ -95,7 +95,7 @@ export default function Home() {
     "Archipel des Eldrazi": "Autonomie",
   });
   const [regionalStates, setRegionalStates] = useState<RegionalState>({
-    "L’Outre-Porte": "Indifférent",
+    "L’Outre-Porte": "Prudent",
     "Alliance des Etats d'Elimat": "Indifférent",
     "Etat de Tori Value": "Rival",
     "Junte des Emirats du Sud": "Coopératif",
