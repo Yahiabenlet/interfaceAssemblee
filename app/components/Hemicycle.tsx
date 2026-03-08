@@ -14,8 +14,10 @@ type ProvinceControl =
   | "Prospère"
   | "Pacifié"
   | "Zone de Non-Droit"
-  | "Rayonnante"
-  | "Contrôle Total";
+  | "Contrôle Total"
+  | "Insurrection"
+  | "Défiance"
+  | "Rayonnante";
 
 type RegionalStateControl =
   | "En Guerre"
@@ -1037,7 +1039,9 @@ export default function Hemicycle({
 const getProvinceControlColor = (value: ProvinceControl): string => {
   if (value === "Autonomie" || value === "Stable") return "text-blue-700 dark:text-blue-300";
   if (value === "Prospère" || value === "Pacifié" || value === "Rayonnante") return "text-green-700 dark:text-green-300";
-  if (value === "Insoumission" || value === "Contestation" ) return "text-orange-700 dark:text-orange-300";
+  if (value === "Insoumission" || value === "Contestation" || value === "Insurrection" || value === "Défiance") {
+    return "text-orange-700 dark:text-orange-300";
+  }
   if (value === "Sécession" || value === "Sédition" || value === "Contrôle Total" || value === "Zone de Non-Droit") {
     return "text-red-700 dark:text-red-300";
   }

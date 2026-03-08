@@ -95,9 +95,9 @@ export default function DepartPage() {
 
             <p><strong>Intégration d’une Province récemment annexée :</strong></p>
             <p>
-                <span className="text-red-700 dark:text-red-300 font-semibold">Zone de Non-Droit</span> ➔{" "}
-              <span className="text-orange-700 dark:text-orange-300 font-semibold">Insoumission</span> ➔{" "}
-              <span className="text-orange-700 dark:text-orange-300 font-semibold">Contestation</span> ➔{" "}
+              <span className="text-red-700 dark:text-red-300 font-semibold">Zone de Non-Droit</span> ➔{" "}
+              <span className="text-orange-700 dark:text-orange-300 font-semibold">Insurrection</span> ➔{" "}
+              <span className="text-orange-700 dark:text-orange-300 font-semibold">Défiance</span> ➔{" "}
               <span className="text-green-700 dark:text-green-300 font-semibold">Pacifiée</span> ➔{" "}
               <span className="text-red-700 dark:text-red-300 font-semibold">Contrôle total</span> ➔{" "}
               <span className="text-gray-700 dark:text-gray-300">Equilibre</span>.

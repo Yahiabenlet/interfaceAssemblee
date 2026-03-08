@@ -15,8 +15,10 @@ type ProvinceControl =
   | "Prospère"
   | "Pacifié"
   | "Zone de Non-Droit"
-  | "Rayonnante"
-  | "Contrôle Total";
+  | "Contrôle Total"
+  | "Insurrection"
+  | "Défiance"
+  | "Rayonnante";
 
 type RegionalStateControl =
   | "En Guerre"
