@@ -769,7 +769,11 @@ export default function Hemicycle({
             <div className="mt-8 grid">
               <div className="w-full max-w-3xl justify-self-start">
                 {electionMode ? (
-                  <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div
+                    className={`w-full grid grid-cols-1 ${
+                      normalizedCandidates.length >= 3 ? "md:grid-cols-4" : "md:grid-cols-2"
+                    } gap-3`}
+                  >
                     {electionResults.map((c, idx) => (
                       <div
                         key={`cand-${idx}-${c.name}`}
