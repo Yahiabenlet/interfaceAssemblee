@@ -5,24 +5,27 @@ import Hemicycle from "../components/Hemicycle";
 
 type SeatColor = "white" | "green" | "red" | "orange" | "black" | string;
 type ProvinceControl =
-    | "Indépendant"
-    | "Autonomie"
-    | "Allié"
-    | "Indifférent"
-    | "Rivalité"
-    | "Antagoniste"
-    | "Fantoche"
-    | "Sédition"
-    | "Insoumission"
-    | "Contestation"
-    | "Équilibre"
-    | "Stable"
-    | "Prospère"
-    | "Pacifié"
-    | "Contrôle Total"
-    | "En Guerre";
+  | "Sécession"
+  | "Autonomie"
+  | "Sédition"
+  | "Insoumission"
+  | "Contestation"
+  | "Équilibre"
+  | "Stable"
+  | "Prospère"
+  | "Pacifié"
+  | "Contrôle Total";
+
+type RegionalStateControl =
+  | "Allié"
+  | "Indifférent"
+  | "Rivalité"
+  | "Antagoniste"
+  | "Fantoche"
+  | "En Guerre";
 
 type ProvinceState = Record<string, ProvinceControl>;
+type RegionalState = Record<string, RegionalStateControl>;
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
 
@@ -40,6 +43,7 @@ type DisplayState = {
   isCrisis?: boolean;
   crisisDescription?: string;
   provinces?: ProvinceState;
+  regionalStates?: RegionalState;
   passedLaws?: Array<{ title: string; text: string; abrogee?: boolean; organique?: boolean }>;
   isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
@@ -162,12 +166,16 @@ export default function DisplayPage() {
           crisisDescription={state.crisisDescription ?? ""}
           provinces={
             state.provinces ?? {
-              "201D": "Indépendant",
-              "202D-Plateau": "Indépendant",
-              "202D-Profond": "Indépendant",
-              "204D": "Indépendant",
-              "Provinces des Plasticiens": "Indépendant",
-              "Etat de Tori Valu": "Indépendant",
+              "201D": "Sécession",
+              "202D-Plateau": "Sécession",
+              "202D-Profond": "Sécession",
+              "204D": "Sécession",
+              "Provinces des Plasticiens": "Sécession",
+            }
+          }
+          regionalStates={
+            state.regionalStates ?? {
+              "Etat de Tori Valu": "Indifférent",
             }
           }
           isControlValidated={state.isControlValidated ?? "nonConforme"}

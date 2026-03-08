@@ -4,24 +4,27 @@ import { useEffect, useMemo, useState } from "react";
 
 type Proposal = { title: string; text: string; organique?: boolean };
 type ProvinceControl =
-    | "Indépendant"
-    | "Autonomie"
-    | "Allié"
-    | "Indifférent"
-    | "Rivalité"
-    | "Antagoniste"
-    | "Fantoche"
-    | "Sédition"
-    | "Insoumission"
-    | "Contestation"
-    | "Équilibre"
-    | "Stable"
-    | "Prospère"
-    | "Pacifié"
-    | "Contrôle Total"
-    | "En Guerre";
+  | "Sécession"
+  | "Autonomie"
+  | "Sédition"
+  | "Insoumission"
+  | "Contestation"
+  | "Équilibre"
+  | "Stable"
+  | "Prospère"
+  | "Pacifié"
+  | "Contrôle Total";
+
+type RegionalStateControl =
+  | "Allié"
+  | "Indifférent"
+  | "Rivalité"
+  | "Antagoniste"
+  | "Fantoche"
+  | "En Guerre";
 
 type ProvinceState = Record<string, ProvinceControl>;
+type RegionalState = Record<string, RegionalStateControl>;
 
 type ProposalsState = {
   proposals?: Proposal[];
@@ -29,6 +32,7 @@ type ProposalsState = {
   isCrisis?: boolean;
   crisisDescription?: string;
   provinces?: ProvinceState;
+  regionalStates?: RegionalState;
   economyGauge?: number;
   socialGauge?: number;
   securityGauge?: number;
@@ -36,12 +40,15 @@ type ProposalsState = {
 };
 
 const getProvinceControlColor = (value: ProvinceControl): string => {
-  if (value === "Indépendant" || value === "Indifférent") return "text-blue-700 dark:text-blue-300";
-  if (value === "Autonomie" || value === "Allié" || value === "Fantoche") return "text-green-700 dark:text-green-300";
-  if (value === "En Guerre" || value === "Sédition" || value === "Contrôle Total" || value === "Rivalité" || value === "Antagoniste") {
-    return "text-red-700 dark:text-red-300";
-  }
+  if (value === "Autonomie" || value === "Prospère" || value === "Pacifié") return "text-green-700 dark:text-green-300";
+  if (value === "Sécession" || value === "Sédition" || value === "Insoumission" || value === "Contrôle Total") return "text-red-700 dark:text-red-300";
   return "text-gray-700 dark:text-gray-300";
+};
+
+const getRegionalStateColor = (value: RegionalStateControl): string => {
+  if (value === "Allié" || value === "Fantoche") return "text-green-700 dark:text-green-300";
+  if (value === "Indifférent") return "text-blue-700 dark:text-blue-300";
+  return "text-red-700 dark:text-red-300";
 };
 
 export default function PropositionsPage() {
@@ -56,6 +63,7 @@ export default function PropositionsPage() {
   const [isCrisis, setIsCrisis] = useState(false);
   const [crisisDescription, setCrisisDescription] = useState("");
   const [provinces, setProvinces] = useState<ProvinceState>({});
+  const [regionalStates, setRegionalStates] = useState<RegionalState>({});
   const [economyGauge, setEconomyGauge] = useState(0);
   const [socialGauge, setSocialGauge] = useState(0);
   const [securityGauge, setSecurityGauge] = useState(0);
@@ -78,6 +86,7 @@ export default function PropositionsPage() {
         setIsCrisis(parsed.isCrisis ?? false);
         setCrisisDescription(parsed.crisisDescription ?? "");
         setProvinces(parsed.provinces ?? {});
+        setRegionalStates(parsed.regionalStates ?? {});
         setEconomyGauge(parsed.economyGauge ?? 0);
         setSocialGauge(parsed.socialGauge ?? 0);
         setSecurityGauge(parsed.securityGauge ?? 0);
@@ -171,7 +180,7 @@ export default function PropositionsPage() {
           <div className="lg:col-span-1 space-y-4">
             <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
               <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
-                Niveau de Contrôle des Provinces et Généralités Régionales
+                Niveau de Contrôle des Provinces
               </h3>
               <div className="space-y-2">
                 {(Object.keys(provinces) as string[]).length === 0 ? (
@@ -182,6 +191,26 @@ export default function PropositionsPage() {
                       <span className="text-xs text-gray-700 dark:text-gray-300">{name}</span>
                       <span className={`text-xs font-semibold ${getProvinceControlColor(provinces[name])}`}>
                         {provinces[name]}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                Généralités Régionales
+              </h3>
+              <div className="space-y-2">
+                {(Object.keys(regionalStates) as string[]).length === 0 ? (
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Aucun pays indépendant.</p>
+                ) : (
+                  (Object.keys(regionalStates) as string[]).map((name) => (
+                    <div key={name} className="flex items-center justify-between gap-2">
+                      <span className="text-xs text-gray-700 dark:text-gray-300">{name}</span>
+                      <span className={`text-xs font-semibold ${getRegionalStateColor(regionalStates[name])}`}>
+                        {regionalStates[name]}
                       </span>
                     </div>
                   ))

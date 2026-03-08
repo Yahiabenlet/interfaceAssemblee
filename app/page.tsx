@@ -5,24 +5,27 @@ import Hemicycle from "./components/Hemicycle";
 
 type SeatColor = "white" | "green" | "red" | "orange" | "black";
 type ProvinceControl =
-    | "Indépendant"
-    | "Autonomie"
-    | "Allié"
-    | "Indifférent"
-    | "Rivalité"
-    | "Antagoniste"
-    | "Fantoche"
-    | "Sédition"
-    | "Insoumission"
-    | "Contestation"
-    | "Équilibre"
-    | "Stable"
-    | "Prospère"
-    | "Pacifié"
-    | "Contrôle Total"
-    | "En Guerre";
+  | "Sécession"
+  | "Autonomie"
+  | "Sédition"
+  | "Insoumission"
+  | "Contestation"
+  | "Équilibre"
+  | "Stable"
+  | "Prospère"
+  | "Pacifié"
+  | "Contrôle Total";
+
+type RegionalStateControl =
+  | "Allié"
+  | "Indifférent"
+  | "Rivalité"
+  | "Antagoniste"
+  | "Fantoche"
+  | "En Guerre";
 
 type ProvinceState = Record<string, ProvinceControl>;
+type RegionalState = Record<string, RegionalStateControl>;
 
 type PassedLaw = {
   title: string;
@@ -32,23 +35,26 @@ type PassedLaw = {
   organique?: boolean;
 };
 
-const CONTROL_OPTIONS: ProvinceControl[] = [
-    "Indépendant",
-    "Autonomie",
-    "Allié",
-    "Indifférent",
-    "Rivalité",
-    "Antagoniste",
-    "Fantoche",
-    "Sédition",
-    "Insoumission",
-    "Contestation",
-    "Équilibre",
-    "Stable",
-    "Prospère",
-    "Pacifié",
-    "Contrôle Total",
-    "En Guerre"
+const PROVINCE_CONTROL_OPTIONS: ProvinceControl[] = [
+  "Sécession",
+  "Autonomie",
+  "Sédition",
+  "Insoumission",
+  "Contestation",
+  "Équilibre",
+  "Stable",
+  "Prospère",
+  "Pacifié",
+  "Contrôle Total",
+];
+
+const REGIONAL_STATE_OPTIONS: RegionalStateControl[] = [
+  "Allié",
+  "Indifférent",
+  "Rivalité",
+  "Antagoniste",
+  "Fantoche",
+  "En Guerre",
 ];
 
 const SUPER_MAJORITY_OPTIONS = ["3/5", "2/3", "7/10" ,"3/4"] as const;
@@ -74,12 +80,14 @@ export default function Home() {
   const [isCrisis, setIsCrisis] = useState(false);
   const [crisisDescription, setCrisisDescription] = useState("");
   const [provinces, setProvinces] = useState<ProvinceState>({
-    "201D": "Indépendant",
+    "201D": "Sécession",
     "202D-Plateau": "Stable",
     "202D-Profond": "Stable",
     "204D": "Équilibre",
     "Provinces des Plasticiens": "Contestation",
-    "Etat de Tori Valu": "Indépendant",
+  });
+  const [regionalStates, setRegionalStates] = useState<RegionalState>({
+    "Etat de Tori Valu": "Indifférent",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
   const [lawFeedback, setLawFeedback] = useState<{
@@ -395,6 +403,7 @@ export default function Home() {
       isCrisis,
       crisisDescription,
       provinces,
+      regionalStates,
       passedLaws,
       isControlValidated,
       requiredMajority,
@@ -440,6 +449,7 @@ export default function Home() {
     isCrisis,
     crisisDescription,
     provinces,
+    regionalStates,
     passedLaws,
     isControlValidated,
     requiredMajority,
@@ -518,8 +528,8 @@ export default function Home() {
     const name = newProvinceName.trim();
     if (!name) return;
     setProvinces((prev) => {
-      if (prev[name]) return prev;
-      return { ...prev, [name]: "Indépendant" };
+      if (prev[name] || regionalStates[name]) return prev;
+      return { ...prev, [name]: "Sécession" };
     });
     setNewProvinceName("");
   };
@@ -532,20 +542,24 @@ export default function Home() {
     });
   };
 
-  const renameProvince = (oldName: string, rawNewName: string) => {
-    const newName = rawNewName.trim();
-    if (!newName || newName === oldName) return;
-
+  const setProvinceIndependence = (name: string) => {
     setProvinces((prev) => {
-      if (!prev[oldName]) return prev;
-      if (prev[newName]) return prev; // évite doublon de clé
-      const next: ProvinceState = {};
-      (Object.keys(prev) as string[]).forEach((key) => {
-        if (key === oldName) next[newName] = prev[oldName];
-        else next[key] = prev[key];
-      });
+      if (!prev[name]) return prev;
+      const next = { ...prev };
+      delete next[name];
       return next;
     });
+    setRegionalStates((prev) => ({ ...prev, [name]: "Indifférent" }));
+  };
+
+  const annexRegionalState = (name: string) => {
+    setRegionalStates((prev) => {
+      if (!prev[name]) return prev;
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+    setProvinces((prev) => ({ ...prev, [name]: "Sécession" }));
   };
 
   return (
@@ -612,7 +626,7 @@ export default function Home() {
 
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
-                  Niveau de Contrôle des Provinces et Généralités Régionales
+                  Niveau de Contrôle des Provinces
                 </h3>
 
                 <div className="mb-3 grid grid-cols-[1fr_auto] gap-2">
@@ -634,7 +648,7 @@ export default function Home() {
 
                 <div className="space-y-3">
                   {(Object.keys(provinces) as string[]).map((name) => (
-                    <div key={name} className="grid grid-cols-[1fr_140px_auto] gap-2 items-center">
+                    <div key={name} className="grid grid-cols-[1fr_140px_auto_auto] gap-2 items-center">
                       <input
                         type="text"
                         defaultValue={name}
@@ -652,25 +666,58 @@ export default function Home() {
                       <select
                         value={provinces[name]}
                         onChange={(e) =>
-                          setProvinces((prev) => ({
-                            ...prev,
-                            [name]: e.target.value as ProvinceControl,
-                          }))
+                          setProvinces((prev) => ({ ...prev, [name]: e.target.value as ProvinceControl }))
                         }
                         className="px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                       >
-                        {CONTROL_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
+                        {PROVINCE_CONTROL_OPTIONS.map((option) => (
+                          <option key={option} value={option}>{option}</option>
                         ))}
                       </select>
+                      <button
+                        type="button"
+                        onClick={() => setProvinceIndependence(name)}
+                        className="px-2 py-1.5 text-xs font-semibold rounded-md text-white bg-amber-600 hover:bg-amber-700 transition"
+                      >
+                        Indépendance
+                      </button>
                       <button
                         type="button"
                         onClick={() => removeProvince(name)}
                         className="px-2 py-1.5 text-xs font-semibold rounded-md text-white bg-red-600 hover:bg-red-700 transition"
                       >
                         Supprimer
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700 mt-4">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                  Généralités Régionales
+                </h3>
+                <div className="space-y-3">
+                  {(Object.keys(regionalStates) as string[]).map((name) => (
+                    <div key={name} className="grid grid-cols-[1fr_140px_auto] gap-2 items-center">
+                      <span className="min-w-0 px-2 py-1.5 text-sm text-gray-900 dark:text-white">{name}</span>
+                      <select
+                        value={regionalStates[name]}
+                        onChange={(e) =>
+                          setRegionalStates((prev) => ({ ...prev, [name]: e.target.value as RegionalStateControl }))
+                        }
+                        className="px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      >
+                        {REGIONAL_STATE_OPTIONS.map((option) => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => annexRegionalState(name)}
+                        className="px-2 py-1.5 text-xs font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition"
+                      >
+                        Annexion
                       </button>
                     </div>
                   ))}
@@ -1228,6 +1275,7 @@ export default function Home() {
               isCrisis={isCrisis}
               crisisDescription={crisisDescription}
               provinces={provinces}
+              regionalStates={regionalStates}
               isControlValidated={isControlValidated}
               requiredMajority={requiredMajority}
               superMajorityRatio={superMajorityRatio}
