@@ -53,6 +53,7 @@ type DisplayState = {
   electionMode?: boolean;
   candidateCount?: number;
   candidateNames?: string[];
+  candidateColors?: string[];
 };
 
 export default function DisplayPage() {
@@ -175,6 +176,7 @@ export default function DisplayPage() {
           hideAssemblyWhenSecretBallot
           electionMode={state.electionMode ?? false}
           candidateNames={(state.candidateNames ?? ["Candidat 1"]).slice(0, state.candidateCount ?? 1)}
+          candidateColors={(state.candidateColors ?? ["#4f46e5"]).slice(0, state.candidateCount ?? 1)}
           readOnly
         />
       </div>

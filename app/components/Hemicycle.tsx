@@ -55,6 +55,7 @@ interface HemicycleProps {
   hideAssemblyWhenSecretBallot?: boolean;
   electionMode?: boolean;
   candidateNames?: string[];
+  candidateColors?: string[];
 }
 
 export default function Hemicycle({
@@ -99,6 +100,7 @@ export default function Hemicycle({
   hideAssemblyWhenSecretBallot = true,
   electionMode = false,
   candidateNames = ["Candidat 1"],
+  candidateColors = ["#4f46e5"],
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -493,6 +495,14 @@ export default function Hemicycle({
     return base.length > 0 ? base : ["Candidat 1"];
   }, [candidateNames]);
 
+  const normalizedCandidateColors = useMemo(() => {
+    const palette = ["#4f46e5", "#7c3aed", "#2563eb", "#059669", "#dc2626", "#ea580c", "#0d9488", "#a21caf"];
+    const count = normalizedCandidates.length;
+    const base = candidateColors.slice(0, count);
+    while (base.length < count) base.push(palette[base.length % palette.length]);
+    return base;
+  }, [candidateColors, normalizedCandidates]);
+
   const electionResults = useMemo(() => {
     const expressed = [...seatColors, presidentColor].filter((c) => c === "green").length;
     const count = normalizedCandidates.length;
@@ -500,9 +510,10 @@ export default function Hemicycle({
     const rem = expressed % count;
     return normalizedCandidates.map((name, i) => ({
       name,
+      color: normalizedCandidateColors[i],
       votes: base + (i < rem ? 1 : 0),
     }));
-  }, [seatColors, presidentColor, normalizedCandidates]);
+  }, [seatColors, presidentColor, normalizedCandidates, normalizedCandidateColors]);
 
   return (
     <div className="space-y-8">
@@ -777,12 +788,16 @@ export default function Hemicycle({
                     {electionResults.map((c, idx) => (
                       <div
                         key={`cand-${idx}-${c.name}`}
-                        className="rounded-lg p-4 border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30 text-center"
+                        className="rounded-lg p-4 border text-center"
+                        style={{
+                          backgroundColor: `${c.color}22`,
+                          borderColor: `${c.color}66`,
+                        }}
                       >
-                        <div className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 break-words">
+                        <div className="text-sm font-semibold break-words" style={{ color: c.color }}>
                           {c.name}
                         </div>
-                        <div className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 mt-2">
+                        <div className="text-3xl font-bold mt-2" style={{ color: c.color }}>
                           {c.votes}
                         </div>
                       </div>

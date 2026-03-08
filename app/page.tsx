@@ -107,6 +107,7 @@ export default function Home() {
   const [electionMode, setElectionMode] = useState(false);
   const [candidateCount, setCandidateCount] = useState(2);
   const [candidateNames, setCandidateNames] = useState<string[]>(["Candidat 1", "Candidat 2"]);
+  const [candidateColors, setCandidateColors] = useState<string[]>(["#4f46e5", "#7c3aed"]);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -119,10 +120,24 @@ export default function Home() {
       while (next.length < candidateCount) next.push(`Candidat ${next.length + 1}`);
       return next;
     });
+    setCandidateColors((prev) => {
+      const palette = ["#4f46e5", "#7c3aed", "#2563eb", "#059669", "#dc2626", "#ea580c", "#0d9488", "#a21caf"];
+      const next = prev.slice(0, candidateCount);
+      while (next.length < candidateCount) next.push(palette[next.length % palette.length]);
+      return next;
+    });
   }, [candidateCount]);
 
   const setCandidateName = (idx: number, value: string) => {
     setCandidateNames((prev) => {
+      const next = [...prev];
+      next[idx] = value;
+      return next;
+    });
+  };
+
+  const setCandidateColor = (idx: number, value: string) => {
+    setCandidateColors((prev) => {
       const next = [...prev];
       next[idx] = value;
       return next;
@@ -384,6 +399,7 @@ export default function Home() {
       electionMode,
       candidateCount,
       candidateNames,
+      candidateColors,
       proposals: [
         { title: proposal1Title, text: proposal1Text, organique: proposal1Organic },
         { title: proposal2Title, text: proposal2Text, organique: proposal2Organic },
@@ -426,6 +442,7 @@ export default function Home() {
     electionMode,
     candidateCount,
     candidateNames,
+    candidateColors,
     proposal1Title,
     proposal1Text,
     proposal2Title,
@@ -1118,82 +1135,24 @@ export default function Home() {
 
               <div className="mt-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                 {candidateNames.slice(0, candidateCount).map((name, idx) => (
-                  <input
-                    key={`cand-name-${idx}`}
-                    type="text"
-                    value={name}
-                    onChange={(e) => setCandidateName(idx, e.target.value)}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    placeholder={`Candidat ${idx + 1}`}
-                  />
+                  <div key={`cand-wrap-${idx}`} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setCandidateName(idx, e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      placeholder={`Candidat ${idx + 1}`}
+                    />
+                    <input
+                      type="color"
+                      value={candidateColors[idx] ?? "#4f46e5"}
+                      onChange={(e) => setCandidateColor(idx, e.target.value)}
+                      className="h-9 w-11 cursor-pointer rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
+                      title={`Couleur candidat ${idx + 1}`}
+                    />
+                  </div>
                 ))}
               </div>
-            </div>
-
-            {lawFeedback && (
-              <div
-                className={`mb-4 rounded-lg border px-4 py-2 text-sm font-medium ${
-                  lawFeedback.type === "success"
-                    ? "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-300"
-                    : "bg-red-50 border-red-200 text-red-700 dark:bg-red-950 dark:border-red-800 dark:text-red-300"
-                }`}
-              >
-                {lawFeedback.message}
-              </div>
-            )}
-
-            <div className="mb-6 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-              <div className="flex items-center justify-between gap-3 mb-3">
-                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100">Lois votées ({passedLaws.length})</h3>
-              </div>
-              {passedLaws.length === 0 ? (
-                <p className="text-sm text-gray-600 dark:text-gray-300">Aucune loi enregistrée.</p>
-              ) : (
-                <div className="space-y-2 max-h-56 overflow-auto">
-                  {passedLaws.map((law, idx) => (
-                    <div
-                      key={`${law.title}-${idx}`}
-                      className={`rounded-lg border p-3 ${
-                        law.abrogee
-                          ? "border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-950/40"
-                          : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-gray-900 dark:text-white break-words">
-                            {law.title || "Sans titre"}{" "}
-                            {law.abrogee ? <span className="text-red-700 dark:text-red-300">(Abrogée)</span> : null}
-                          </p>
-                          {law.adopteeSousEnclume ? (
-                            <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
-                              Adoptée sous Loi de l’Enclume
-                            </p>
-                          ) : null}
-                          {law.organique ? (
-                            <p className="text-xs font-semibold text-violet-700 dark:text-violet-300">
-                              Loi Organique (supermajorité requise)
-                            </p>
-                          ) : null}
-                          <p className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
-                            {law.text || "Sans texte"}
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => toggleLawAbrogation(idx)}
-                          className={`shrink-0 px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
-                            law.abrogee
-                              ? "bg-emerald-600 hover:bg-emerald-700"
-                              : "bg-red-600 hover:bg-red-700"
-                          }`}
-                        >
-                          {law.abrogee ? "Rétablir la loi" : "Abroger la loi"}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
 
             <Hemicycle
@@ -1229,6 +1188,7 @@ export default function Home() {
               hideAssemblyWhenSecretBallot={false}
               electionMode={electionMode}
               candidateNames={candidateNames.slice(0, candidateCount)}
+              candidateColors={candidateColors.slice(0, candidateCount)}
             />
           </div>
         )}
