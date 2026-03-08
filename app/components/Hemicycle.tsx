@@ -185,15 +185,32 @@ export default function Hemicycle({
     const all = [...seatColors, presidentColor];
     const registered = all.filter((c) => c !== "black");
     const hasSeatVeto = registered.some((c) => c === "orange");
+    const hasPresidentVeto = presidentColor === "orange";
 
     const pour = registered.filter((c) => c === "green").length;
     const contre = registered.filter((c) => c === "red" || c === "orange").length;
     const exprimes = pour + contre;
 
     if (isDecretMode && !isNoConfidenceMotion && !useEnclumeLaw) {
+      // Nouveau : droit de véto contre un décret
+      const decretVetoUsed =
+        (vetoMode === "player" && hasSeatVeto) ||
+        (vetoMode === "president" && hasPresidentVeto);
+
+      if (decretVetoUsed) {
+        return {
+          label:
+            vetoMode === "president"
+              ? "Décret bloqué : droit de véto du Président utilisé"
+              : "Décret bloqué : droit de véto utilisé",
+          tone: "text-rose-700 dark:text-rose-300",
+          bg: "bg-rose-50 dark:bg-rose-950",
+        };
+      }
+
       if (exprimes === 0) {
         return {
-          label: `Décret en cours — nécessite ${superMajorityRatio} de votes contre pour être bloqué`,
+          label: `Décret en cours — nécessite ${superMajorityRatio} des votes contre pour être bloqué`,
           tone: "text-amber-700 dark:text-amber-300",
           bg: "bg-amber-50 dark:bg-amber-950",
         };
@@ -201,7 +218,7 @@ export default function Hemicycle({
       const ratioContre = contre / exprimes;
       if (ratioContre >= superThreshold) {
         return {
-          label: `Décret rejeté (supermajorité contre atteinte : ${superMajorityRatio})`,
+          label: `Décret rejeté (Super Majorité contre atteinte : ${superMajorityRatio})`,
           tone: "text-rose-700 dark:text-rose-300",
           bg: "bg-rose-50 dark:bg-rose-950",
         };
@@ -329,7 +346,17 @@ export default function Hemicycle({
       tone: "text-gray-700 dark:text-gray-200",
       bg: "bg-rose-50 dark:bg-rose-950",
     };
-  }, [seatColors, presidentColor, superThreshold, superMajorityRatio, vetoMode, isNoConfidenceMotion, useEnclumeLaw, enclumeStatus, isDecretMode]);
+  }, [
+    seatColors,
+    presidentColor,
+    superThreshold,
+    superMajorityRatio,
+    vetoMode,
+    isNoConfidenceMotion,
+    useEnclumeLaw,
+    enclumeStatus,
+    isDecretMode,
+  ]);
 
   const seats = useMemo(() => {
     const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
@@ -700,10 +727,10 @@ export default function Hemicycle({
                       Décret — Rappel des règles
                     </div>
                     <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-200">
-                      Un décret est appliqué immédiatement
+                      Un décret proposé par le président est appliqué par défaut
                     </div>
                     <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
-                      Il faut une supermajorité de votes contre pour le bloquer
+                      Il faut une super majorité de votes contre pour le bloquer
                     </div>
                     <div className="mt-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
                       Seuil actuel : {superMajorityRatio}
