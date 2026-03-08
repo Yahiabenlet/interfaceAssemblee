@@ -1168,6 +1168,29 @@ export default function Home() {
                   />
                   Amendement anti constitutionnel
                 </label>
+
+
+                <label className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    Selection Couleur Parti
+                  </span>
+                  <input
+                    type="color"
+                    value={selectionRingColor}
+                    onChange={(e) => setSelectionRingColor(e.target.value)}
+                    className="h-6 w-10 cursor-pointer"
+                  />
+                </label>
+
+
+                <button
+                  onClick={() => setIsGoldOutlineMode((v) => !v)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                    isGoldOutlineMode ? "bg-amber-700 hover:bg-amber-800" : "bg-amber-600 hover:bg-amber-700"
+                  }`}
+                >
+                  Sélection Chef de Parti : {isGoldOutlineMode ? "ON" : "OFF"}
+                </button>
               </div>
 
               <div className="flex flex-col gap-1.5">
