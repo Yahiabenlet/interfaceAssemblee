@@ -157,6 +157,8 @@ export default function Home() {
   const [choiceOptionCount, setChoiceOptionCount] = useState<ChoiceModeOptionCount>(2);
   const [choiceUseProposals, setChoiceUseProposals] = useState(true);
   const [choiceCustomLabels, setChoiceCustomLabels] = useState<string[]>(["Choix 1", "Choix 2", "Choix 3"]);
+  const [choiceColors, setChoiceColors] = useState<string[]>(["#22c55e", "#ef4444", "#f59e0b"]);
+  const [activeChoiceIndex, setActiveChoiceIndex] = useState(0);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -178,6 +180,10 @@ export default function Home() {
     setActiveCandidateIndex((prev) => Math.min(prev, Math.max(0, candidateCount - 1)));
   }, [candidateCount]);
 
+  useEffect(() => {
+    setActiveChoiceIndex((prev) => Math.min(prev, Math.max(0, choiceOptionCount - 1)));
+  }, [choiceOptionCount]);
+
   const setCandidateName = (idx: number, value: string) => {
     setCandidateNames((prev) => {
       const next = [...prev];
@@ -195,6 +201,12 @@ export default function Home() {
   };
 
   const nextColor = (current: SeatColor, target: "seat" | "president"): SeatColor => {
+    if (choiceMode) {
+      const active = choiceColors[activeChoiceIndex] ?? choiceColors[0] ?? "#22c55e";
+      const currentNorm = current.toLowerCase();
+      return currentNorm === active.toLowerCase() ? "white" : (active as SeatColor);
+    }
+
     if (electionMode) {
       const active = candidateColors[activeCandidateIndex] ?? candidateColors[0] ?? "#4f46e5";
       const currentNorm = current.toLowerCase();
@@ -474,6 +486,8 @@ export default function Home() {
       choiceOptionCount,
       choiceUseProposals,
       choiceCustomLabels,
+      choiceColors,
+      activeChoiceIndex,
       proposals: [
         { title: proposal1Title, text: proposal1Text, organique: proposal1Organic, decret: proposal1Decret },
         { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
@@ -537,6 +551,8 @@ export default function Home() {
     choiceOptionCount,
     choiceUseProposals,
     choiceCustomLabels,
+    choiceColors,
+    activeChoiceIndex,
   ]);
 
   useEffect(() => {
@@ -1361,9 +1377,7 @@ export default function Home() {
                   <button
                     onClick={() => setRevealSecretResults((v) => !v)}
                     className={`px-4 py-2 text-white font-semibold rounded-lg transition ${
-                      revealSecretResults
-                        ? "bg-amber-600 hover:bg-amber-700"
-                        : "bg-emerald-600 hover:bg-emerald-700"
+                      revealSecretResults ? "bg-amber-600 hover:bg-amber-700" : "bg-emerald-600 hover:bg-emerald-700"
                     }`}
                   >
                     {revealSecretResults ? "Masquer les résultats" : "Afficher les résultats"}
@@ -1488,6 +1502,31 @@ export default function Home() {
                 </label>
               </div>
 
+              <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2">
+                {Array.from({ length: choiceOptionCount }).map((_, idx) => (
+                  <label
+                    key={`choice-color-${idx}`}
+                    className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-between gap-2"
+                  >
+                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      Couleur Choix {idx + 1}
+                    </span>
+                    <input
+                      type="color"
+                      value={choiceColors[idx] ?? "#22c55e"}
+                      onChange={(e) =>
+                        setChoiceColors((prev) => {
+                          const next = [...prev];
+                          next[idx] = e.target.value;
+                          return next;
+                        })
+                      }
+                      className="h-6 w-10 cursor-pointer"
+                    />
+                  </label>
+                ))}
+              </div>
+
               {!choiceUseProposals && (
                 <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2">
                   {Array.from({ length: choiceOptionCount }).map((_, idx) => (
@@ -1506,6 +1545,27 @@ export default function Home() {
                       placeholder={`Texte du choix ${idx + 1}`}
                     />
                   ))}
+                </div>
+              )}
+
+              {choiceMode && (
+                <div className="mt-3 max-w-sm mx-auto">
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 text-center">
+                    Choix actif pour le clic
+                  </label>
+                  <select
+                    value={activeChoiceIndex}
+                    onChange={(e) => setActiveChoiceIndex(Number(e.target.value))}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    {Array.from({ length: choiceOptionCount }).map((_, idx) => (
+                      <option key={`active-choice-${idx}`} value={idx}>
+                        {(choiceUseProposals
+                          ? proposalChoicesLabel(idx, proposal1Title, proposal2Title, proposal3Title)
+                          : (choiceCustomLabels[idx] || `Choix ${idx + 1}`)).trim() || `Choix ${idx + 1}`}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
             </div>
@@ -1551,6 +1611,7 @@ export default function Home() {
               choiceOptionCount={choiceOptionCount}
               choiceUseProposals={choiceUseProposals}
               choiceCustomLabels={choiceCustomLabels}
+              choiceColors={choiceColors}
               proposalChoices={[
                 { title: proposal1Title, text: proposal1Text, organique: proposal1Organic, decret: proposal1Decret },
                 { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
@@ -1563,3 +1624,8 @@ export default function Home() {
     </div>
   );
 }
+
+const proposalChoicesLabel = (idx: number, p1: string, p2: string, p3: string) => {
+  const arr = [p1, p2, p3];
+  return arr[idx] || `Choix ${idx + 1}`;
+};

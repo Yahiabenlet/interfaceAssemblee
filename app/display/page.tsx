@@ -56,6 +56,8 @@ type DisplayState = {
   choiceOptionCount?: 2 | 3;
   choiceUseProposals?: boolean;
   choiceCustomLabels?: string[];
+  choiceColors?: string[];
+  activeChoiceIndex?: number;
   isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
@@ -240,6 +242,7 @@ export default function DisplayPage() {
           choiceOptionCount={state.choiceOptionCount ?? 2}
           choiceUseProposals={state.choiceUseProposals ?? true}
           choiceCustomLabels={state.choiceCustomLabels ?? ["Choix 1", "Choix 2", "Choix 3"]}
+          choiceColors={state.choiceColors ?? ["#22c55e", "#ef4444", "#f59e0b"]}
           proposalChoices={state.proposals ?? []}
         />
       </div>

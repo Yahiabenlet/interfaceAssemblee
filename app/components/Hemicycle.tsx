@@ -91,6 +91,7 @@ interface HemicycleProps {
   choiceOptionCount?: 2 | 3;
   choiceUseProposals?: boolean;
   choiceCustomLabels?: string[];
+  choiceColors?: string[];
   proposalChoices?: ProposalChoice[];
 }
 
@@ -151,6 +152,7 @@ export default function Hemicycle({
   choiceOptionCount = 2,
   choiceUseProposals = true,
   choiceCustomLabels = ["Choix 1", "Choix 2", "Choix 3"],
+  choiceColors = ["#22c55e", "#ef4444", "#f59e0b"],
   proposalChoices = [],
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
@@ -666,17 +668,22 @@ export default function Hemicycle({
 
   const choiceResults = useMemo(() => {
     const count = choiceOptionCount;
-    const fixedChoiceColors = ["#22c55e", "#ef4444", "#f59e0b"]; // Choix 1 vert, 2 rouge, 3 orange
-    const colors = fixedChoiceColors.slice(0, count).map((c) => c.toLowerCase());
+    const mappedColors = choiceColors.slice(0, count);
+    while (mappedColors.length < count) mappedColors.push(["#22c55e", "#ef4444", "#f59e0b"][mappedColors.length] ?? "#22c55e");
+
     const labels = renderedChoices.map((c) => c.title);
     const all = [...seatColors, presidentColor].filter((c) => c !== "white" && c !== "black");
 
-    return labels.map((label, i) => ({
-      label,
-      color: fixedChoiceColors[i] ?? "#22c55e",
-      votes: all.filter((c) => c.toLowerCase() === colors[i]).length,
-    }));
-  }, [choiceOptionCount, renderedChoices, seatColors, presidentColor]);
+    return labels.map((label, i) => {
+      const color = mappedColors[i];
+      const source = color.toLowerCase();
+      return {
+        label,
+        color,
+        votes: all.filter((c) => c.toLowerCase() === source).length,
+      };
+    });
+  }, [choiceOptionCount, renderedChoices, seatColors, presidentColor, choiceColors]);
 
   return (
     <div className="space-y-8">
