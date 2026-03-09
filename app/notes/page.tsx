@@ -88,6 +88,7 @@ export default function NotesPage() {
       if (e.key === "1") openWithFs("/display");
       if (e.key === "2") openWithFs("/propositions");
       if (e.key === "3") openWithFs("/notes");
+      if (e.key === "4") openWithFs("/depart");
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);

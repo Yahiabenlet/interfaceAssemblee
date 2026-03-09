@@ -140,6 +140,7 @@ export default function DisplayPage() {
       if (e.key === "1") openWithFs("/display");
       if (e.key === "2") openWithFs("/propositions");
       if (e.key === "3") openWithFs("/notes");
+      if (e.key === "4") openWithFs("/depart");
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
@@ -193,7 +194,7 @@ export default function DisplayPage() {
           economyGauge={state.economyGauge ?? 0}
           socialGauge={state.socialGauge ?? 0}
           securityGauge={state.securityGauge ?? 0}
-          budgetGauge={state.budgetGauge ?? 0}
+          budgetGauge={state.budgetGauge ?? 4}
           countrySituation={state.countrySituation ?? ""}
           isCrisis={state.isCrisis ?? false}
           crisisDescription={state.crisisDescription ?? ""}
@@ -235,8 +236,8 @@ export default function DisplayPage() {
           electionMode={state.electionMode ?? false}
           candidateNames={(state.candidateNames ?? ["Candidat 1"]).slice(0, state.candidateCount ?? 1)}
           candidateColors={(state.candidateColors ?? ["#4f46e5"]).slice(0, state.candidateCount ?? 1)}
-          passedLaws={state.passedLaws ?? []}
-          onToggleLawAbrogation={toggleLawAbrogationFromDisplay}
+          passedLaws={[]}
+          onToggleLawAbrogation={undefined}
           readOnly
           choiceMode={state.choiceMode ?? false}
           choiceOptionCount={state.choiceOptionCount ?? 2}

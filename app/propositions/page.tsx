@@ -103,7 +103,7 @@ export default function PropositionsPage() {
         setEconomyGauge(parsed.economyGauge ?? 0);
         setSocialGauge(parsed.socialGauge ?? 0);
         setSecurityGauge(parsed.securityGauge ?? 0);
-        setBudgetGauge(parsed.budgetGauge ?? 0);
+        setBudgetGauge(parsed.budgetGauge ?? 4);
       } catch {}
     };
 
@@ -151,6 +151,7 @@ export default function PropositionsPage() {
       if (e.key === "1") openWithFs("/display");
       if (e.key === "2") openWithFs("/propositions");
       if (e.key === "3") openWithFs("/notes");
+      if (e.key === "4") openWithFs("/depart");
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);

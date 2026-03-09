@@ -91,7 +91,7 @@ export default function Home() {
   const [economyGauge, setEconomyGauge] = useState(5);
   const [socialGauge, setSocialGauge] = useState(5);
   const [securityGauge, setSecurityGauge] = useState(5);
-  const [budgetGauge, setBudgetGauge] = useState(0);
+  const [budgetGauge, setBudgetGauge] = useState(4);
   const [countrySituation, setCountrySituation] = useState("");
   const [isCrisis, setIsCrisis] = useState(false);
   const [crisisDescription, setCrisisDescription] = useState("");
@@ -1084,6 +1084,16 @@ export default function Home() {
                           <p className="text-xs text-gray-600 dark:text-gray-300">
                             {law.abrogee ? "Statut : Abrogée" : "Statut : En vigueur"}
                           </p>
+                          {law.adopteeSousEnclume ? (
+                            <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
+                              Loi de l’Enclume
+                            </p>
+                          ) : null}
+                          {law.organique ? (
+                            <p className="text-xs font-semibold text-violet-700 dark:text-violet-300">
+                              Loi organique
+                            </p>
+                          ) : null}
                           {law.decret ? (
                             <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
                               Décret
