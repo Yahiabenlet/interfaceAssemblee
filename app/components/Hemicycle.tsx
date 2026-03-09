@@ -800,7 +800,102 @@ export default function Hemicycle({
             )}
           </div>
 
+          {/* Jauges au-dessus de l'hémicycle */}
           <div>
+            <div className="w-full max-w-3xl justify-self-center mb-4">
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges de la République</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Colonne gauche: Économie + Social */}
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
+                        <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
+                      </div>
+                      <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
+                        <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
+                        <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
+                      </div>
+                      <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
+                        <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Colonne droite: Sécurité + Budget */}
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
+                        <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
+                      </div>
+                      <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
+                        <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Budget</span>
+                        <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                          {clampedBudget > 0 ? `+${clampedBudget}` : clampedBudget}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center gap-0 max-w-[300px] mx-auto">
+                        {Array.from({ length: 15 }).map((_, idx) => {
+                          const center = 7;
+                          const distance = idx - center;
+
+                          if (distance === 0) {
+                            return (
+                              <div
+                                key={`budget-center-${idx}`}
+                                className="h-4 w-4 shrink-0 rounded-sm border border-gray-400 bg-white"
+                                title="Équilibre"
+                              />
+                            );
+                          }
+
+                          if (distance < 0) {
+                            const needed = -clampedBudget;
+                            const slotFromCenter = -distance;
+                            const show = clampedBudget < 0 && slotFromCenter <= needed;
+                            return show ? (
+                              <div
+                                key={`budget-neg-${idx}`}
+                                className="h-4 w-4 shrink-0 rounded-sm border border-red-700 bg-red-500"
+                                title="Déficit"
+                              />
+                            ) : (
+                              <div key={`budget-neg-empty-${idx}`} className="h-4 w-4 shrink-0" />
+                            );
+                          }
+
+                          const needed = clampedBudget;
+                          const slotFromCenter = distance;
+                          const show = clampedBudget > 0 && slotFromCenter <= needed;
+                          return show ? (
+                            <div
+                              key={`budget-pos-${idx}`}
+                              className="h-4 w-4 shrink-0 rounded-sm border border-green-700 bg-green-500"
+                              title="Excédent"
+                            />
+                          ) : (
+                            <div key={`budget-pos-empty-${idx}`} className="h-4 w-4 shrink-0" />
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-6 items-start mb-8">
               <div className="w-full max-w-3xl justify-self-center">
                 <div className="flex justify-center items-start self-start">{hemicycleOrSecretBlock}</div>
@@ -851,94 +946,6 @@ export default function Hemicycle({
                         </span>
                       </div>
                     ))}
-                  </div>
-                </div>
-
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Jauges de la République </h3>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
-                        <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
-                      </div>
-                      <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
-                        <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
-                        <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
-                      </div>
-                      <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
-                        <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Sécurité</span>
-                        <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">{securityGauge}/10</span>
-                      </div>
-                      <div className="h-3 rounded-full bg-blue-100 dark:bg-blue-950 overflow-hidden">
-                        <div className="h-full bg-blue-500" style={{ width: `${(securityGauge / 10) * 100}%` }} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Budget</span>
-                        <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-                          {clampedBudget > 0 ? `+${clampedBudget}` : clampedBudget}
-                        </span>
-                      </div>
-
-                      {/* 15 colonnes de largeur identique => espace uniforme */}
-                      <div className="grid grid-cols-15 gap-0 max-w-[300px] mx-auto justify-items-center">
-                        {Array.from({ length: 15 }).map((_, idx) => {
-                          const center = 7; // colonne centrale (0..14)
-                          const distance = idx - center;
-
-                          if (distance === 0) {
-                            return (
-                              <div
-                                key={`budget-center-${idx}`}
-                                className="h-4 w-4 rounded-sm border border-gray-400 bg-white"
-                                title="Équilibre"
-                              />
-                            );
-                          }
-
-                          if (distance < 0) {
-                            const needed = -clampedBudget; // nb rouges à afficher
-                            const slotFromCenter = -distance; // 1..7
-                            const show = clampedBudget < 0 && slotFromCenter <= needed;
-                            return show ? (
-                              <div
-                                key={`budget-neg-${idx}`}
-                                className="h-4 w-4 rounded-sm border border-red-700 bg-red-500"
-                                title="Déficit"
-                              />
-                            ) : (
-                              <div key={`budget-neg-empty-${idx}`} className="h-4 w-4" />
-                            );
-                          }
-
-                          const needed = clampedBudget; // nb vertes à afficher
-                          const slotFromCenter = distance; // 1..7
-                          const show = clampedBudget > 0 && slotFromCenter <= needed;
-                          return show ? (
-                            <div
-                              key={`budget-pos-${idx}`}
-                              className="h-4 w-4 rounded-sm border border-green-700 bg-green-500"
-                              title="Excédent"
-                            />
-                          ) : (
-                            <div key={`budget-pos-empty-${idx}`} className="h-4 w-4" />
-                          );
-                        })}
-                      </div>
-                    </div>
                   </div>
                 </div>
 
