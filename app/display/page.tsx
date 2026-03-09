@@ -204,14 +204,14 @@ export default function DisplayPage() {
               "Les Hauteurs Profondes": "Stable",
               "Vallée de l’Armoire": "Contestation",
               "Provinces des Plasticiens": "Contestation",
-              "Archipel des Eldrazi": "Autonomie",
+              "Archipel des Eldrazi": "Équilibre",
             }
           }
           regionalStates={
             state.regionalStates ?? {
               "L’Outre-Porte": "Prudent",
               "Alliance des Etats d'Elimat": "Indifférent",
-              "Etat de Tori Value": "Rival",
+              "Empire de Tori Value": "Rival",
               "Junte des Emirats du Sud": "Coopératif",
             }
           }

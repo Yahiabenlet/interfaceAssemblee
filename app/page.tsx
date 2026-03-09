@@ -101,12 +101,12 @@ export default function Home() {
     "Les Hauteurs Profondes": "Stable",
     "Vallée de l’Armoire": "Contestation",
     "Provinces des Plasticiens": "Contestation",
-    "Archipel des Eldrazi": "Autonomie",
+    "Archipel des Eldrazi": "Équilibre",
   });
   const [regionalStates, setRegionalStates] = useState<RegionalState>({
     "L’Outre-Porte": "Prudent",
     "Alliance des Etats d'Elimat": "Indifférent",
-    "Etat de Tori Value": "Rival",
+    "Empire de Tori Value": "Rival",
     "Junte des Emirats du Sud": "Coopératif",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);

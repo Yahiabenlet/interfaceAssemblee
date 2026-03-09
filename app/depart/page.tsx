@@ -154,11 +154,11 @@ export default function DepartPage() {
             <p><strong>Provinces des Plasticiens (<span className="text-orange-700 dark:text-orange-300">Contestation</span>)</strong> : Province du peuple plasticien, une minorité qui ne s’est jamais réellement intégrée.</p>
             <p className="mb-2">Impact : Les lois restrictives ou nationalistes font baisser son statut vers Sédition et des Crises peuvent naître ici. Soutien : Les Écolos et Progressistes.</p>
 
-            <p><strong>Archipel des Eldrazi (<span className="text-blue-700 dark:text-blue-300">Autonome</span>)</strong> : Province d’outre-mer qui flirte avec l&apos;idée de devenir indépendante, mais source de convoitise.</p>
+            <p><strong>Archipel des Eldrazi (<span className="text-gray-700 dark:text-gray-300">Equilibre</span>)</strong> : Province d’outre-mer qui flirte avec l&apos;idée de devenir indépendante, mais source de convoitise.</p>
             <p>
               Impact :{" "}
               <span className="font-bold text-white">Budget</span>{" "}
-              -1 par tour tant qu’elle n’est pas indépendante.
+              -1 par tour tant qu’elle n’est pas autonome ou indépendante.
             </p>
           </section>
 
@@ -167,7 +167,7 @@ export default function DepartPage() {
 
             <p><strong>L’Outre-Porte (<span className="text-orange-700 dark:text-orange-300">Prudent</span>)</strong> : Jeune royaume indépendant, le pays est séparé entre deux peuples, dont un proche de nous. Le concept de Grande République de Gérionie considère l’Outre-Porte comme incluse dans nos frontières naturelles.</p>
             <p className="mt-2"><strong>L’Alliance des Etats d’Elimat (<span className="text-gray-700 dark:text-gray-300">Indifférent</span>)</strong> :  Superpuissance régionale, son hégémonie économique et militaire est telle que ce pays est le gendarme du monde et personne n&apos;ose imaginer l'état de l’économie mondiale si celle d’Elimat venait à s’effondrer.</p>
-            <p className="mt-2"><strong>Etat de Tori Value (<span className="text-orange-700 dark:text-orange-300">Rivalité</span>)</strong> : Rival historique de la République de Gérionie, cela fait 3 décennies que les deux états n’ont pas combattu. Revendique l’archipel des Eldrazi.</p>
+            <p className="mt-2"><strong>Empire de Tori Value (<span className="text-orange-700 dark:text-orange-300">Rivalité</span>)</strong> : Rival historique de la République de Gérionie, cela fait 3 décennies que les deux états n’ont pas combattu. Revendique l’archipel des Eldrazi.</p>
             <p className="mt-2"><strong>Junte des Emirats du Sud (<span className="text-green-700 dark:text-green-300">Coopératif</span>)</strong> : Junte dirigé par un émir atypique, qui s’est pris d’affection pour votre république singulière. Bien que l’émir n’hésite pas à financer des projets pharaoniques sur votre territoire, son peuple souffre de son régime absolutiste et dictatorial.</p>
           </section>
         </div>
