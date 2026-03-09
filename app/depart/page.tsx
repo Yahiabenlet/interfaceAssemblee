@@ -113,6 +113,12 @@ export default function DepartPage() {
           <section className="rounded-lg border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900">
             <h2 className="font-bold mb-2">Liste des Provinces</h2>
 
+            <p className="mb-3 rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-3 py-2">
+              <span className="font-semibold text-amber-800 dark:text-amber-300">Règle générale :</span>{" "}
+              Si <span className="font-semibold">2 décrets</span> sont appliqués dans une province,
+               des <span className="font-semibold">jetons d&apos;influence bonus</span> seront accordés aux partis soutenus dans la province.
+            </p>
+
             <p><strong>La Capitale (<span className="text-green-700 dark:text-green-300">Prospère</span>)</strong> : Siège du pouvoir politique, ici tout est jeu d’influence et de politique. Quand la Capitale éternue, la République s’enrhume.</p>
             <p className="mb-2">
               Impact :{" "}
