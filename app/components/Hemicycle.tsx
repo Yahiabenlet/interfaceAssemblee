@@ -735,7 +735,26 @@ export default function Hemicycle({
 
             {!electionMode && (
               <>
-                {isNoConfidenceMotion ? (
+                {choiceMode ? (
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                      Choix ({choiceOptionCount})
+                    </h3>
+                    {renderedChoices.map((opt, idx) => (
+                      <div
+                        key={`choice-card-${idx}`}
+                        className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700"
+                      >
+                        <div className="text-sm font-semibold text-gray-800 dark:text-gray-100 break-words">
+                          {opt.title}
+                        </div>
+                        <div className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
+                          {opt.text || "—"}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : isNoConfidenceMotion ? (
                   <div className="rounded-lg p-4 border text-center bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
                     <div className="text-sm font-medium text-amber-800 dark:text-amber-300">
                       Motion de censure — Rappel des règles
@@ -760,7 +779,7 @@ export default function Hemicycle({
                     <div className="text-base font-bold mt-2 text-amber-800 dark:text-amber-300">
                       Loi de l&apos;Enclume — Rappel des règles
                     </div>
-                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
+                    <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
                       Loi adoptée sans vote, engageant la responsabilité du président
                     </div>
                     <div className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">
@@ -842,7 +861,7 @@ export default function Hemicycle({
                   </div>
                 )}
 
-                {!isNoConfidenceMotion && !useEnclumeLaw && (
+                {!choiceMode && !isNoConfidenceMotion && !useEnclumeLaw && (
                   <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 break-words">
                       {title || "Proposition de loi"}
