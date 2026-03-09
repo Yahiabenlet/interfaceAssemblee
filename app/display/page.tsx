@@ -52,6 +52,10 @@ type DisplayState = {
   regionalStates?: RegionalState;
   passedLaws?: Array<{ title: string; text: string; abrogee?: boolean; organique?: boolean; nonConforme?: boolean }>;
   proposals?: Array<{ title: string; text: string; organique?: boolean; decret?: boolean }>;
+  choiceMode?: boolean;
+  choiceOptionCount?: 2 | 3;
+  choiceUseProposals?: boolean;
+  choiceCustomLabels?: string[];
   isControlValidated?: "conforme" | "nonConforme" | "nonStatue";
   requiredMajority?: "simple" | "super";
   superMajorityRatio?: string;
@@ -232,6 +236,11 @@ export default function DisplayPage() {
           passedLaws={state.passedLaws ?? []}
           onToggleLawAbrogation={toggleLawAbrogationFromDisplay}
           readOnly
+          choiceMode={state.choiceMode ?? false}
+          choiceOptionCount={state.choiceOptionCount ?? 2}
+          choiceUseProposals={state.choiceUseProposals ?? true}
+          choiceCustomLabels={state.choiceCustomLabels ?? ["Choix 1", "Choix 2", "Choix 3"]}
+          proposalChoices={state.proposals ?? []}
         />
       </div>
     </div>

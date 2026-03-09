@@ -79,6 +79,8 @@ type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
 
 type ConstitutionalStatus = "conforme" | "nonConforme" | "nonStatue";
 
+type ChoiceModeOptionCount = 2 | 3;
+
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -151,6 +153,10 @@ export default function Home() {
   const [activeCandidateIndex, setActiveCandidateIndex] = useState(0);
   const [allowAntiConstitutionalAmendment, setAllowAntiConstitutionalAmendment] = useState(false);
   const [isDecretMode, setIsDecretMode] = useState(false);
+  const [choiceMode, setChoiceMode] = useState(false);
+  const [choiceOptionCount, setChoiceOptionCount] = useState<ChoiceModeOptionCount>(2);
+  const [choiceUseProposals, setChoiceUseProposals] = useState(true);
+  const [choiceCustomLabels, setChoiceCustomLabels] = useState<string[]>(["Choix 1", "Choix 2", "Choix 3"]);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -464,6 +470,10 @@ export default function Home() {
       candidateColors,
       activeCandidateIndex,
       isDecretMode,
+      choiceMode,
+      choiceOptionCount,
+      choiceUseProposals,
+      choiceCustomLabels,
       proposals: [
         { title: proposal1Title, text: proposal1Text, organique: proposal1Organic, decret: proposal1Decret },
         { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
@@ -523,6 +533,10 @@ export default function Home() {
     proposal2Decret,
     proposal3Decret,
     isDecretMode,
+    choiceMode,
+    choiceOptionCount,
+    choiceUseProposals,
+    choiceCustomLabels,
   ]);
 
   useEffect(() => {
@@ -1428,6 +1442,74 @@ export default function Home() {
               )}
             </div>
 
+            <div className="mb-4 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                Mode choix (2 ou 3 options)
+              </h3>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setChoiceMode((v) => !v)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                    choiceMode ? "bg-indigo-700 hover:bg-indigo-800" : "bg-indigo-600 hover:bg-indigo-700"
+                  }`}
+                >
+                  {choiceMode ? "Désactiver le mode choix" : "Activer le mode choix"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setChoiceOptionCount(2)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                    choiceOptionCount === 2 ? "bg-slate-700 hover:bg-slate-800" : "bg-slate-600 hover:bg-slate-700"
+                  }`}
+                >
+                  2 options
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setChoiceOptionCount(3)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                    choiceOptionCount === 3 ? "bg-slate-700 hover:bg-slate-800" : "bg-slate-600 hover:bg-slate-700"
+                  }`}
+                >
+                  3 options
+                </button>
+
+                <label className="inline-flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-300 ml-2">
+                  <input
+                    type="checkbox"
+                    checked={choiceUseProposals}
+                    onChange={(e) => setChoiceUseProposals(e.target.checked)}
+                    className="h-4 w-4"
+                  />
+                  Utiliser les propositions de loi
+                </label>
+              </div>
+
+              {!choiceUseProposals && (
+                <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2">
+                  {Array.from({ length: choiceOptionCount }).map((_, idx) => (
+                    <input
+                      key={`choice-custom-${idx}`}
+                      type="text"
+                      value={choiceCustomLabels[idx] ?? ""}
+                      onChange={(e) =>
+                        setChoiceCustomLabels((prev) => {
+                          const next = [...prev];
+                          next[idx] = e.target.value;
+                          return next;
+                        })
+                      }
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      placeholder={`Texte du choix ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Hemicycle
               numSeats={numSeats}
               title={title}
@@ -1465,6 +1547,15 @@ export default function Home() {
               candidateNames={candidateNames.slice(0, candidateCount)}
               candidateColors={candidateColors.slice(0, candidateCount)}
               isDecretMode={isDecretMode}
+              choiceMode={choiceMode}
+              choiceOptionCount={choiceOptionCount}
+              choiceUseProposals={choiceUseProposals}
+              choiceCustomLabels={choiceCustomLabels}
+              proposalChoices={[
+                { title: proposal1Title, text: proposal1Text, organique: proposal1Organic, decret: proposal1Decret },
+                { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
+                { title: proposal3Title, text: proposal3Text, organique: proposal3Organic, decret: proposal3Decret },
+              ]}
             />
           </div>
         )}

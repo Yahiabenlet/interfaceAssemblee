@@ -44,6 +44,8 @@ type PassedLaw = {
   decret?: boolean;
 };
 
+type ProposalChoice = { title: string; text: string; organique?: boolean; decret?: boolean };
+
 interface HemicycleProps {
   numSeats: number;
   title: string;
@@ -85,6 +87,11 @@ interface HemicycleProps {
   candidateColors?: string[];
   passedLaws?: PassedLaw[];
   onToggleLawAbrogation?: (index: number) => void;
+  choiceMode?: boolean;
+  choiceOptionCount?: 2 | 3;
+  choiceUseProposals?: boolean;
+  choiceCustomLabels?: string[];
+  proposalChoices?: ProposalChoice[];
 }
 
 export default function Hemicycle({
@@ -140,6 +147,11 @@ export default function Hemicycle({
   candidateColors = ["#4f46e5"],
   passedLaws = [],
   onToggleLawAbrogation,
+  choiceMode = false,
+  choiceOptionCount = 2,
+  choiceUseProposals = true,
+  choiceCustomLabels = ["Choix 1", "Choix 2", "Choix 3"],
+  proposalChoices = [],
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -637,11 +649,39 @@ export default function Hemicycle({
 
   const canManageLawsFromHere = Boolean(onToggleLawAbrogation);
 
+  const renderedChoices = useMemo(() => {
+    if (!choiceUseProposals) {
+      return Array.from({ length: choiceOptionCount }).map((_, i) => ({
+        title: (choiceCustomLabels[i] ?? "").trim() || `Choix ${i + 1}`,
+        text: "",
+      }));
+    }
+    const base = proposalChoices.slice(0, choiceOptionCount);
+    while (base.length < choiceOptionCount) base.push({ title: `Choix ${base.length + 1}`, text: "" });
+    return base.map((p, i) => ({
+      title: p.title?.trim() || `Choix ${i + 1}`,
+      text: p.text?.trim() || "",
+    }));
+  }, [choiceUseProposals, choiceOptionCount, proposalChoices, choiceCustomLabels]);
+
+  const choiceResults = useMemo(() => {
+    const count = choiceOptionCount;
+    const fixedChoiceColors = ["#22c55e", "#ef4444", "#f59e0b"]; // Choix 1 vert, 2 rouge, 3 orange
+    const colors = fixedChoiceColors.slice(0, count).map((c) => c.toLowerCase());
+    const labels = renderedChoices.map((c) => c.title);
+    const all = [...seatColors, presidentColor].filter((c) => c !== "white" && c !== "black");
+
+    return labels.map((label, i) => ({
+      label,
+      color: fixedChoiceColors[i] ?? "#22c55e",
+      votes: all.filter((c) => c.toLowerCase() === colors[i]).length,
+    }));
+  }, [choiceOptionCount, renderedChoices, seatColors, presidentColor]);
+
   return (
     <div className="space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full overflow-x-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 items-start min-w-[980px]">
-          {/* Colonne gauche : Situation + Essentiel + (Avis/Enclume/Motion/Proposition) */}
           <div className="space-y-4">
             <div
               className={`rounded-lg p-4 border ${
@@ -1019,6 +1059,27 @@ export default function Hemicycle({
                       </div>
                     </div>
                   </div>
+                ) : choiceMode ? (
+                  <div
+                    className={`w-full grid grid-cols-1 ${
+                      choiceOptionCount === 3 ? "md:grid-cols-3" : "md:grid-cols-2"
+                    } gap-3`}
+                  >
+                    {choiceResults.map((c, idx) => (
+                      <div
+                        key={`choice-${idx}-${c.label}`}
+                        className="rounded-lg p-4 border text-center"
+                        style={{ backgroundColor: `${c.color}22`, borderColor: `${c.color}66` }}
+                      >
+                        <div className="text-sm font-semibold break-words" style={{ color: c.color }}>
+                          {c.label}
+                        </div>
+                        <div className="text-3xl font-bold mt-2" style={{ color: c.color }}>
+                          {c.votes}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 ) : electionMode ? (
                   <div
                     className={`w-full grid grid-cols-1 ${
@@ -1066,7 +1127,9 @@ export default function Hemicycle({
         </div>
       </div>
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        {electionMode
+        {choiceMode
+          ? "Mode choix : attribuez les voix via les couleurs des candidats (comme le mode élection)"
+          : electionMode
           ? "Mode élection : cliquez pour attribuer la voix au candidat actif (clic à nouveau pour annuler)"
           : "Cliquez sur les sièges (y compris du Président) pour changer la couleur (Blanc → Vert → Rouge → Orange → Noir)"}
       </p>
