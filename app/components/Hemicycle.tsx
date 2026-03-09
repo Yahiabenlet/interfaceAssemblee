@@ -362,16 +362,28 @@ export default function Hemicycle({
   ]);
 
   const seats = useMemo(() => {
-    const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
+    const rows = numSeats < 12 ? 3 : numSeats > 50 ? 7 : numSeats > 35 ? 6 : numSeats > 21 ? 5 : 4;
     const rowRadii =
       rows === 3
         ? [160, 188, 216]
         : rows === 4
         ? [152, 178, 204, 230]
-        : [144, 168, 192, 216, 240];
+        : rows === 5
+        ? [144, 168, 192, 216, 240]
+        : rows === 6
+        ? [136, 158, 180, 202, 224, 246]
+        : [128, 148, 168, 188, 208, 228, 248];
 
     const baseWeights =
-      rows === 3 ? [2, 3, 4] : rows === 4 ? [2, 3, 4, 5] : [2, 3, 4, 5, 6];
+      rows === 3
+        ? [2, 3, 4]
+        : rows === 4
+        ? [2, 3, 4, 5]
+        : rows === 5
+        ? [2, 3, 4, 5, 6]
+        : rows === 6
+        ? [2, 3, 4, 5, 6, 7]
+        : [2, 3, 4, 5, 6, 7, 8];
 
     const weightSum = baseWeights.reduce((a, b) => a + b, 0);
     const capacities = baseWeights.map((w) => Math.max(1, Math.floor((numSeats * w) / weightSum)));
@@ -418,13 +430,17 @@ export default function Hemicycle({
   }, [numSeats, seatColors]);
 
   const presidentY = useMemo(() => {
-    const rows = numSeats < 12 ? 3 : numSeats > 21 ? 5 : 4;
+    const rows = numSeats < 12 ? 3 : numSeats > 50 ? 7 : numSeats > 35 ? 6 : numSeats > 21 ? 5 : 4;
     const rowRadii =
       rows === 3
         ? [160, 188, 216]
         : rows === 4
         ? [152, 178, 204, 230]
-        : [144, 168, 192, 216, 240];
+        : rows === 5
+        ? [144, 168, 192, 216, 240]
+        : rows === 6
+        ? [136, 158, 180, 202, 224, 246]
+        : [128, 148, 168, 188, 208, 228, 248];
 
     const rowCenterYs = rowRadii.map((radius) => (292 - radius) + 18);
     const sorted = [...rowCenterYs].sort((a, b) => a - b);
