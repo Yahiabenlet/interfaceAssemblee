@@ -99,7 +99,10 @@ export default function NotesPage() {
     };
   }, []);
 
-  const activeLaws = useMemo(() => notes.filter((law) => !law.abrogee), [notes]);
+  const activeLaws = useMemo(
+    () => notes.filter((law) => !law.abrogee && !law.decret),
+    [notes]
+  );
   const repealedLaws = useMemo(() => notes.filter((law) => law.abrogee), [notes]);
   const decrets = useMemo(() => notes.filter((law) => law.decret && !law.abrogee), [notes]);
 
