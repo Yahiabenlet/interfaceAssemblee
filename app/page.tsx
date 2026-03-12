@@ -678,6 +678,14 @@ export default function Home() {
                 Créer l'hémicycle
               </button>
             </form>
+
+            <button
+              type="button"
+              onClick={() => window.open("/depart", "_blank", "noopener,noreferrer")}
+              className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition"
+            >
+              Voir la situation de départ
+            </button>
           </div>
         ) : (
           <div>
