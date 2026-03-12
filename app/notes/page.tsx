@@ -180,6 +180,9 @@ export default function NotesPage() {
                           Loi organique (supermajorité requise)
                         </p>
                       ) : null}
+                      {law.decret ? (
+                        <p className="mt-1 text-xs font-semibold text-amber-800 dark:text-amber-300">Décret</p>
+                      ) : null}
                       {law.nonConforme ? (
                         <p className="mt-1 text-xs font-semibold text-rose-700 dark:text-rose-300">
                           Loi non conforme à la Constitution
