@@ -892,20 +892,20 @@ export default function Hemicycle({
                   <div className="space-y-4">
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium text-green-700 dark:text-green-300">Économie</span>
-                        <span className="text-xs font-semibold text-green-700 dark:text-green-300">{economyGauge}/10</span>
+                        <span className="text-sm font-medium text-red-700 dark:text-red-300">Économie</span>
+                        <span className="text-xs font-semibold text-red-700 dark:text-red-300">{economyGauge}/10</span>
                       </div>
-                      <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
-                        <div className="h-full bg-green-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
+                      <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
+                        <div className="h-full bg-red-500" style={{ width: `${(economyGauge / 10) * 100}%` }} />
                       </div>
                     </div>
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium text-red-700 dark:text-red-300">Social</span>
-                        <span className="text-xs font-semibold text-red-700 dark:text-red-300">{socialGauge}/10</span>
+                        <span className="text-sm font-medium text-green-700 dark:text-green-300">Social</span>
+                        <span className="text-xs font-semibold text-green-700 dark:text-green-300">{socialGauge}/10</span>
                       </div>
-                      <div className="h-3 rounded-full bg-red-100 dark:bg-red-950 overflow-hidden">
-                        <div className="h-full bg-red-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
+                      <div className="h-3 rounded-full bg-green-100 dark:bg-green-950 overflow-hidden">
+                        <div className="h-full bg-green-500" style={{ width: `${(socialGauge / 10) * 100}%` }} />
                       </div>
                     </div>
                   </div>

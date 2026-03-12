@@ -132,7 +132,7 @@ export default function DepartPage() {
             <p className="mb-2">
               Impact : Tant qu’elle est plus haute que{" "}
               <span className="text-blue-700 dark:text-blue-300 font-semibold">Stable</span>,{" "}
-              <span className="text-green-700 dark:text-green-300 font-semibold">Économie</span>{" "}
+              <span className="text-red-700 dark:text-red-300 font-semibold">Économie</span>{" "}
               {">"} 3 hors Crise. Soutien : Les Libéraux et Radicaux.
             </p>
 
@@ -148,7 +148,7 @@ export default function DepartPage() {
             <p><strong>Vallée de l’Armoire (<span className="text-orange-700 dark:text-orange-300">Contestation</span>)</strong> : Le grenier à blé du pays. Si elle bascule en contestation, le peuple a faim.</p>
             <p className="mb-2">
               Impact : Chaque tour en contestation,{" "}
-              <span className="text-red-700 dark:text-red-300 font-semibold">Social</span>{" "}
+              <span className="text-green-700 dark:text-green-300 font-semibold">Social</span>{" "}
               -1. Soutien : Les Populistes et Socialistes.
             </p>
 

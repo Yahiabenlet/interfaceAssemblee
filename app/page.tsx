@@ -971,8 +971,8 @@ export default function Home() {
             </div>
 
             <div className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-green-200 dark:border-green-900">
-                <label className="block text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-red-200 dark:border-red-900">
+                <label className="block text-sm font-semibold text-red-700 dark:text-red-300 mb-2">
                   Économie ({economyGauge}/10)
                 </label>
                 <input
@@ -982,11 +982,11 @@ export default function Home() {
                   step={1}
                   value={economyGauge}
                   onChange={(e) => setEconomyGauge(Number(e.target.value))}
-                  className="w-full accent-green-500"
+                  className="w-full accent-red-500"
                 />
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-red-200 dark:border-red-900">
-                <label className="block text-sm font-semibold text-red-700 dark:text-red-300 mb-2">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-green-200 dark:border-green-900">
+                <label className="block text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
                   Social ({socialGauge}/10)
                 </label>
                 <input
@@ -996,7 +996,7 @@ export default function Home() {
                   step={1}
                   value={socialGauge}
                   onChange={(e) => setSocialGauge(Number(e.target.value))}
-                  className="w-full accent-red-500"
+                  className="w-full accent-green-500"
                 />
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-200 dark:border-blue-900">
