@@ -66,7 +66,7 @@ export default function DepartPage() {
             </p>
             <p className="mb-2">
               Impact : Augmente le{" "}
-              <span className="font-bold text-white">Budget</span>{" "}
+              <span className="font-bold text-black dark:text-white">Budget</span>{" "}
               à chaque tour car la bureaucratie fonctionne parfaitement.
             </p>
             <p>
@@ -105,8 +105,8 @@ export default function DepartPage() {
             </p>
             <p className="mt-1">
               Impact : Garder une province récemment annexée au même niveau de contrôle coûte{" "}
-              <span className="font-bold text-white">1 de Budget</span>, et coûte{" "}
-              <span className="font-bold text-white">2 de Budget</span> pour réduire le niveau d’insurrection.
+              <span className="font-bold text-black dark:text-white">1 de Budget</span>, et coûte{" "}
+              <span className="font-bold text-black dark:text-white">2 de Budget</span> pour réduire le niveau d’insurrection.
               Sinon, baisse du niveau de controle de 1 à chaque cycle.
             </p>
           </section>
@@ -123,7 +123,7 @@ export default function DepartPage() {
             <p><strong>La Capitale (<span className="text-green-700 dark:text-green-300">Prospère</span>)</strong> : Siège du pouvoir politique, ici tout est jeu d’influence et de politique. Quand la Capitale éternue, la République s’enrhume.</p>
             <p className="mb-2">
               Impact :{" "}
-              <span className="font-bold text-white">Budget</span>{" "}
+              <span className="font-bold text-black dark:text-white">Budget</span>{" "}
               -2 si la province passe en dessous de{" "}
               <span className="text-blue-700 dark:text-blue-300 font-semibold">Stable</span>. Soutien : Les Conservateur et Radicaux.
             </p>
@@ -141,7 +141,7 @@ export default function DepartPage() {
               Impact : Fournit un point de{" "}
               <span className="text-blue-700 dark:text-blue-300 font-semibold">Sécurité</span>{" "}
               par{" "}
-              <span className="font-bold text-white">Budget</span>{" "}
+              <span className="font-bold text-black dark:text-white">Budget</span>{" "}
               Dépensé. Soutient : Les Nationalistes et Militaristes.
             </p>
 
@@ -158,7 +158,7 @@ export default function DepartPage() {
             <p><strong>Archipel des Eldrazi (<span className="text-gray-700 dark:text-gray-300">Equilibre</span>)</strong> : Province d’outre-mer qui flirte avec l&apos;idée de devenir indépendante, mais source de convoitise.</p>
             <p>
               Impact :{" "}
-              <span className="font-bold text-white">Budget</span>{" "}
+              <span className="font-bold text-black dark:text-white">Budget</span>{" "}
               -1 par tour tant qu’elle n’est pas autonome ou indépendante.
             </p>
           </section>
