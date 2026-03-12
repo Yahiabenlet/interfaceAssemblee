@@ -181,7 +181,10 @@ export default function DisplayPage() {
   if (!state) return <div className="w-screen h-screen bg-black" />;
 
   return (
-    <div className="min-h-screen bg-black p-6 flex items-center justify-center relative">
+    <div
+      className="min-h-screen bg-black p-6 flex items-center justify-center relative overflow-auto"
+      style={{ zoom: 0.72 }}
+    >
       <div className="w-full max-w-7xl">
         <Hemicycle
           numSeats={state.numSeats}
