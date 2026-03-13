@@ -104,10 +104,11 @@ export default function Home() {
     "Archipel des Eldrazi": "Équilibre",
   });
   const [regionalStates, setRegionalStates] = useState<RegionalState>({
-    "L’Outre-Porte": "Prudent",
+    "L'Outre-Porte": "Prudent",
     "Alliance des Etats d'Elimat": "Indifférent",
     "Empire de Tori Value": "Rival",
     "Junte des Emirats du Sud": "Coopératif",
+    "Royaume de Luvonie": "Indifférent",
   });
   const [passedLaws, setPassedLaws] = useState<PassedLaw[]>([]);
   const [lawFeedback, setLawFeedback] = useState<{

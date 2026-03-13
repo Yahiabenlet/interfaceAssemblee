@@ -213,10 +213,11 @@ export default function DisplayPage() {
           }
           regionalStates={
             state.regionalStates ?? {
-              "L’Outre-Porte": "Prudent",
+              "L'Outre-Porte": "Prudent",
               "Alliance des Etats d'Elimat": "Indifférent",
               "Empire de Tori Value": "Rival",
               "Junte des Emirats du Sud": "Coopératif",
+              "Royaume de Luvonie": "Indifférent",
             }
           }
           isControlValidated={state.isControlValidated ?? "nonConforme"}
