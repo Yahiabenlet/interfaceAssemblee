@@ -55,13 +55,13 @@ export default function CartePage() {
           <div className="w-full aspect-video bg-gray-800 rounded-lg shadow-lg flex items-center justify-center">
             <div className="text-center">
               <p className="text-white text-lg font-semibold mb-2">Carte non trouvée</p>
-              <p className="text-gray-400 text-sm">Le fichier public/carte_Nord_Masquee.jpg n'existe pas.</p>
-              <p className="text-gray-400 text-sm mt-2">Vérifiez que le fichier est dans le dossier public/carte/</p>
+              <p className="text-gray-400 text-sm">Le fichier carte_Nord_Masquee.jpg n'existe pas.</p>
+              <p className="text-gray-400 text-sm mt-2">Vérifiez que le fichier est dans le dossier public/</p>
             </div>
           </div>
         ) : (
           <img
-            src="/public/carte_Nord_Masquee.jpg"
+            src="/carte_Nord_Masquee.jpg"
             alt="Carte du Nord masquée"
             className="w-full h-auto rounded-lg shadow-lg"
             onError={() => setImageError(true)}
