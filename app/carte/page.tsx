@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function CartePage() {
   const [, setIsFullscreen] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -50,13 +51,23 @@ export default function CartePage() {
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center">
       <div className="w-full max-w-7xl">
-        <img
-          src="/cartes/carte_Nord_Masquee.jpg"
-          alt="Carte du Nord masquée"
-          className="w-full h-auto rounded-lg shadow-lg"
-        />
+        {imageError ? (
+          <div className="w-full aspect-video bg-gray-800 rounded-lg shadow-lg flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-white text-lg font-semibold mb-2">Carte non trouvée</p>
+              <p className="text-gray-400 text-sm">Le fichier public/carte_Nord_Masquee.jpg n'existe pas.</p>
+              <p className="text-gray-400 text-sm mt-2">Vérifiez que le fichier est dans le dossier public/carte/</p>
+            </div>
+          </div>
+        ) : (
+          <img
+            src="/public/carte_Nord_Masquee.jpg"
+            alt="Carte du Nord masquée"
+            className="w-full h-auto rounded-lg shadow-lg"
+            onError={() => setImageError(true)}
+          />
+        )}
       </div>
     </div>
   );
 }
-
