@@ -687,6 +687,13 @@ export default function Home() {
             >
               Voir la situation de départ
             </button>
+            <button
+              type="button"
+              onClick={() => window.open("/carte", "_blank", "noopener,noreferrer")}
+              className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition"
+            >
+              Ouvrir la carte
+            </button>
           </div>
         ) : (
           <div>
@@ -1376,6 +1383,12 @@ export default function Home() {
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
                 >
                   Ouvrir la situation de départ
+                </button>
+                <button
+                  onClick={() => window.open("/carte", "_blank", "noopener,noreferrer")}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
+                >
+                  Ouvrir la carte
                 </button>
                 <button
                   onClick={() =>
