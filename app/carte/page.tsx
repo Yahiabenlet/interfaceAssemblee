@@ -57,7 +57,10 @@ export default function CartePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black p-6 flex flex-col items-center justify-center relative">
+    <div
+      className="min-h-screen bg-black p-6 flex flex-col items-center justify-center relative"
+      style={{ zoom: 1.2 }}
+    >
       {!isFullscreen && (
         <div className="absolute top-6 right-6 flex flex-col gap-2">
           <button
