@@ -1381,7 +1381,7 @@ export default function Home() {
                   onClick={() => window.open("/notes", "_blank", "noopener,noreferrer")}
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
                 >
-                  Ouvrir l'historique des lois votées
+                  Ouvrir l&apos;historique des lois votées
                 </button>
                 <button
                   onClick={() => window.open("/display", "_blank", "noopener,noreferrer")}
