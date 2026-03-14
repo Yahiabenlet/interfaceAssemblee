@@ -14,37 +14,19 @@ export default function CartePage() {
 
     const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
 
-    const openWithFs = (path: string) => {
-      const fs = !!document.fullscreenElement;
-      const url = fs ? `${path}?fs=1` : path;
-      window.open(url, "_blank", "noopener,noreferrer");
+    const enterFullscreen = async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen?.();
+        }
+      } catch {}
     };
 
-    const onKeyDown = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null;
-      const tag = target?.tagName?.toLowerCase();
-      const isTyping = tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable;
-      if (isTyping) return;
-
-      const key = e.key.toLowerCase();
-      if (key === "f") {
-        e.preventDefault();
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
-        else document.exitFullscreen?.();
-        return;
-      }
-
-      if (e.key === "1") openWithFs("/display");
-      if (e.key === "2") openWithFs("/propositions");
-      if (e.key === "3") openWithFs("/notes");
-      if (e.key === "4") openWithFs("/depart");
-    };
+    enterFullscreen();
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
-    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("fullscreenchange", onFullscreenChange);
-      window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
 
@@ -57,12 +39,9 @@ export default function CartePage() {
   };
 
   return (
-    <div
-      className="min-h-screen bg-black p-6 flex flex-col items-center justify-center relative"
-      style={{ zoom: 1.2 }}
-    >
+    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center overflow-hidden">
       {!isFullscreen && (
-        <div className="absolute top-6 right-6 flex flex-col gap-2">
+        <div className="absolute top-6 right-6 flex flex-col gap-2 z-10">
           <button
             onClick={toggleFullscreen}
             className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
@@ -78,9 +57,9 @@ export default function CartePage() {
         </div>
       )}
 
-      <div className="w-full max-w-7xl">
+      <div className="w-screen h-screen flex items-center justify-center">
         {imageError ? (
-          <div className="w-full aspect-video bg-gray-800 rounded-lg shadow-lg flex items-center justify-center">
+          <div className="w-full h-full bg-gray-800 flex items-center justify-center">
             <div className="text-center">
               <p className="text-white text-lg font-semibold mb-2">Carte non trouvée</p>
               <p className="text-gray-400 text-sm">Le fichier carte_Oriente90.jpg n'existe pas.</p>
@@ -91,11 +70,15 @@ export default function CartePage() {
           <img
             src="/carte_Oriente90.jpg"
             alt="Carte Nord masquée"
-            className="w-full h-auto rounded-lg shadow-lg"
+            className="w-screen h-screen object-contain"
             onError={() => setImageError(true)}
           />
         )}
       </div>
+
+      <p className="absolute bottom-3 left-1/2 -translate-x-1/2 text-white/90 text-sm font-semibold z-10">
+        Carte Continentale
+      </p>
     </div>
   );
 }
