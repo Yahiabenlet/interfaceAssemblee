@@ -101,7 +101,7 @@ export default function Home() {
     "Les Hauteurs Profondes": "Stable",
     "Vallée de l’Armoire": "Contestation",
     "Provinces des Plasticiens": "Contestation",
-    "Archipel des Eldrazi": "Équilibre",
+    "Archipel d'Eldrazi": "Équilibre",
   });
   const [regionalStates, setRegionalStates] = useState<RegionalState>({
     "L'Outre-Porte": "Prudent",
@@ -676,7 +676,7 @@ export default function Home() {
                 type="submit"
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
               >
-                Créer l'hémicycle
+                Créer l&apos;hémicycle
               </button>
             </form>
 
@@ -1039,7 +1039,7 @@ export default function Home() {
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                L'essentiel de l'info :
+                L&apos;essentiel de l&apos;info :
               </label>
               <textarea
                 value={countrySituation}

@@ -155,7 +155,7 @@ export default function DepartPage() {
             <p><strong>Provinces des Plasticiens (<span className="text-orange-700 dark:text-orange-300">Contestation</span>)</strong> : Province du peuple plasticien, une minorité qui ne s’est jamais réellement intégrée.</p>
             <p className="mb-2">Impact : Les lois restrictives ou nationalistes font baisser son statut vers Sédition et des Crises peuvent naître ici. Soutien : Les Écolos et Progressistes.</p>
 
-            <p><strong>Archipel des Eldrazi (<span className="text-gray-700 dark:text-gray-300">Equilibre</span>)</strong> : Province d’outre-mer qui flirte avec l&apos;idée de devenir indépendante, mais source de convoitise.</p>
+            <p><strong>Archipel d&apos;Eldrazi (<span className="text-gray-700 dark:text-gray-300">Equilibre</span>)</strong> : Province d’outre-mer qui flirte avec l&apos;idée de devenir indépendante, mais source de convoitise.</p>
             <p>
               Impact :{" "}
               <span className="font-bold text-black dark:text-white">Budget</span>{" "}
@@ -166,12 +166,12 @@ export default function DepartPage() {
           <section className="rounded-lg border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900">
             <h2 className="font-bold mb-2">Listes des Pays</h2>
 
-            <p><strong>L’Outre-Porte (<span className="text-orange-700 dark:text-orange-300">Prudent</span>)</strong> : Jeune royaume indépendant, le pays est séparé entre deux peuples, dont un proche de nous. Le concept de Grande Gérionie considère l’Outre-Porte comme incluse dans nos frontières naturelles.</p>
-            <p className="mt-2"><strong>L’Alliance des Etats d’Elimat (<span className="text-gray-700 dark:text-gray-300">Indifférent</span>)</strong> :  Superpuissance régionale, son hégémonie économique et militaire est telle que ce pays est le gendarme du monde et personne n&apos;ose imaginer l'état de l’économie mondiale si celle d’Elimat venait à s’effondrer.</p>
-            <p className="mt-2"><strong>Empire de Tori Value (<span className="text-orange-700 dark:text-orange-300">Rivalité</span>)</strong> : Rival historique de la République de Gérionie, cela fait 3 décennies que les deux états n’ont pas combattu. Revendique l’archipel des Eldrazi.</p>
-            <p className="mt-2"><strong>Junte des Emirats du Sud (<span className="text-green-700 dark:text-green-300">Coopératif</span>)</strong> : Junte dirigé par un émir atypique, qui s'est pris d'affection pour votre république singulière. Bien que l'émir n'hésite pas à financer des projets pharaoniques sur votre territoire, son peuple souffre de son régime absolutiste et dictatorial.</p>
-
-            <p className="mt-2"><strong>Royaume de Luvonie (<span className="text-gray-700 dark:text-gray-300">Indifférent</span>)</strong> : Situé au nord-ouest de la République, c'est une nation de montagnes et de toundra, agissant comme un "toit" naturel sur le continent. Séparée de force de l'Outre-Porte, la Luvonie ne cherche pas l'expansion, mais protège farouchement l'accès à ses cols. Elle observe d'un œil froid les conflits entre la Gérionie et l'Outre-Porte, prête à verrouiller ses frontières au moindre signe d'instabilité.</p>
+            <p className="mt-2"><strong>L’Outre-Porte (<span className="text-orange-700 dark:text-orange-300">Prudent</span>)</strong> : Jeune royaume indépendant, le pays est séparé entre deux peuples, dont un proche de nous. Le concept de Grande Gérionie considère l’Outre-Porte comme incluse dans nos frontières naturelles.</p>
+            <p className="mt-2"><strong>L’Alliance des Etats d’Elimat (<span className="text-gray-700 dark:text-gray-300">Indifférent</span>)</strong> :  Superpuissance régionale, son hégémonie économique et militaire est telle que ce pays est le gendarme du monde et personne n&apos;ose imaginer l&apos;état de l’économie mondiale si celle d’Elimat venait à s’effondrer.</p>
+            <p className="mt-2"><strong>Empire de Tori Value (<span className="text-orange-700 dark:text-orange-300">Rivalité</span>)</strong> : Rival historique de la République de Gérionie, cela fait 3 décennies que les deux états ont signé l&apos;armistice. Malgré cela, les tensions restent, tout comme la revendication torivaluenne sur  l’archipel d&apos;Eldrazi.</p>
+            <p className="mt-2"><strong>Junte des Emirats du Sud (<span className="text-green-700 dark:text-green-300">Coopératif</span>)</strong> : Junte dirigé par un émir atypique, qui s&apos;est pris d&apos;affection pour votre république singulière. Bien que l&apos;émir n&apos;hésite pas à financer des projets pharaoniques sur votre territoire, son peuple souffre de son régime absolutiste et dictatorial.</p>
+            <p className="mt-2"><strong>Royaume de Luvonie (<span className="text-gray-700 dark:text-gray-300">Indifférent</span>)</strong> : Situé au nord-ouest de la République, la Luvonie est une nation de montagnes escarpées et de côtes stratégiques, agissant comme le poumon maritime du Nord.</p>
+            <p className="mt-2>"> Loin d&apos;être une terre désolée, elle constitue le port majeur et indispensable pour tout le commerce avec les nations situées de l&apos;autre côté de la Mer de Thalj. Elle observe d&apos;un œil froid les conflits entre la Gérionie et l&apos;Outre-Porte, prête à verrouiller ses frontières au moindre signe d&apos;instabilité.</p>
           </section>
         </div>
       </div>

@@ -118,7 +118,7 @@ export default function Hemicycle({
     "Les Hauteurs Profondes": "Stable",
     "Vallée de l’Armoire": "Contestation",
     "Provinces des Plasticiens": "Contestation",
-    "Archipel des Eldrazi": "Équilibre",
+    "Archipel d'Eldrazi": "Équilibre",
   },
   regionalStates = {
     "L’Outre-Porte": "Prudent",

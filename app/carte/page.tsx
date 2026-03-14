@@ -62,7 +62,7 @@ export default function CartePage() {
           <div className="w-full h-full bg-gray-800 flex items-center justify-center">
             <div className="text-center">
               <p className="text-white text-lg font-semibold mb-2">Carte non trouvée</p>
-              <p className="text-gray-400 text-sm">Le fichier carte_Oriente90.jpg n'existe pas.</p>
+              <p className="text-gray-400 text-sm">Le fichier carte_Oriente90.jpg n&apos;existe pas.</p>
               <p className="text-gray-400 text-sm mt-2">Vérifiez que le fichier est dans le dossier public/</p>
             </div>
           </div>
