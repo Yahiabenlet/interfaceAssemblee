@@ -615,6 +615,23 @@ export default function Home() {
     });
   };
 
+  const renameProvince = (oldName: string, rawNewName: string) => {
+    const newName = rawNewName.trim();
+    if (!newName || newName === oldName) return;
+
+    setProvinces((prev) => {
+      if (!prev[oldName]) return prev;
+      if (prev[newName] || regionalStates[newName]) return prev;
+
+      const next: ProvinceState = {};
+      (Object.keys(prev) as string[]).forEach((key) => {
+        if (key === oldName) next[newName] = prev[oldName];
+        else next[key] = prev[key];
+      });
+      return next;
+    });
+  };
+
   const setProvinceIndependence = (name: string) => {
     setProvinces((prev) => {
       if (!prev[name]) return prev;
@@ -1523,7 +1540,7 @@ export default function Home() {
                   3 options
                 </button>
 
-                <label className="inline-flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-300 ml-2">
+                <label className="inline-flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300 ml-2">
                   <input
                     type="checkbox"
                     checked={choiceUseProposals}
