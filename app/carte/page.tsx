@@ -24,17 +24,46 @@ export default function CartePage() {
 
     enterFullscreen();
 
+    const openWithFs = (path: string) => {
+      const fs = !!document.fullscreenElement;
+      const url = fs ? `${path}?fs=1` : path;
+      window.open(url, "_blank", "noopener,noreferrer");
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase();
+      const isTyping = tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable;
+
+      if (isTyping) return;
+
+      const key = e.key.toLowerCase();
+      if (key === "f") {
+        e.preventDefault();
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+        return;
+      }
+
+      if (e.key === "1") openWithFs("/display");
+      if (e.key === "2") openWithFs("/propositions");
+      if (e.key === "3") openWithFs("/notes");
+      if (e.key === "4") openWithFs("/depart");
+    };
+
     document.addEventListener("fullscreenchange", onFullscreenChange);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("fullscreenchange", onFullscreenChange);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
 
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen?.().catch(() => {});
+      await document.documentElement.requestFullscreen?.();
     } else {
-      await document.exitFullscreen?.().catch(() => {});
+      await document.exitFullscreen?.();
     }
   };
 
