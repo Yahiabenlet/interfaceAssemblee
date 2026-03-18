@@ -35,6 +35,12 @@ type RegionalState = Record<string, RegionalStateControl>;
 
 type EnclumeStatus = "idle" | "running" | "adopted" | "rejected";
 
+type PhoneVoteChoice = "yes" | "no" | "none";
+type PhoneVotesState = {
+  connectedSeats: number[];
+  votes: Record<number, PhoneVoteChoice>;
+};
+
 type DisplayState = {
   numSeats: number;
   title: string;
@@ -79,6 +85,7 @@ type DisplayState = {
   candidateNames?: string[];
   candidateColors?: string[];
   activeCandidateIndex?: number;
+  phoneVotes?: PhoneVotesState;
 };
 
 export default function DisplayPage() {

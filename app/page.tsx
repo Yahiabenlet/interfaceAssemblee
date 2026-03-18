@@ -81,6 +81,12 @@ type ConstitutionalStatus = "conforme" | "nonConforme" | "nonStatue";
 
 type ChoiceModeOptionCount = 2 | 3;
 
+type PhoneVoteChoice = "yes" | "no" | "none";
+type PhoneVotesState = {
+  connectedSeats: number[];
+  votes: Record<number, PhoneVoteChoice>;
+};
+
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -160,6 +166,7 @@ export default function Home() {
   const [choiceCustomLabels, setChoiceCustomLabels] = useState<string[]>(["Choix 1", "Choix 2", "Choix 3"]);
   const [choiceColors, setChoiceColors] = useState<string[]>(["#22c55e", "#ef4444", "#f59e0b"]);
   const [activeChoiceIndex, setActiveChoiceIndex] = useState(0);
+  const [phoneVotes, setPhoneVotes] = useState<PhoneVotesState>({ connectedSeats: [], votes: {} });
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -494,6 +501,7 @@ export default function Home() {
         { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
         { title: proposal3Title, text: proposal3Text, organique: proposal3Organic, decret: proposal3Decret },
       ],
+      phoneVotes,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -554,6 +562,7 @@ export default function Home() {
     choiceCustomLabels,
     choiceColors,
     activeChoiceIndex,
+    phoneVotes,
   ]);
 
   useEffect(() => {
@@ -652,6 +661,39 @@ export default function Home() {
     setProvinces((prev) => ({ ...prev, [name]: "Sécession" }));
   };
 
+  useEffect(() => {
+    if (numSeats === null) return;
+
+    const toSeatColor = (choice: PhoneVoteChoice): SeatColor => {
+      if (choice === "yes") return "green";
+      if (choice === "no") return "red";
+      return "white";
+    };
+
+    setSeatColors((prev) => {
+      const next = [...prev];
+      phoneVotes.connectedSeats.forEach((seatNumber) => {
+        const idx = seatNumber - 1;
+        if (idx < 0 || idx > next.length) return;
+
+        if (idx === next.length) {
+          // Président
+          return;
+        }
+
+        const vote = phoneVotes.votes[seatNumber] ?? "none";
+        next[idx] = toSeatColor(vote);
+      });
+      return next;
+    });
+
+    const presidentSeatNumber = numSeats + 1;
+    if (phoneVotes.connectedSeats.includes(presidentSeatNumber)) {
+      const vote = phoneVotes.votes[presidentSeatNumber] ?? "none";
+      setPresidentColor(vote === "yes" ? "green" : vote === "no" ? "red" : "white");
+    }
+  }, [phoneVotes, numSeats]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
       {lawFeedback && (
@@ -682,7 +724,7 @@ export default function Home() {
                 <input
                   type="number"
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={(e) setInputValue(e.target.value)}
                   min="5"
                   max="50"
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -710,6 +752,13 @@ export default function Home() {
               className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition"
             >
               Ouvrir la carte
+            </button>
+            <button
+              type="button"
+              onClick={() => window.open("/telephone", "_blank", "noopener,noreferrer")}
+              className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition"
+            >
+              Ouvrir Téléphone (vote)
             </button>
           </div>
         ) : (
