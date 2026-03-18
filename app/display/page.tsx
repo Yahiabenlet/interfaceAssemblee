@@ -91,6 +91,8 @@ type DisplayState = {
 export default function DisplayPage() {
   const [state, setState] = useState<DisplayState | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [appliedSeatColors, setAppliedSeatColors] = useState<SeatColor[]>([]);
+  const [appliedPresidentColor, setAppliedPresidentColor] = useState<SeatColor>("white");
 
   useEffect(() => {
     const load = () => {
@@ -185,6 +187,58 @@ export default function DisplayPage() {
     } catch {}
   };
 
+  useEffect(() => {
+    if (!state) return;
+
+    const normalize = (v?: string) => (v ?? "").toLowerCase();
+
+    const toSeatColor = (choice: string): SeatColor => {
+      const normalized = normalize(choice);
+
+      if (normalized === "none" || normalized === "") return "white";
+      if (normalized === "yes") return "green";
+      if (normalized === "no") return "red";
+
+      if (state.choiceMode) {
+        const allowed = (state.choiceColors ?? ["#22c55e", "#ef4444", "#f59e0b"])
+          .slice(0, state.choiceOptionCount ?? 2)
+          .map((c) => c.toLowerCase());
+        if (allowed.includes(normalized)) return choice as SeatColor;
+      }
+
+      if (state.electionMode) {
+        const allowed = (state.candidateColors ?? ["#4f46e5"])
+          .slice(0, state.candidateCount ?? 1)
+          .map((c) => c.toLowerCase());
+        if (allowed.includes(normalized)) return choice as SeatColor;
+      }
+
+      return "white";
+    };
+
+    // Appliquer les votes téléphone par-dessus les couleurs existantes
+    const nextSeatColors = [...(state.seatColors ?? [])];
+    const phoneVotes = state.phoneVotes ?? { connectedSeats: [], votes: {} };
+
+    phoneVotes.connectedSeats.forEach((seatNumber) => {
+      const idx = seatNumber - 1;
+      if (idx >= 0 && idx < nextSeatColors.length) {
+        const vote = phoneVotes.votes[seatNumber] ?? "none";
+        nextSeatColors[idx] = toSeatColor(vote);
+      }
+    });
+
+    let nextPresidentColor = state.presidentColor ?? "white";
+    const presidentSeatNumber = (state.numSeats ?? 0) + 1;
+    if (phoneVotes.connectedSeats.includes(presidentSeatNumber)) {
+      const vote = phoneVotes.votes[presidentSeatNumber] ?? "none";
+      nextPresidentColor = toSeatColor(vote);
+    }
+
+    setAppliedSeatColors(nextSeatColors);
+    setAppliedPresidentColor(nextPresidentColor);
+  }, [state]);
+
   if (!state) return <div className="w-screen h-screen bg-black" />;
 
   return (
@@ -197,8 +251,8 @@ export default function DisplayPage() {
           numSeats={state.numSeats}
           title={state.title}
           paragraph={state.paragraph}
-          seatColors={state.seatColors}
-          presidentColor={state.presidentColor}
+          seatColors={appliedSeatColors.length > 0 ? appliedSeatColors : state.seatColors}
+          presidentColor={appliedPresidentColor || state.presidentColor}
           onToggleSeat={() => {}}
           onTogglePresident={() => {}}
           economyGauge={state.economyGauge ?? 0}
