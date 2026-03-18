@@ -753,6 +753,30 @@ export default function Home() {
     markPresidentAsManuallyVoted();
   };
 
+  // Ajouter cet effet pour synchroniser phoneVotes depuis localStorage
+  useEffect(() => {
+    const loadPhoneVotes = () => {
+      const raw = localStorage.getItem("hemicycleState");
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        const loaded = parsed.phoneVotes ?? { connectedSeats: [], votes: {} };
+        setPhoneVotes(loaded);
+      } catch {}
+    };
+
+    loadPhoneVotes();
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "hemicycleState") loadPhoneVotes();
+    };
+    window.addEventListener("storage", onStorage);
+    const interval = setInterval(loadPhoneVotes, 200); // Synchronisation rapide
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
       {lawFeedback && (
