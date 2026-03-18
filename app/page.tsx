@@ -724,7 +724,7 @@ export default function Home() {
                 <input
                   type="number"
                   value={inputValue}
-                  onChange={(e) setInputValue(e.target.value)}
+                  onChange={(e) => setInputValue(e.target.value)}
                   min="5"
                   max="50"
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
