@@ -93,6 +93,7 @@ interface HemicycleProps {
   choiceCustomLabels?: string[];
   choiceColors?: string[];
   proposalChoices?: ProposalChoice[];
+  showSeatNumbers?: boolean;
 }
 
 export default function Hemicycle({
@@ -154,6 +155,7 @@ export default function Hemicycle({
   choiceCustomLabels = ["Choix 1", "Choix 2", "Choix 3"],
   choiceColors = ["#22c55e", "#ef4444", "#f59e0b"],
   proposalChoices = [],
+  showSeatNumbers = true,
 }: HemicycleProps) {
   const [now, setNow] = useState<number>(Date.now());
   const enclumeDurationMs = enclumeDurationMinutes * 60 * 1000;
@@ -572,14 +574,16 @@ export default function Hemicycle({
                 onClick={svgOnly || readOnly ? undefined : () => onToggleSeat(seat.index)}
                 title={`Siège ${seat.index + 1}`}
               />
-              <text
-                x={seat.x}
-                y={seat.y + 3}
-                textAnchor="middle"
-                className="fill-gray-900 dark:fill-white text-[8px] font-bold pointer-events-none select-none"
-              >
-                {seat.index + 1}
-              </text>
+              {showSeatNumbers && (
+                <text
+                  x={seat.x}
+                  y={seat.y + 3}
+                  textAnchor="middle"
+                  className="fill-gray-900 dark:fill-white text-[8px] font-bold pointer-events-none select-none"
+                >
+                  {seat.index + 1}
+                </text>
+              )}
             </g>
           );
         })}
@@ -598,14 +602,16 @@ export default function Hemicycle({
                 className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
                 onClick={svgOnly || readOnly ? undefined : onTogglePresident}
               />
-              <text
-                x="250"
-                y={presidentY + 3}
-                textAnchor="middle"
-                className="fill-gray-900 dark:fill-white text-[8px] font-bold pointer-events-none select-none"
-              >
-                {numSeats + 1}
-              </text>
+              {showSeatNumbers && (
+                <text
+                  x="250"
+                  y={presidentY + 3}
+                  textAnchor="middle"
+                  className="fill-gray-900 dark:fill-white text-[8px] font-bold pointer-events-none select-none"
+                >
+                  {numSeats + 1}
+                </text>
+              )}
             </>
           );
         })()}

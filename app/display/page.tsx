@@ -41,6 +41,11 @@ type PhoneVotesState = {
   votes: Record<number, PhoneVoteChoice>;
 };
 
+type ManualVotesState = {
+  connectedSeats: number[];
+  votes: Record<number, "manual">;
+};
+
 type DisplayState = {
   numSeats: number;
   title: string;
@@ -86,6 +91,7 @@ type DisplayState = {
   candidateColors?: string[];
   activeCandidateIndex?: number;
   phoneVotes?: PhoneVotesState;
+  manualVotes?: ManualVotesState;
 };
 
 export default function DisplayPage() {
@@ -216,23 +222,34 @@ export default function DisplayPage() {
       return "white";
     };
 
-    // Appliquer les votes téléphone par-dessus les couleurs existantes
-    const nextSeatColors = [...(state.seatColors ?? [])];
+    // Charger votes manuels avec priorité
+    const manualVotes = state.manualVotes ?? { connectedSeats: [], votes: {} };
     const phoneVotes = state.phoneVotes ?? { connectedSeats: [], votes: {} };
 
+    const nextSeatColors = [...(state.seatColors ?? [])];
+
+    // Appliquer votes téléphone d'abord
     phoneVotes.connectedSeats.forEach((seatNumber) => {
       const idx = seatNumber - 1;
       if (idx >= 0 && idx < nextSeatColors.length) {
         const vote = phoneVotes.votes[seatNumber] ?? "none";
-        nextSeatColors[idx] = toSeatColor(vote);
+        // Ne pas appliquer si c'est un vote manuel
+        if (!manualVotes.votes[seatNumber]) {
+          nextSeatColors[idx] = toSeatColor(vote);
+        }
       }
     });
 
     let nextPresidentColor = state.presidentColor ?? "white";
     const presidentSeatNumber = (state.numSeats ?? 0) + 1;
-    if (phoneVotes.connectedSeats.includes(presidentSeatNumber)) {
+
+    // Appliquer vote téléphone du président si pas de vote manuel
+    if (phoneVotes.connectedSeats.includes(presidentSeatNumber) && !manualVotes.votes[presidentSeatNumber]) {
       const vote = phoneVotes.votes[presidentSeatNumber] ?? "none";
       nextPresidentColor = toSeatColor(vote);
+    } else if (manualVotes.votes[presidentSeatNumber]) {
+      // Utiliser la couleur manuelle du président
+      nextPresidentColor = state.presidentColor ?? "white";
     }
 
     setAppliedSeatColors(nextSeatColors);

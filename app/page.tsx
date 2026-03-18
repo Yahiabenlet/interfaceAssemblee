@@ -87,6 +87,11 @@ type PhoneVotesState = {
   votes: Record<number, PhoneVoteChoice>;
 };
 
+type ManualVotesState = {
+  connectedSeats: number[];
+  votes: Record<number, "manual">;
+};
+
 export default function Home() {
   const [numSeats, setNumSeats] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -167,6 +172,8 @@ export default function Home() {
   const [choiceColors, setChoiceColors] = useState<string[]>(["#22c55e", "#ef4444", "#f59e0b"]);
   const [activeChoiceIndex, setActiveChoiceIndex] = useState(0);
   const [phoneVotes, setPhoneVotes] = useState<PhoneVotesState>({ connectedSeats: [], votes: {} });
+  const [manualVotes, setManualVotes] = useState<ManualVotesState>({ connectedSeats: [], votes: {} });
+  const [showSeatNumbers, setShowSeatNumbers] = useState(true);
 
   const enclumeDurationMs = useMemo(
     () => enclumeDurationMinutes * 60 * 1000,
@@ -496,12 +503,8 @@ export default function Home() {
       choiceCustomLabels,
       choiceColors,
       activeChoiceIndex,
-      proposals: [
-        { title: proposal1Title, text: proposal1Text, organique: proposal1Organic, decret: proposal1Decret },
-        { title: proposal2Title, text: proposal2Text, organique: proposal2Organic, decret: proposal2Decret },
-        { title: proposal3Title, text: proposal3Text, organique: proposal3Organic, decret: proposal3Decret },
-      ],
       phoneVotes,
+      manualVotes,
     };
 
     localStorage.setItem("hemicycleState", JSON.stringify(payload));
@@ -563,6 +566,7 @@ export default function Home() {
     choiceColors,
     activeChoiceIndex,
     phoneVotes,
+    manualVotes,
   ]);
 
   useEffect(() => {
@@ -713,6 +717,41 @@ export default function Home() {
     candidateCount,
     candidateColors,
   ]);
+
+  // Marquer un siège comme voté manuellement
+  const markSeatAsManuallyVoted = (seatNumber: number) => {
+    setManualVotes((prev) => {
+      const next = { ...prev };
+      if (!next.connectedSeats.includes(seatNumber)) {
+        next.connectedSeats = [...next.connectedSeats, seatNumber];
+      }
+      next.votes[seatNumber] = "manual";
+      return next;
+    });
+  };
+
+  // Marquer le président comme voté manuellement
+  const markPresidentAsManuallyVoted = () => {
+    if (numSeats === null) return;
+    markSeatAsManuallyVoted(numSeats + 1);
+  };
+
+  // Reset des votes manuels
+  const resetManualVotes = () => {
+    setManualVotes({ connectedSeats: [], votes: {} });
+  };
+
+  // Wrapper pour toggleSeat qui marque comme manuel
+  const toggleSeatWithManualMark = (index: number) => {
+    toggleSeat(index);
+    markSeatAsManuallyVoted(index + 1);
+  };
+
+  // Wrapper pour togglePresident qui marque comme manuel
+  const togglePresidentWithManualMark = () => {
+    togglePresident();
+    markPresidentAsManuallyVoted();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
@@ -918,9 +957,20 @@ export default function Home() {
             </div>
 
             <div className="mb-4 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
-                Pilotage du vote
-              </h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                  Pilotage du vote
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowSeatNumbers((v) => !v)}
+                  className={`px-2.5 py-1.5 text-xs font-semibold rounded-md text-white transition ${
+                    showSeatNumbers ? "bg-indigo-600 hover:bg-indigo-700" : "bg-slate-600 hover:bg-slate-700"
+                  }`}
+                >
+                  Numéros de sièges : {showSeatNumbers ? "Affichés" : "Masqués"}
+                </button>
+              </div>
 
               <div className="mb-3 text-center">
                 <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -1688,14 +1738,67 @@ export default function Home() {
               )}
             </div>
 
+            <div className="mb-4 bg-white dark:bg-gray-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                Votes en direct (Téléphone)
+              </h3>
+
+              {phoneVotes.connectedSeats.length === 0 ? (
+                <p className="text-sm text-gray-600 dark:text-gray-300">Aucun vote téléphone pour le moment.</p>
+              ) : (
+                <div className="space-y-2 max-h-48 overflow-auto pr-1">
+                  {phoneVotes.connectedSeats.map((seatNumber) => {
+                    const vote = phoneVotes.votes[seatNumber] ?? "none";
+                    const isManual = manualVotes.votes[seatNumber] === "manual";
+                    const seatLabel = seatNumber === numSeats + 1 ? `Président` : `Siège ${seatNumber}`;
+
+                    return (
+                      <div
+                        key={`phone-vote-display-${seatNumber}`}
+                        className={`rounded border p-2 flex items-center justify-between ${
+                          isManual
+                            ? "border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-950/30"
+                            : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
+                        }`}
+                      >
+                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                          {seatLabel}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                            {vote === "yes"
+                              ? "Oui"
+                              : vote === "no"
+                              ? "Non"
+                              : vote === "none"
+                              ? "Blanc"
+                              : vote}
+                          </span>
+                          {isManual && (
+                            <span className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-200 dark:bg-indigo-900 px-1.5 py-0.5 rounded">
+                              Manuel
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* ...existing lois adoptées section... */}
+
+            {/* ...existing buttons and forms... */}
+
             <Hemicycle
               numSeats={numSeats}
               title={title}
               paragraph={paragraph}
               seatColors={seatColors}
               presidentColor={presidentColor}
-              onToggleSeat={toggleSeat}
-              onTogglePresident={togglePresident}
+              onToggleSeat={toggleSeatWithManualMark}
+              onTogglePresident={togglePresidentWithManualMark}
               economyGauge={economyGauge}
               socialGauge={socialGauge}
               securityGauge={securityGauge}
