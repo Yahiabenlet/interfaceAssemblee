@@ -2,12 +2,22 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-type PhoneVoteChoice = "yes" | "no" | "none";
+type PhoneVoteChoice = string;
 
 type HemicycleState = {
   numSeats?: number;
   isNoConfidenceMotion?: boolean;
   isDecretMode?: boolean;
+  electionMode?: boolean;
+  choiceMode?: boolean;
+  choiceOptionCount?: 2 | 3;
+  choiceUseProposals?: boolean;
+  choiceCustomLabels?: string[];
+  choiceColors?: string[];
+  candidateCount?: number;
+  candidateNames?: string[];
+  candidateColors?: string[];
+  proposals?: { title: string; text: string; organique?: boolean; decret?: boolean }[];
   phoneVotes?: {
     connectedSeats: number[];
     votes: Record<number, PhoneVoteChoice>;
@@ -78,14 +88,52 @@ export default function TelephonePage() {
     } catch {}
   };
 
-  const currentVote =
-    connectedSeat && state?.phoneVotes?.votes ? state.phoneVotes.votes[connectedSeat] ?? "none" : "none";
-
   const modeLabel = state?.isNoConfidenceMotion
     ? "Motion de censure"
     : state?.isDecretMode
     ? "Décret"
+    : state?.choiceMode
+    ? "Mode choix"
+    : state?.electionMode
+    ? "Élection"
     : "Vote classique";
+
+  const choiceOptions = useMemo(() => {
+    if (state?.choiceMode) {
+      const count = state.choiceOptionCount ?? 2;
+      const colors = (state.choiceColors ?? ["#22c55e", "#ef4444", "#f59e0b"]).slice(0, count);
+      while (colors.length < count) colors.push(["#22c55e", "#ef4444", "#f59e0b"][colors.length] ?? "#22c55e");
+
+      const labels =
+        state.choiceUseProposals
+          ? Array.from({ length: count }).map((_, i) => state.proposals?.[i]?.title?.trim() || `Choix ${i + 1}`)
+          : Array.from({ length: count }).map((_, i) => state.choiceCustomLabels?.[i]?.trim() || `Choix ${i + 1}`);
+
+      return labels.map((label, i) => ({ label, value: colors[i] }));
+    }
+
+    if (state?.electionMode) {
+      const count = state.candidateCount ?? (state.candidateNames?.length || 1);
+      const names = (state.candidateNames ?? ["Candidat 1"]).slice(0, count);
+      const colors = (state.candidateColors ?? ["#4f46e5"]).slice(0, count);
+      while (colors.length < count) colors.push("#4f46e5");
+      return names.map((label, i) => ({ label: label?.trim() || `Candidat ${i + 1}`, value: colors[i] }));
+    }
+
+    if (state?.isDecretMode) {
+      return [
+        { label: "Soutien", value: "yes" },
+        { label: "Contre", value: "no" },
+      ];
+    }
+
+    return [
+      { label: "Oui", value: "yes" },
+      { label: "Non", value: "no" },
+    ];
+  }, [state]);
+
+  const currentVote = connectedSeat && state?.phoneVotes?.votes ? state.phoneVotes.votes[connectedSeat] ?? "none" : "none";
 
   return (
     <div className="min-h-screen bg-black p-6 flex items-center justify-center">
@@ -123,19 +171,26 @@ export default function TelephonePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
-          <button onClick={() => vote("yes")} className="px-3 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold">
-            Oui
-          </button>
-          <button onClick={() => vote("no")} className="px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold">
-            Non
-          </button>
+        <div className="grid grid-cols-1 gap-2">
+          {choiceOptions.map((opt, idx) => (
+            <button
+              key={`phone-vote-${idx}-${opt.label}`}
+              onClick={() => vote(opt.value)}
+              className="px-3 py-2 rounded-lg text-white font-semibold"
+              style={{ backgroundColor: opt.value.startsWith("#") ? opt.value : opt.value === "yes" ? "#16a34a" : "#dc2626" }}
+            >
+              {opt.label}
+            </button>
+          ))}
           <button onClick={() => vote("none")} className="px-3 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white font-semibold">
             Blanc
           </button>
         </div>
+
+        <p className="text-xs text-gray-600 dark:text-gray-300">
+          Vote actuel : <span className="font-semibold">{currentVote}</span>
+        </p>
       </div>
     </div>
   );
 }
-

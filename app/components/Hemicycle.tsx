@@ -572,6 +572,14 @@ export default function Hemicycle({
                 onClick={svgOnly || readOnly ? undefined : () => onToggleSeat(seat.index)}
                 title={`Siège ${seat.index + 1}`}
               />
+              <text
+                x={seat.x}
+                y={seat.y + 3}
+                textAnchor="middle"
+                className="fill-gray-900 dark:fill-white text-[8px] font-bold pointer-events-none select-none"
+              >
+                {seat.index + 1}
+              </text>
             </g>
           );
         })}
@@ -579,16 +587,26 @@ export default function Hemicycle({
         {(() => {
           const presidentVisual = resolveSeatVisual(presidentColor);
           return (
-            <circle
-              cx="250"
-              cy={presidentY}
-              r="13"
-              fill={presidentVisual.fill}
-              stroke={goldOutlinedPresident ? "#d4af37" : presidentBorder.stroke}
-              strokeWidth={goldOutlinedPresident ? 3 : presidentBorder.strokeWidth}
-              className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
-              onClick={svgOnly || readOnly ? undefined : onTogglePresident}
-            />
+            <>
+              <circle
+                cx="250"
+                cy={presidentY}
+                r="13"
+                fill={presidentVisual.fill}
+                stroke={goldOutlinedPresident ? "#d4af37" : presidentBorder.stroke}
+                strokeWidth={goldOutlinedPresident ? 3 : presidentBorder.strokeWidth}
+                className={svgOnly || readOnly ? "" : "cursor-pointer transition hover:opacity-80"}
+                onClick={svgOnly || readOnly ? undefined : onTogglePresident}
+              />
+              <text
+                x="250"
+                y={presidentY + 3}
+                textAnchor="middle"
+                className="fill-gray-900 dark:fill-white text-[8px] font-bold pointer-events-none select-none"
+              >
+                {numSeats + 1}
+              </text>
+            </>
           );
         })()}
 

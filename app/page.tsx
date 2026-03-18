@@ -664,9 +664,25 @@ export default function Home() {
   useEffect(() => {
     if (numSeats === null) return;
 
+    const normalize = (v?: string) => (v ?? "").toLowerCase();
+
     const toSeatColor = (choice: PhoneVoteChoice): SeatColor => {
-      if (choice === "yes") return "green";
-      if (choice === "no") return "red";
+      const normalized = normalize(choice);
+
+      if (normalized === "none" || normalized === "") return "white";
+      if (normalized === "yes") return "green";
+      if (normalized === "no") return "red";
+
+      if (choiceMode) {
+        const allowed = choiceColors.slice(0, choiceOptionCount).map((c) => c.toLowerCase());
+        if (allowed.includes(normalized)) return choice as SeatColor;
+      }
+
+      if (electionMode) {
+        const allowed = candidateColors.slice(0, candidateCount).map((c) => c.toLowerCase());
+        if (allowed.includes(normalized)) return choice as SeatColor;
+      }
+
       return "white";
     };
 
@@ -675,12 +691,7 @@ export default function Home() {
       phoneVotes.connectedSeats.forEach((seatNumber) => {
         const idx = seatNumber - 1;
         if (idx < 0 || idx > next.length) return;
-
-        if (idx === next.length) {
-          // Président
-          return;
-        }
-
+        if (idx === next.length) return;
         const vote = phoneVotes.votes[seatNumber] ?? "none";
         next[idx] = toSeatColor(vote);
       });
@@ -690,9 +701,18 @@ export default function Home() {
     const presidentSeatNumber = numSeats + 1;
     if (phoneVotes.connectedSeats.includes(presidentSeatNumber)) {
       const vote = phoneVotes.votes[presidentSeatNumber] ?? "none";
-      setPresidentColor(vote === "yes" ? "green" : vote === "no" ? "red" : "white");
+      setPresidentColor(toSeatColor(vote));
     }
-  }, [phoneVotes, numSeats]);
+  }, [
+    phoneVotes,
+    numSeats,
+    choiceMode,
+    choiceOptionCount,
+    choiceColors,
+    electionMode,
+    candidateCount,
+    candidateColors,
+  ]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-900 dark:to-black p-8">
