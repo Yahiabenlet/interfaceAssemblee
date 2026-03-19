@@ -74,6 +74,7 @@ export default function DepartPage() {
               <span className="text-orange-700 dark:text-orange-300 font-semibold">Contestation</span> ➔{" "}
               <span className="text-orange-700 dark:text-orange-300 font-semibold">Insoumission</span> ➔{" "}
               <span className="text-red-700 dark:text-red-300 font-semibold">Sédition</span> ➔{" "}
+              <span className="text-red-700 dark:text-red-300 font-semibold">Sécession</span> ➔{" "}
               <span className="text-red-700 dark:text-red-300 font-semibold">Indépendance</span> (Perte de la province).
             </p>
             <p className="mb-2">Impact : Baisse la Sécurité et demande des “Lois d&apos;Exception” pour être stabilisé.</p>
@@ -94,7 +95,7 @@ export default function DepartPage() {
               <span className="text-green-700 dark:text-green-300 font-semibold">Annexation</span> (Gain d’une province)
             </p>
 
-            <p><strong>Intégration d’une Province récemment annexée :</strong></p>
+            <p><strong>Intégration d’une Province récemment annexée de façon militaire :</strong></p>
             <p>
               <span className="text-red-700 dark:text-red-300 font-semibold">Zone de Non-Droit</span> ➔{" "}
               <span className="text-orange-700 dark:text-orange-300 font-semibold">Insurrection</span> ➔{" "}
