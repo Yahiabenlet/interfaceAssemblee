@@ -1,0 +1,948 @@
+\documentclass{book}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.85cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\usepackage[labelformat=empty]{caption}
+
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{amsfonts}
+\usepackage{pdfpages}
+
+\usepackage[none]{hyphenat}
+
+
+\usepackage[most]{tcolorbox} % Pour les encadrés
+\usepackage{xcolor}          % Pour les couleurs personnalisées
+\usepackage{fontawesome5}    % Pour les petites icônes (si besoin)
+
+
+
+
+
+\begin{document}
+
+
+
+
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=14cm]{Page de Garde.pdf}
+
+\end{figure}
+
+\pagenumbering{gobble}
+\newpage
+\section*{La Collection YABEL}
+
+\paragraph*{CERTIFICATION  :} Les "Codes YABEL" constituent la référence absolue en matière de droit gérionien. Cette édition 4026 ap. D. a été révisée par le Grand Collège des Juristes de la Capitale. Le label YABEL garantit que chaque article ici présent est conforme aux traités de paix signés après la Guerre des Six Jours.
+
+\paragraph*{ÉDITIONS I2S  :} La maison d'édition I2S est le fournisseur officiel de l'Assemblée Fédérale. Spécialisée dans la publication des documents "Haute Sécurité", elle assure la diffusion des lois auprès des six provinces de la République.
+
+\section*{Dépôt Légal et Copyright}
+
+\paragraph*{RÉFÉRENCE  :} ISBN  : 4026-YBL-I2S-001.
+\paragraph*{DÉPÔT LÉGAL  :} Janvier 4026, Imprimerie Nationale, Secteur 4 (Capitale).
+
+\paragraph*{DROITS RÉSERVÉS  :} © Éditions I2S. Toute reproduction des mécanismes de vote, des barèmes de ressources ou des cartes stratégiques sans l'autorisation expresse du Greffier de la République est strictement interdite. Les contrevenants s'exposent à une saisie immédiate de leurs Unités d'Influence et à une comparution devant le tribunal des Hauteurs Profondes.
+
+\section*{Crédits de Collaboration}
+
+\paragraph*{DIRECTION DE COLLECTION  :} Le Greffier de la République.
+\paragraph*{CONTRIBUTION SPÉCIALE (PRESSE)  :} En vertu du partenariat avec la presse libre, les visuels et manchettes intégrés à cette édition sont l'œuvre de David L. M., Rédacteur en Chef de la Critique, sous licence de diffusion I2S.
+
+
+
+\part{Code Constitutionnel}
+
+\chapter*{Préambule}
+
+
+\textbf{NOUS, REPRÉSENTANTS DU PEUPLE DE GÉRIONIE}, investis de la confiance des provinces du \textbf{Plateau}, des \textbf{Hauteurs Profondes}, de la \textbf{Vallée de l’Armoire} et de la \textbf{Capitale}, réunis en Assemblée Fédérale souveraine sous le regard de l'Histoire ;
+
+\textbf{CONSCIENTS} des liens indéfectibles qui nous unissent, forgés dans le fer des mines \\septentrionales et le sel des courants marins ;
+
+\textbf{RAPPELANT} que notre liberté fut conquise par la raison et le sacrifice, et qu'elle ne saurait perdurer sans une vigilance constante face aux ambitions de l'Empire de Tori Value et aux troubles qui agitent ceux qui nous entourent ;
+
+\textbf{AFFIRMANT} notre attachement aux principes de la Concorde et du Compromis, rejetant l'absolutisme d'un seul homme pour lui préférer la sagesse collégiale du Parlement, car seule une République de pairs peut naviguer sans sombrer ;
+
+\textbf{DÉCLARONS} solennellement que la Gérionie est une patrie de justice, de travail et de courage. Que chaque loi ici consignée soit le rempart de nos foyers et le guide de nos ambitions. Que chaque jeton versé au Trésor de la Nation soit une pierre ajoutée à l'édifice de notre grandeur commune ;
+
+\textbf{PROCLAMONS} l’entrée en vigueur de ce Code Constitutionnel, pacte sacré entre les \\provinces et l’État, sous l’égide de notre devise éternelle  :
+
+\quad
+
+\Large\textbf{\textit{E PLURIBUS, UNA RESPUBLICA}}
+\normalsize
+
+\quad
+
+
+\textbf{ACTÉ ET SCELLÉ} par le Bureau du Greffier, en la Capitale, pour que nul n’en ignore.
+
+
+
+
+\chapter{DES FONDEMENTS DE LA RÉPUBLIQUE}
+
+\section*{\textit{Article 1 :} Nature de l'État et Souveraineté}
+
+\paragraph{1.1. L'Unité Indivisible :}La Gérionie est une République parlementaire d’assemblée, \\souveraine et indivisible. Elle tire sa force de l'union de ses territoires historiques et des provinces sous sa protection.
+
+
+\paragraph{1.2. Les Symboles Nationaux :}La République de Gérionie est reconnue par ses signes\\ immuables, garants de son identité et de sa continuité.
+\subparagraph{1.2.1. Le Grand Sceau de la République  : }Le Grand Sceau de la République reprend les armes provinciales, sommées de la Devise de la République.
+Il est apposé par le Greffier sur les lois et traités pour leur donner force exécutoire.
+\subparagraph{1.2.2. Le Drapeau  : }Le Drapeau National est le tricolore horizontal, Vert, Blanc, Noir, orné en son centre du Grand Sceau.
+
+
+\paragraph{1.3. Le Système de Concorde :}Le pouvoir législatif et le pouvoir exécutif sont fusionnés au sein du Parlement. La direction de l'État est assurée de manière collégiale. Il n'existe aucun chef d'État disposant d'un pouvoir décisionnel autonome hors du contrôle de l'Assemblée.
+
+\paragraph{1.4. La Présidence de Séance :}L'Assemblée élit en son sein un Président de séance. Ce dernier n'est point un monarque républicain, mais le premier des pairs (Primus inter pares). Il assure la police des débats, la représentation protocolaire et la médiation entre les départements. En cas d'égalité parfaite lors d'un vote, sa voix est prépondérante.
+
+\paragraph{1.5. Les Départements Ministériels :} Le Parlement délègue la gestion des affaires publiques à des Ministres-Parlementaires. Ces derniers sont responsables de la gestion des ressources nationales et doivent rendre compte de chaque dépense devant l'Assemblée. Tout acte ministériel peut être frappé de nullité par un vote majoritaire du Parlement.
+
+\paragraph{1.6. Le Gardien des Registres :} Le Greffier est le dépositaire de la Constitution. Il valide la régularité des votes, certifie les traités et archive les secrets de l'État. Sa parole sur l'interprétation du présent Code fait foi.
+
+
+
+
+\section*{\textit{Article 2 :} Des Provinces et de l'Unité Fédérale}
+\paragraph{2.1. Autonomie Provinciale  :} Les provinces de la République jouissent d'une autonomie de gestion. Leurs représentants sont les garants de leur stabilité .
+
+\paragraph{2.2. Solidarité Nationale  :} En cas de crise majeure dans une province, l'Assemblée Fédérale peut voter un plan de sauvetage en utilisant les ressources du Trésor National.
+
+
+
+\section*{\textit{Article 3 :} Du Cabinet Ministériel}
+\paragraph{3.1. Absence de Hiérarchie  :} Il n'existe pas de "Premier Ministre". Chaque Ministre est responsable de son Département et traite d'égal à égal avec ses pairs.
+
+\paragraph{3.2. Responsabilité Collective  :} Les grandes décisions internationales ou militaires doivent être validées par un vote du Parlement. Un Ministre ne peut engager de façon importante son département sans l'aval de l'Assemblée.
+
+
+
+\section*{\textit{Article 4 :} Du Rôle du Greffier de la République}
+\paragraph{4.1. Neutralité Absolue  :} Le Greffier n'est pas un membre votant. Il est le témoin des engagements.
+
+\paragraph{4.2. Pouvoir de Certification  :} Un accord entre deux joueurs ou deux nations n'a de valeur juridique que s'il est consigné dans les registres du Greffier.
+
+\paragraph{4.3. Gestion de l'Inflation  :} Le Greffier régule la circulation des richesses et peut lever des taxes administratives pour éviter l'accumulation de richesses excessives par une seule faction.
+
+
+
+
+\chapter{DE L'ASSEMBLÉE FÉDÉRALE ET DE LA PROCÉDURE LÉGISLATIVE}
+\section*{\textit{Article 5 :} De la Tenue des Séances}
+\paragraph{5.1. La Présidence de Séance  :} La séance est ouverte et fermée par le Président. Il distribue la parole et peut ordonner le silence au nom de la Constitution.
+
+\paragraph{5.2. Ordre du Jour  :} Toute proposition de loi ou de décret doit être annoncée au Greffier avant l'ouverture des débats.
+
+
+
+\section*{\textit{Article 6 :} De l'Engagement des Ressources Législatives}
+\paragraph{6.1. Du Débat Parlementaire  :} Pour influencer la forme d'une loi, les parlementaires utilisent leurs Crédits Diplomatiques et Unités de Valeur tels que définis dans la loi organique.
+
+\paragraph{6.2. Dépôt d'Amendement  : }Permet de modifier ou d'ajouter une condition à une loi proposée.
+
+\paragraph{6.3. Priorité de Parole  :} Permet de passer en tête de liste des orateurs pour convaincre l'assemblée.
+
+\paragraph{6.4. Rappel au Règlement  :} Interrompt un joueur ou demande une clarification au Greffier.
+
+
+
+
+\section*{\textit{Article 7 :} Du Processus de Vote}
+
+\paragraph{7.1. Le Scrutin Secret  :} Un parlementaire peut exiger que le vote soit secret contre le versement de 6 Crédits Diplomatiques aux frais d'organisation.
+
+\paragraph{7.2. Distinction des Normes  :} Une loi modifiant le fonctionnement des institutions ou les frontières est qualifiée de Loi Organique. Son adoption requiert impérativement une Super-Majorité.
+
+\paragraph{7.3. Le Décret du Président  :} Le Président de séance peut proposer un décret. Ce texte est adopté d'office, sauf si le Parlement s'y oppose par un vote à la Super-Majorité.
+
+
+
+\newpage
+\section*{\textit{Article 8 :} Du Droit de Veto Constitutionnel}
+
+\paragraph{7.1. Nature du Veto  :} Le Président de séance dispose d'un droit de Veto Constitutionnel sur toute loi votée par le Parlement dans les dispositions définies par la loi organique.
+
+\paragraph{7.2. Coût de l'Obstruction  :} L'usage du Veto est un acte grave. Pour chaque Veto déposé, le Président doit verser 5 Crédits Diplomatiques personnels au Greffe, symbolisant le coût politique de l'arrêt du processus législatif.
+
+\paragraph{7.3. Incompatibilité avec l'Enclume  :} Le Droit de Veto ne peut être exercé contre une loi adoptée par la procédure de l'Enclume (Article 9), car l'engagement de responsabilité du Président vaut approbation tacite du texte.
+
+
+
+
+\section*{\textit{Article 9 :} De la Motion de Censure}
+
+\paragraph{9.1. Définition  :} La Motion de Censure est l'acte par lequel le Parlement exprime son refus de collaborer avec le Président de séance et son cabinet Ministériel.
+
+\paragraph{9.2. Coût de Mise en Œuvre  :} Le déclenchement de cette procédure est provoqué par la mobilisation de Crédits Diplomatiques versés solidairement par un ou plusieurs parlementaires.
+Dans le cas où le Président de Séance engage la responsabilité de son cabinet Ministériel à l'aide de la Loi de l'Enclume selon les modalités de l'Article 10, le dépôt de la motion ne nécessite pas de mobilisation de Crédits Diplomatiques
+
+\paragraph{9.3. Effets de la Censure  :} Si la motion est adoptée à la majorité absolue simple, le Président et son cabinet Ministériel sont démis de leurs fonctions avec effet immédiat. Les Crédits Diplomatiques attribués aux Départements Ministériels sont gelées par le Greffier jusqu'à l'élection d'un successeur.
+
+\paragraph{9.4. Inéligibilité Temporaire  :} Un membre censuré ne peut se représenter à une fonction ministérielle avant la fin du cycle parlementaire en cours.
+
+
+
+
+
+\section*{\textit{Article 10 :} De la Procédure de l'Enclume}
+\paragraph{10.1. Définition et Mise en Œuvre  :} Le Président de séance peut, pour un texte qu’il juge vital pour la survie de la République, engager la responsabilité de son cabinet Ministériel en invoquant le présent article dit de la "Loi de l’Enclume". Cette procédure suspend immédiatement les débats et les votes d’amendements en cours.
+
+\paragraph{10.2. Adoption par Présomption  :} Dès l’instant où l’Enclume est invoquée, le texte est considéré comme adopté d'office, sans vote, et prend force de loi immédiate.
+
+\paragraph{10.3. Délai de Censure  :} L'unique moyen pour le Parlement de s’opposer à l’Enclume est le dépôt d'une Motion de Censure selon les modalités de l'Article 9 dans un temps imparti défini par la loi Organique.
+
+\paragraph{10.4. Conséquences du Rejet  :}  Si une Motion de Censure est adoptée pendant ce délai, le texte de loi est définitivement rejeté et le Président et son cabinet Ministériel sont démis de leurs fonctions.
+Si aucune Motion de Censure n'est déposée ou adoptée dans le temps imparti, la loi est ratifiée et ne peut plus être contestée durant le cycle parlementaire.
+
+\paragraph{10.5. Coût de l'Audace  :} L'usage de l'Enclume est gratuit en Crédits Diplomatiques pour le Président, mais il met sa carrière politique en jeu. Cependant, chaque usage de cette loi provoque une instabilité  : le Greffier prend immédiatement note du mécontentement populaire face à ce passage en force.
+
+
+
+
+
+
+\chapter{DES DÉPARTEMENTS MINISTÉRIELS ET DES RESSOURCES}
+\section*{\textit{Article 11 :} De l'Attribution des Fonds de Département}
+
+\paragraph{11.1. Responsabilité Ministérielle  :}Chaque Ministre-Parlementaire est responsable d'un portefeuille spécifique. Il gère les Unités de Valeur\footnote{Les Unités de Valeurs sont les différents types de jetons utilisés.} allouées à son Département par le Trésor de la République.
+
+\paragraph{11.2. Département de l'Économie et des Finances Publiques  :} En charge des Fonds Industriels\footnote{Les Fonds Industriels correspondent aux jetons Rouges.}. Utilisés pour l'audit des provinces, les infrastructures et les pactes commerciaux avec les Nations Étrangères.
+
+\paragraph{11.3. Département de la Paix Publique  :} En charge des Titres de Solidarité\footnote{Les Titres de Solidarités correspondent aux jetons Verts.}. Utilisés pour les réformes sociales, l'aide humanitaire et l'apaisement des provinces insurgées.
+
+\paragraph{11.4. Département de la Défense  :} En charge des Crédits de Défense\footnote{Les Crédits de Défense correspondent aux jetons Bleus.}. Utilisés pour le renseignement, le déploiement de garnisons et la conduite des opérations militaires.
+
+\paragraph{11.5. Département des Affaires Constitutionnelles  :} En charge des Crédits Diplomatiques\footnote{Les Crédits Diplomatiques correspondent aux jetons Violets.}. Ce fonds est généralement géré par le Président de séance pour l'organisation des débats, mais peut être distribué aux chefs de blocs parlementaires.
+
+
+
+
+\section*{\textit{Article 12 :} De la Transférabilité des Fonds}
+
+\paragraph{12.1. Accords Inter-Ministériels  :} Les Ministres peuvent échanger des Unités de Valeur entre leurs Départements respectifs, à condition que l'échange soit visé par le Greffier.
+
+\paragraph{12.2. Usage de l'Influence  :} Les Unités d'Influence \footnote{Les Unités d'Influences correspondent aux jetons Noirs} détenues à titre privé par les\\ parlementaires peuvent être injectées dans un fonds ministériel pour pallier une carence budgétaire, moyennant une taxe de change fixée par le Greffier.
+
+
+\chapter{DES RELATIONS EXTÉRIEURES ET DE LA SOUVERAINETÉ}
+\section*{\textit{Article 13 :} De la Diplomatie et des Traités}
+
+\paragraph{13.1. Négociation des Accords  :} Le Parlement délègue à l'un de ses membres la responsabilité de négociateur. Il est chargé de mener les discussions avec les puissances limitrophes. Toutefois, aucun engagement ne devient définitif sans la ratification de l'Assemblée à la majorité simple.
+
+\paragraph{13.2. Ratification des Traités  :} La signature officielle d'un traité international nécessite le versement de Crédits Diplomatiques au Greffe pour l'enregistrement des protocoles suivant la loi organique.
+
+\paragraph{13.3. Rôle des Ambassadeurs  :} Les représentants des puissances étrangères peuvent être admis dans l'enceinte du Parlement pour une audition exceptionnelle. Cette admission doit être proposée par le Président de séance et ne peut être refusée que par une Super-Majorité.
+
+\section*{\textit{Article 14 :} De la Guerre et de la Paix}
+
+\paragraph{14.1. Déclaration d'Hostilités  :} La guerre ne peut être déclarée que par le Parlement à la Super-Majorité. Le texte de la déclaration doit préciser les objectifs militaires et le budget en Crédits de Défense alloué à l'opération.
+
+\paragraph{14.2. État de Siège  :} En cas de menace existentielle, le Président de séance peut proclamer l'État de Siège par Décret d'Urgence.
+
+        Durant l'État de Siège, le coût des Crédits de Défense pour le maintien de l'ordre est réduit de moitié.
+
+        En contrepartie, les Titres de Solidarité sont gelés  : aucune réforme sociale ne peut être votée tant que le territoire est menacé.
+
+\paragraph{14.3. Cessez-le-feu  :} Un armistice peut être décidé à la majorité simple pour une durée d'un cycle parlementaire.
+
+
+\newpage
+
+\section*{\textit{Article 15 :} Des Territoires sous Protectorat}
+
+\paragraph{15.1. Statut d'Exception  :} Les territoires occupés ou libérés ne sont pas immédiatement intégrés à la République. Ils sont gérés par un Gouverneur Militaire nommé par le Parlement.
+
+\paragraph{15.2. Naturalisation Organique  :} L'intégration définitive d'une province étrangère dans le corps de la République nécessite le vote d'une Loi Organique et le paiement d'une taxe d'intégration déterminée par le Greffier.
+
+
+
+
+\section*{\textit{Article 16 :} De l'Usage de l'Influence à l'Étranger}
+
+\paragraph{16.1. Opérations de l'Ombre  :} Le Parlement peut autoriser l'usage d'Unités d'Influence pour déstabiliser un voisin ou obtenir des informations secrètes.
+
+\paragraph{16.2. Clause de Négation  :} Si une opération d'espionnage est découverte par le Greffier, la République peut nier toute implication en versant réparation à l'aide d'Unités d'Influence, évitant ainsi un malus diplomatique immédiat.
+
+
+
+
+\section*{\textit{Article 17 :} Du Droit d'Asile et des Réfugiés}
+
+\paragraph{17.1. Principes d'Accueil :}  La République peut accorder sa protection à tout individu fuyant l'oppression ou les zones de conflit. L'octroi de l'asile est une prérogative du Parlement.
+
+\paragraph{17.2. Coût de Prise en Charge :} L'accueil d'un contingent de réfugiés ou d'une personnalité étrangère nécessite le versement de Titres de Solidarité.
+
+\paragraph{17.3. Impact Social  :} L'accueil de réfugiés peut, selon la situation, augmenter le score Social de la République ou générer une crise si les ressources de la province d'accueil sont insuffisantes.
+
+\paragraph{17.4. Naturalisation Spéciale  :} Un réfugié peut obtenir la citoyenneté gérionienne après un cycle complet, par vote à la majorité simple.
+
+
+
+
+\chapter{DU RÈGLEMENT INTERNE AU PARLEMENT}
+\section*{\textit{Article 18 :} De la Tenue et de la Dignité des Débats}
+
+\paragraph{18.1. Respect de la Présidence  :} Le Président de séance est le seul maître du temps de parole. Toute interruption sans avoir versé de Crédit Diplomatique pour un "Rappel au règlement" est passible de sanction.
+
+\paragraph{18.2. Interdiction des Outrages  :} Les insultes personnelles entre parlementaires, envers le Président ou le Greffier sont interdites. Le Greffier peut infliger une Amende pour Outrage versée immédiatement au Trésor.
+
+\paragraph{18.3. Obligation de Présence  :} Un parlementaire qui quitte la table pendant un vote sans procuration est considéré comme abstentionniste d'office.
+
+
+
+\section*{\textit{Article 19 :} De la Discipline et des Sanctions}
+
+\paragraph{19.1. L'Avertissement  :} Pour un trouble mineur, le Président de séance prononce un avertissement formel inscrit au procès-verbal.
+
+\paragraph{19.2. L'Exclusion Temporaire (Coupure de micro)  :} En cas de trouble persistant, le Président peut, sur proposition du Greffier, interdire à un parlementaire toute prise de parole suivant la loi Organique.
+
+\paragraph{19.3. La Censure avec Exclusion  :} Sur proposition du Greffier et vote à la majorité simple, un parlementaire peut être exclu de la salle pour le reste du cycle en cours pour faute grave contre la République. Ses Unités sont alors placées sous séquestre.
+
+
+\section*{\textit{Article 20 :} Du Secret des Délibérations}
+
+\paragraph{20.1. Confidentialité des Comités  :} Les discussions privées ou de "couloir" impliquant des Unités d'Influence ne sont pas protégées par le Code de comportement. La République ne reconnaît que les paroles prononcées officiellement à la table.
+
+\paragraph{20.2. Divulgation de Secrets d'État  :} Tout parlementaire révélant le contenu d'un dossier classé par le Greffier peut être poursuivi pour Haute Trahison, suivant la Loi Organique.
+
+
+
+
+
+
+
+
+
+
+
+\part{Contexte géopolitique}
+
+\chapter{PANORAMA DES PROVINCES NATIONALES}
+\section*{Rappels des Paliers :}
+
+\begin{tcolorbox}[adjusted title= Niveau de Contrôle des Provinces]
+    Équilibre $\rightarrow$ Stable $\rightarrow$ Prospère $\rightarrow$ Rayonnante \\
+  \textit{Impact  :} Augmente le \textbf{Budget} car la bureaucratie fonctionne parfaitement.
+
+  \vspace{8pt}
+  Équilibre $\rightarrow$ Contestation $\rightarrow$ Insoumission $\rightarrow$ Indépendance \\
+  \textit{Impact  :} Baisse la Sécurité et demande des \og Lois d'Exception \fg.
+\end{tcolorbox}
+
+\begin{tcolorbox}[adjusted title= Niveau de Relations Diplomatiques]
+    Indifférent  $\rightarrow$ Prudent $\rightarrow$ Rivalité  $\rightarrow$ Antagoniste $\rightarrow$ En Guerre \\
+  \textit{Impact  :} La détérioration des relations diplomatiques avec un autre pays peut avoir des conséquences graves sur l'économie, mais peut être également souhaitée dans le cadre d'un casus belli ou d'une volonté de s'opposer à un régime.
+
+  \vspace{8pt}
+  Indifférent  $\rightarrow$ Coopératif  $\rightarrow$ Allié  $\rightarrow$ Fantoche $\rightarrow$ Annexation \\
+  \textit{Impact  :} La coopération avec un autre pays permet d'avoir accès à des alliances et pactes commerciaux qui peuvent s'avérer intéressant pour le pays. En revanche, chaque signature rend chacune des parties dépendante de l'autre.
+\end{tcolorbox}
+
+\begin{tcolorbox}[adjusted title=Intégration d’une Province récemment annexée de façon militaire  :]
+    Zone de Non-Droit  $\rightarrow$ Insurrection $\rightarrow$ Défiance  $\rightarrow$ Pacifié $\rightarrow$ Contrôle total$\rightarrow$ Equilibre \\
+ \textit{Impact  :} Garder une province récemment annexée au même niveau de contrôle coûte 1 de \textbf{Budget}, et coûte 2 de \textbf{Budget} pour réduire le niveau d’insurrection. Sinon, baisse du niveau de controle de 1 à chaque cycle.
+\end{tcolorbox}
+
+
+\newpage
+
+\section{La Capitale :}
+\paragraph{STATUT :} PROSPÈRE
+
+\paragraph{DESCRIPTION :}  Siège du pouvoir politique, ici tout est jeu d’influence et de politique. Quand la Capitale éternue, la République s’enrhume.
+
+\paragraph{HISTOIRE :} Centre névralgique de la République, la Capitale est une métropole où les anciens monuments cohabitent avec les gratte-ciels des Ministères. C'est le cœur de l'administration et des réseaux de communication. Ici, l'opinion publique se fait et se défait sur les plateaux TV et les réseaux sociaux en quelques minutes.
+
+\paragraph{IMPACT :}  Si la province chute en dessous du statut STABLE, le pays subit un malus immédiat de Budget -2.
+
+\paragraph{SOUTIEN POLITIQUE :}  Conservateurs et Radicaux.
+
+\paragraph{HÉRITAGE \& MURMURES :} "Le Scandale des Registres". Une enquête journalistique suggère que des Unités d'Influence circulent de manière illicite pour influencer le vote des lois organiques.
+
+
+
+\section{Le Plateau :}
+\paragraph{STATUT :} ÉQUILIBRE
+
+\paragraph{DESCRIPTION :}  Carrefour des routes commerciales, Province plutôt libérale, elle est la province la plus riche de la République.
+
+\paragraph{HISTOIRE :} La province la plus riche. C’est le hub industriel et logistique du pays, avec ses zones franches, ses usines automatisées et ses ports secs. Sa culture est celle du résultat et de l'efficacité libérale. Elle finance une grande partie des infrastructures nationales.
+
+\paragraph{IMPACT :}  Si Statut > STABLE, la jauge ÉCONOMIE reste supérieure à 3 hors crise.
+
+\paragraph{SOUTIEN POLITIQUE :}  Libéraux et Radicaux.
+
+\paragraph{HÉRITAGE \& MURMURES :} "Le Pacte de l'Acier". Les syndicats de techniciens et les grands patrons industriels maintiennent une paix fragile, mais réclament moins de taxes pour rester compétitifs face à l'Est.
+
+
+
+
+
+
+\section{Les Hauteurs Profondes}
+
+\paragraph{STATUT :} STABLE
+
+\paragraph{DESCRIPTION :} Province minière et militaire. Elle est fidèle, mais exigeante en budget.
+
+\paragraph{HISTOIRE :} Province de pics enneigés et de complexes militaires enterrés sous le granit. Véritable "Triple Frontière", elle surplombe à la fois les plaines de l'Outre-Porte et les cols glacés menant au Royaume de Luvonie. C'est ici que sont installés les centres d'écoute et les batteries de défense sol-air. La culture y est spartiate  : les civils sont tous formés aux protocoles d'urgence et la Garde Frontalière est l'unité la plus prestigieuse du pays.
+
+\paragraph{IMPACT :} Chaque unité de BUDGET dépensée ici fournit +1 point de SÉCURITÉ.
+
+\paragraph{SOUTIEN POLITIQUE :} Nationalistes et Militaristes.
+
+\paragraph{HÉRITAGE \& MURMURES :} "Le Triple Verrou". Les habitants se considèrent comme les gardiens de la paix face aux instabilités de l'Outre-porte et aux ambitions douanières de la Luvonie. On murmure que certains cols secrets serviraient au passage de diplomates de l'ombre.
+
+
+\section{Vallée de l'Armoire}
+
+\paragraph{STATUT  :} CONTESTATION
+
+\paragraph{DESCRIPTION  :}  Le grenier à blé du pays. Si elle bascule en contestation, le peuple a faim.
+
+\paragraph{HISTOIRE :} Le grenier à blé du pays, exploitant de vastes plaines hautement productives. Cependant, le sentiment d'être délaissé par la Capitale "urbaine" est fort. Les agriculteurs et ouvriers agro-industriels se sentent écrasés par les normes et les prix fixés au Parlement.
+
+\paragraph{IMPACT :} Chaque tour en CONTESTATION inflige SOCIAL -1.
+
+\paragraph{SOUTIEN POLITIQUE :} Populistes et Socialistes.
+
+\paragraph{HÉRITAGE \& MURMURES :} "La Révolte des Faucilles". Un mouvement de contestation sociale menace de bloquer les autoroutes de ravitaillement si des Titres de Solidarité ne sont pas injectés massivement.
+
+
+
+\section{Province des Plasticiens}
+
+\paragraph{STATUT  :} CONTESTATION
+
+\paragraph{DESCRIPTION  :} Province du peuple plasticien, une minorité qui ne s’est jamais réellement intégrée.
+
+\paragraph{HISTOIRE :} Une province au design urbain unique, utilisant des matériaux synthétiques avancés, peuplée par la minorité Plasticienne. Bien que maîtres de technologies de pointe, ils souffrent d'un manque d'intégration culturelle. Ils réclament une reconnaissance de leurs droits spécifiques et une autonomie culturelle.
+
+\paragraph{IMPACT :} Les lois nationalistes font basculer la province vers la SÉDITION.
+
+\paragraph{SOUTIEN POLITIQUE :} Écolos et Progressistes.
+
+\paragraph{HÉRITAGE \& MURMURES :} "Le Chant des Plastiques". Une forme de résistance culturelle et artistique qui s'exprime par le sabotage des symboles nationaux de Gérionie.
+
+
+
+\section{Archipel d'Eldrazi}
+
+\paragraph{STATUT  :} ÉQUILIBRE
+
+\paragraph{DESCRIPTION  :} Province d’outre-mer qui flirte avec l'idée de devenir indépendante, mais source de convoitise.
+
+\paragraph{HISTOIRE :} Loin de l'image de carte postale, Eldrazi est une province structurellement sous-développée. Si les côtes accueillent quelques infrastructures modernes, l'intérieur des terres manque cruellement de réseaux électriques fiables, d'écoles et d'hôpitaux. C'est une terre de contrastes où la population locale se sent délaissée par la modernisation du Plateau. Pourtant, sa position en mer en fait une cible prioritaire pour l'Empire de Tori Value. L'archipel a été le théâtre de nombreux conflits sanglants, qui ont laissé des cicatrices profondes dans le paysage et la mémoire des insulaires.
+Le potentiel est immense, mais le retard de croissance est un frein majeur à son intégration.
+
+\paragraph{IMPACT :} Budget -1 par tour tant qu'elle n'est pas Autonome ou Indépendante.
+
+
+\paragraph{HÉRITAGE \& MURMURES :} "Le Souvenir de l'Invasion". La peur d'un nouveau conflit avec Tori Value est omniprésente. Les locaux voient d'un mauvais œil le désinvestissement du Parlement, craignant que la Gérionie ne les abandonne à nouveau si une nouvelle guerre éclatait, ce qui alimente la volonté d'indépendance.
+
+\section*{Remarque Concernant les Décrets}
+\begin{tcolorbox}[arc=5pt, boxrule=1pt, adjusted title= Règle générale Concernant les Provinces :]
+ Si 2 décrets sont appliqués dans une province, des \textbf{jetons d'influence bonus} seront accordés aux partis soutenus dans la province.
+\end{tcolorbox}
+
+
+
+\chapter{DOSSIERS DES PUISSANCES CONTINENTALES}
+\section{Royaume de Luvonie}
+
+\paragraph{DISPOSITION  :} NEUTRE / PARTENAIRE COMMERCIAL EXIGEANT
+
+\paragraph{PROFIL  :}  Situé au nord-ouest de la République, la Luvonie est une nation de montagnes escarpées et de côtes stratégiques, agissant comme le poumon maritime du Nord.
+
+\paragraph{CONTEXTE  :} Maître incontesté des routes maritimes du Nord, la Luvonie est le verrou économique de la Gérionie. Si ses ports sont des modèles de modernisme, sa diplomatie est froide et calculatrice. Le Royaume ne cherche pas l'expansion territoriale, mais la domination financière. Leurs flottes de commerce, protégées par des destroyers de pointe, croisent en permanence au large des Hauteurs Profondes, rappelant silencieusement qui contrôle le flux des ressources.
+Les relations sont cordiales tant que les taxes douanières sont acquittées.
+
+\paragraph{IMPLICATION  :} Nécessite l'engagement régulier de Crédits Diplomatiques pour maintenir des tarifs préférentiels. En cas de rupture, le coût des Fonds Industriels  augmente drastiquement.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "Le Péage des Thalj". Les services secrets signalent que la Luvonie renforce ses attaches avec certaines factions libérales du Plateau. Ils ne veulent pas nous envahir, ils veulent nous posséder par la dette.
+
+
+\section{Empire de Tori Value}
+
+\paragraph{DISPOSITION  :} RIVAL / MENACE EXISTENTIELLE
+
+\paragraph{PROFIL  :} Régime autoritaire militarisé. Une puissance continentale dont l'idéologie est diamétralement opposée à la Concorde Parlementaire gérionienne.
+
+\paragraph{CONTEXTE  :} L'Empire n'a jamais reconnu la légitimité de notre souveraineté sur l'Archipel d'Eldrazi. Pour Tori Value, la Mer de l'Est est leur mare nostrum. Leur doctrine de "l'Espace Vital" les pousse à une pression constante, mêlant cyber-attaques sur nos infrastructures et provocations navales. Leurs bases militaires de l'autre côté du détroit sont en état d'alerte permanent, prêtes à exploiter la moindre crise politique au sein de notre Parlement pour déclencher une "opération de sécurisation".
+C'est une puissance qui respecte la force, mais méprise le compromis.
+
+\paragraph{IMPLICATION  :} Force le maintien d'un niveau élevé de Crédits de Défense. Une baisse de la vigilance entraîne une chute immédiate de la stabilité à Eldrazi.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "L'Ombre de la Guerre". Trente ans après le dernier grand conflit, les analystes prévoient un nouveau cycle d'agression. Tori Value finance discrètement les mouvements séparatistes d'Eldrazi pour justifier une intervention "humanitaire".
+
+\section{L’Outre-Porte}
+
+\paragraph{DISPOSITION  :} PRUDENT / ÉTAT TAMPON DIVISÉ
+
+\paragraph{PROFIL  :} Jeune royaume indépendant, le pays est séparé entre deux peuples, dont un culturellement et historiquement proche de la République de Gérionie.
+
+\paragraph{CONTEXTE  :} L'Outre-Porte est une nation fragile dont l'existence même est un sujet de débat passionné au sein de notre Parlement. Le concept de "Grande Gérionie", largement soutenu par les factions nationalistes, considère l’Outre-Porte comme incluse dans nos frontières naturelles, voyant en son indépendance une anomalie historique.
+Le pays est actuellement scindé en deux  : une population qui regarde vers la Capitale avec l'espoir d'une réunification, et une autre, plus méfiante, qui craint d'être absorbée et de perdre sa souveraineté. Cette dualité fait de l'Outre-Porte un terrain de jeu dangereux pour les agents d'influence.
+
+\paragraph{IMPLICATION  :} L'instabilité y est constante. Toute intervention peut être perçue soit comme une libération par nos partisans, soit comme une agression impérialiste par l'autre moitié du peuple et par l'Empire de Tori Value.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "L'Appel de la Grande Gérionie". Les services de renseignement notent une augmentation des Unités d'Influence circulant pour financer des mouvements pro-réunification. Le risque est qu'une étincelle en Outre-Porte n'embrase toute la frontière Est des Hauteurs Profondes et de la Vallée de l'Armoire.
+
+\section{Junte des Émirats du Sud}
+
+\paragraph{DISPOSITION  :} COOPÉRATIF / MÉCÉNAT AUTOCRATIQUE
+
+\paragraph{PROFIL  :} Junte dirigée par un émir atypique, qui s’est pris d’affection pour votre république singulière.
+
+\paragraph{CONTEXTE  :} Les Émirats du Sud représentent un paradoxe diplomatique majeur. Bien que l’Émir n’hésite pas à financer des projets pharaoniques sur notre territoire national — injectant des capitaux là où le budget de l’État fait défaut — cette générosité cache une réalité sombre. Son peuple souffre d’un régime absolutiste et dictatorial où toute contestation est réprimée dans le sang. La relation entre la Gérionie et la Junte est donc un exercice d'équilibriste moral  : accepter l'or d'un tyran pour bâtir nos infrastructures, tout en fermant les yeux sur les droits de l'homme de l'autre côté de la frontière.
+
+\paragraph{IMPLICATION  :} Fournit un accès facilité à des Fonds Industriels  massifs, mais chaque accord avec la Junte fait chuter la jauge SOCIAL de la République à cause de l'indignation populaire.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "Le Prix du Progrès". On raconte que l'Émir voit en notre Parlement un "jouet" fascinant qu'il souhaite protéger, presque comme un mécène collectionneur. Cependant, si le peuple des Émirats venait à se soulever, la Gérionie serait pointée du doigt comme complice du régime.
+
+
+
+\newpage
+\section{L’Alliance des États d’Elimat}
+
+\paragraph{DISPOSITION  :} INDIFFÉRENT / HÉGÉMONIE DISTANTE
+
+\paragraph{PROFIL  :} Superpuissance régionale, son hégémonie économique et militaire est telle que ce pays agit comme le gendarme du monde.
+
+\paragraph{CONTEXTE  :} Elimat ne joue pas dans la même catégorie que les autres nations. Son influence est si vaste que personne n'ose imaginer l'état de l’économie mondiale si celle d’Elimat venait à s’effondrer. Pour eux, la République de Gérionie n'est qu'une ligne de statistique parmi d'autres. Ils n'interviennent que lorsque l'équilibre global est menacé. Leur monnaie et leurs standards technologiques s'imposent à tous, faisant d'Elimat une puissance invisible mais omniprésente qui dicte les règles du commerce international sans même avoir à siéger à notre Parlement.
+
+\paragraph{IMPLICATION  :} Un effondrement des relations avec Elimat ou une crise interne chez eux provoquerait un malus de ÉCONOMIE -5 immédiat et permanent. Ils sont trop gros pour faire faillite, et trop puissants pour être ignorés.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "Le Géant Silencieux". Elimat ne prend pas parti dans nos querelles avec Tori Value, tant que le flux des ressources mondiales n'est pas interrompu. Mais si la Gérionie devient un facteur d'instabilité globale, le "Gendarme" pourrait décider de mettre la République sous tutelle sans préavis.
+
+
+
+
+
+
+\chapter{DOSSIERS DES NATIONS ÉLOIGNÉES}
+
+\section{Confédération de Venia-Lymerie}
+
+\paragraph{DISPOSITION  :} PRUDENT / ÉQUILIBRE FRAGILE
+
+\paragraph{PROFIL  :} État fédéral archipélagique et péninsulaire, pivot du commerce maritime septentrional.
+
+\paragraph{CONTEXTE  :} Située bien plus au nord, là où les vents deviennent glaciaux, la Confédération est une puissance commerciale dont la structure rappelle les nations insulaires du sud-est lointain. Le pays repose sur une union complexe de duchés et de provinces, dont la pierre angulaire est la Principauté de Myrina. Cette dernière contrôle un détroit stratégique vital pour le transit vers la Mer des Sceaux. Cependant, des tensions séparatistes croissantes agitent Myrina. À l'instar de cités-états historiques ayant fait sécession par le passé, la Principauté menace de rompre son ban avec la Confédération pour devenir un port franc indépendant, ce qui déstabiliserait toute la région.
+
+\paragraph{IMPLICATION  :} Une sécession de Myrina provoquerait une hausse immédiate des coûts d'importation technologique. Le maintien de bonnes relations avec le pouvoir fédéral de Venia est essentiel pour garantir la fluidité des routes du Nord.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "Le Verrou de Myrina". Nos analystes surveillent de près les mouvements financiers dans le détroit. Si Myrina "saute", la Gérionie devra renégocier ses accords maritimes avec une entité souveraine potentiellement plus exigeante.
+
+
+
+
+
+\section{Ligue de Lunn}
+
+\paragraph{DISPOSITION  :} INDIFFÉRENT / RIVALITÉ RÉGIONALE
+
+\paragraph{PROFIL  :} Coalition de cités-états et de royaumes, rempart contre l'expansionnisme de l'Est.
+
+\paragraph{CONTEXTE  :} La Ligue de Lunn est la puissance dominante des côtes septentrionales de la Mer des Thalj. Dans ces contrées froides et rudes, elle s'est imposée comme le principal rival de l'Alliance des États de l'Est. Leur diplomatie est entièrement tournée vers l'endiguement de l'influence de l'Est, ce qui les rend souvent sourds aux sollicitations des nations plus méridionales comme la Gérionie. Pour la Ligue, nous ne sommes qu'un acteur secondaire tant que nous n'intervenons pas dans leur grand jeu de pouvoir contre l'Alliance.
+
+\paragraph{IMPLICATION  :} La Ligue peut devenir un allié de revers si l'Alliance des États de l'Est devient trop pressante, mais leur aide aura un prix politique élevé en termes de concessions militaires.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "Le Rempart de Glace". La Ligue de Lunn ne s'intéresse à la Gérionie que si Tori Value ou l'Est menacent de briser le statu quo mondial. Ils sont le gendarme du Nord, comme Elimat est celui du monde.
+
+
+
+\section{Le Tertre-Profond}
+
+\paragraph{DISPOSITION  :} NEUTRE / RÉSERVE ÉNERGÉTIQUE
+
+\paragraph{PROFIL  :} État frontalier des glaces éternelles, assis sur les plus grandes réserves de pétrole connues du Nord.
+
+\paragraph{CONTEXTE  :} Le Tertre-Profond est un pays de paradoxes. Bien que ses sous-sols regorgent d'un pétrole d'une qualité exceptionnelle, l'environnement hostile, marqué par un pergélisol \\permanent et des tempêtes de neige dévastatrices, rend l'extraction et l'exportation extrêmement complexes et coûteuses. C'est une nation riche en théorie, mais dont la population vit dans une austérité nécessaire à la survie. Ils vendent leurs ressources au compte-gouttes, préférant la stabilité interne à une croissance rapide qui attirerait trop de convoitises étrangères.
+
+\paragraph{IMPLICATION  :} Un accord d'approvisionnement avec le Tertre-Profond sécuriserait l'autonomie énergétique du Plateau, mais nécessiterait des investissements massifs en infrastructures de transport lourd.
+
+\paragraph{RENSEIGNEMENTS \& ANALYSE  :} "L'Or Noir des Neiges". Tori Value lorgne sur ces réserves pour alimenter sa machine de guerre. Le Tertre-Profond cherche discrètement des partenaires pour moderniser ses forages sans tomber sous la coupe d'un empire.
+
+
+
+
+
+
+
+
+
+\chapter{INVENTAIRE DES MENACES IMMINENTES}
+
+\section{Menace Militaire  : Le Front Sud (Tori Value)}
+
+\paragraph{STATUT  :} ALERTE ÉLEVÉE
+
+\paragraph{PROFIL  :} Pression frontalière et mouvements de troupes aéroportées.
+
+\paragraph{CONTEXTE  :} Les satellites de reconnaissance et nos agents sur le terrain confirment une activité inhabituelle de l'armée impériale de Tori Value le long de notre frontière Sud. Plusieurs divisions blindées ont quitté leurs casernements pour prendre position dans les zones tampons. Des exercices de débarquement amphibie ont également été observés face à l'Archipel d'Eldrazi. L'Empire teste notre réactivité parlementaire  : ils savent que notre processus de décision peut être lent et comptent sur une paralysie politique pour avancer leurs pions.
+
+\paragraph{OBJECTIF  : Urgent -} Voter une rallonge de Crédits de Défense pour renforcer les garnisons du Sud et l'Archipel, ou engager des Crédits Diplomatiques pour exiger un retrait via une médiation internationale (potentiellement via Elimat).
+
+
+
+\section{Crise Économique  : Asphyxie des Flux Nordiques}
+
+\paragraph{STATUT  :} CRISE LOGISTIQUE
+
+\paragraph{PROFIL  :} Inflation galopante et rupture de la chaîne d'approvisionnement.
+
+\paragraph{CONTEXTE  :} La situation au Nord et au Nord-Est devient intenable. Le Royaume de Luvonie a imposé une "taxe de sécurité" exceptionnelle sur tout cargo transitant par la Mer de Thalj, prétextant l'instabilité croissante en Outre-Porte. En conséquence, le coût des matières premières nécessaires au Plateau a bondi de 40\% en une semaine. L'inflation frappe de plein fouet le panier de la ménagère dans la Capitale, et les industries du fer commencent à mettre leurs ouvriers au chômage technique.
+
+\paragraph{OBJECTIF  : Prioritaire -} Négocier un accord douanier d'urgence avec la Luvonie ou stabiliser l'Outre-Porte pour sécuriser les routes terrestres. À défaut, le Parlement devra injecter des Fonds Industriels pour subventionner les prix de l'énergie.
+
+
+\newpage
+\section{Péril Intérieur  : La Fracture des Cimes}
+
+\paragraph{STATUT  :} URGENCE CIVILE
+
+\paragraph{PROFIL  :} Montée des mouvements séparatistes et sédition administrative.
+
+\paragraph{CONTEXTE  :} Paradoxalement, c'est dans les Hauteurs Profondes, notre bastion le plus fidèle, que le venin de la division se propage. Des mouvements séparatistes radicaux, influencés par la propagande de l'Alliance des États d’Elimat (qui voit d'un mauvais œil notre souveraineté sur les minerais rares de l'Est, au-delà de la Mer de Sienne), appellent à une "autonomie de gestion totale". Ils accusent la Capitale de gaspiller les richesses minières des cimes pour financer des projets inutiles dans le Sud ou pour l'Émirat.
+
+\paragraph{OBJECTIF  : Intermédiaire -} Restaurer l'autorité de l'État dans les Hauteurs via des Titres de Solidarité pour apaiser les populations, ou utiliser des Unités d'Influence pour discréditer les leaders séparatistes avant que la province ne bascule en Sédition.
+
+
+
+
+
+
+
+\chapter{GUIDE DES FLUX ET RESSOURCES}
+
+\section{Fonds Industriels}
+
+\paragraph{STATUT  :} CAPITAL OPÉRATIONNEL
+
+\paragraph{PROFIL  :} Représente la puissance manufacturière, les réserves de devises et la capacité de production du Plateau et de la Gérionie.
+
+\paragraph{MÉCANIQUE  :} Ces fonds sont générés par le commerce extérieur et la fiscalité sur les entreprises. Ils sont indispensables pour financer les infrastructures, subventionner les provinces en crise et payer les taxes douanières imposées par nos voisins comme la Luvonie. Sans ces fonds, l'économie stagne et le chômage de masse menace la Capitale.
+
+\paragraph{DOTATION  :} Distribués tous les deux cycles parlementaires. Le Ministre de l'Économie et les chefs de partis Libéraux reçoivent une bonification de gestion pour leurs projets départementaux et économiques.
+
+
+
+
+
+\section{Crédits de Défense}
+
+\paragraph{STATUT  :} CAPACITÉ DE DISSUASION
+
+\paragraph{PROFIL  :} Représente la maintenance des radars, le carburant des blindés et la solde des garnisons des Hauteurs Profondes et d'Eldrazi.
+
+\paragraph{MÉCANIQUE  :} La sécurité a un prix. Chaque déploiement ou maintien de l'ordre face aux incursions de Tori Value consomme ces crédits. Si le stock tombe à zéro, les frontières deviennent poreuses et la République s'expose à une annexion de ses territoires d'Outre-Mer. En état de siège, leur utilisation est prioritaire sur tout autre flux.
+
+\paragraph{DOTATION  :} Le Ministre de la Défense et les chefs de partis Militaristes et Nationalistes reçoivent une dotation stratégique supérieure pour garantir la souveraineté nationale.
+
+
+
+
+
+\newpage
+\section{Titres de Solidarité}
+
+\paragraph{STATUT  :} PAIX SOCIALE
+
+\paragraph{PROFIL  :} Représente l'aide alimentaire, l'accès aux soins dans la Vallée de l'Armoire et les subventions d'intégration pour les Plasticiens.
+
+\paragraph{MÉCANIQUE  :} Ces titres sont le rempart contre la révolution. Ils servent à apaiser les provinces en statut de "Contestation" ou de "Sédition". Ignorer ce flux, c'est accepter de voir le peuple se soulever. Dans un monde moderne, la stabilité ne se gagne pas seulement par les armes, mais par la redistribution des richesses.
+
+\paragraph{DOTATION  :} Les chefs de partis Socialistes, Populistes et Écologistes reçoivent un bonus de "Base Électorale" pour maintenir leur influence locale.
+
+
+
+
+\section{Crédits Diplomatiques }
+
+\paragraph{STATUT  :} AUTORITÉ PARLEMENTAIRE
+
+\paragraph{PROFIL  :} Représente le temps de parole, l'organisation des scrutins secrets et les frais de chancellerie internationale.
+
+\paragraph{MÉCANIQUE  :} La démocratie coûte cher. Chaque amendement, chaque veto ou chaque usage de la Loi de l'Enclume nécessite de mobiliser ces ressources. Elles servent également à négocier avec des puissances comme Elimat ou la Junte du Sud. C'est la ressource principale du Président de séance pour diriger les débats.
+
+\paragraph{DOTATION  :} Le Président de séance et les membres du Cabinet reçoivent la dotation la plus élevée pour assurer le fonctionnement des institutions.
+
+\section{Unités d'Influence }
+
+\paragraph{STATUT  :} ACTIFS NON-RÉPERTORIÉS
+
+\paragraph{PROFIL  :} Échanges de faveurs, informations classées, "lobbying" intensif et fonds de couloir.
+
+\paragraph{MÉCANIQUE  :} Officiellement, ces unités n'existent pas dans les registres du Greffier. \\Officieusement, elles achètent les votes et les silences. Elles sont l'outil privilégié pour les opérations d'espionnage contre Tori Value ou pour discréditer un rival politique sans passer par une tribune officielle. C'est l'argent de l'ombre, nécessaire quand la loi devient un obstacle.
+
+\paragraph{DOTATION  :} Distribuées de manière discrète aux chefs de partis et aux membres influents. Le bonus dépend des "services rendus" à la République lors des cycles précédents.
+
+
+
+
+
+
+
+
+\chapter{CHRONOLOGIE RÉCENTE (4016-4026 après Dobby)}
+\section{4017 ap. D.  : Le Krach du Quartz Luvonien}
+
+\paragraph{STATUT  :} CRISE ÉCONOMIQUE MAJEURE
+
+\paragraph{PROFIL  :} Effondrement des cours boursiers et rupture des stocks industriels.
+
+\paragraph{CONTEXTE  :} Suite à un désaccord sur les quotas de pêche dans la Mer de Thalj, le Royaume de Luvonie a gelé les exportations de quartz vers le Plateau pendant six mois. Sans cette ressource, les usines de haute technologie de la République se sont arrêtées. Cet événement a prouvé notre dépendance dangereuse envers le Nord et a forcé le Parlement à voter les premières lois de souveraineté industrielle.
+
+\section{4019 ap. D.  : L'Insurrection des "Pixels Noirs"}
+
+\paragraph{STATUT  :} TROUBLE INTÉRIEUR SÉVÈRE
+
+\paragraph{PROFIL  :} Cyber-révolte et sédition dans la Province des Plasticiens.
+
+\paragraph{CONTEXTE  :} Un mouvement de hackers plasticiens, les "Pixels Noirs", a pris le contrôle des réseaux de diffusion de la Capitale pendant 72 heures, diffusant des messages réclamant l'autonomie numérique. La répression fut brutale, marquant le début de la méfiance actuelle envers les minorités technologiques et l'augmentation des budgets de surveillance intérieure.
+
+\section{4021 ap. D.  : La Guerre des Six Jours contre Tori Value}
+
+\paragraph{STATUT  :} CONFLIT ARMÉ FRONTALIER
+
+\paragraph{PROFIL  :} Tentative d'annexion éclair de l'Archipel d'Eldrazi.
+
+\paragraph{CONTEXTE  :} Profitant d'une vacance du pouvoir au Parlement, l'Empire de Tori Value a lancé une invasion amphibie sur les côtes Sud d'Eldrazi. Grâce à une mobilisation héroïque des garnisons des Hauteurs Profondes dépêchées sur place, l'Empire a été repoussé en moins d'une semaine. Ce conflit a laissé l'archipel en ruines et a ravivé le traumatisme de l'invasion d'il y a 30 ans.
+
+\section{4024 ap. D.  : La Grande Famine de la Vallée de l'Armoire}
+
+\paragraph{STATUT  :} CATASTROPHE HUMANITAIRE
+
+\paragraph{PROFIL  :} Sécheresse exceptionnelle et rupture des chaînes logistiques.
+
+\paragraph{CONTEXTE  :} Une vague de chaleur sans précédent a détruit 70\% des récoltes de la Vallée. Le manque de réactivité du Parlement, qui a refusé de voter des Titres de Solidarité d'urgence par peur du déficit, a provoqué des émeutes de la faim. C'est à la suite de cette crise que la Vallée de l'Armoire est passée durablement en statut de "Contestation".
+
+\section{4025 ap. D.  : Le Pacte de l'Émirat}
+
+\paragraph{STATUT  :} ACCORD DIPLOMATIQUE CONTROVERSÉ
+
+\paragraph{PROFIL  :} Injection massive de capitaux étrangers par la Junte du Sud.
+
+\paragraph{CONTEXTE  :} Pour reconstruire Eldrazi et moderniser le Plateau, le Cabinet a signé un accord secret avec la Junte des Émirats du Sud. En échange de l'accès à nos ports, l'Émir a versé des milliards en Fonds Industriels. Si l'économie a redémarré, l'éthique de la République a été entachée, provoquant la montée des partis Populistes et Socialistes contre "l'argent du sang".
+
+\section{4026 ap. D. (Aujourd'hui)  : L'Éveil de l'Outre-Porte}
+
+\paragraph{STATUT  :} TENSION GÉOPOLITIQUE ACTUELLE
+
+\paragraph{PROFIL  :} Mouvement de réunification de la "Grande Gérionie".
+
+\paragraph{CONTEXTE  :} Depuis le début de l'année, les appels à la réunification en Outre-Porte se multiplient. Des manifestations massives pro-gérioniennes éclatent le long de la frontière Nord-Est. Le Parlement est aujourd'hui face à un choix historique  : intégrer ces populations au risque d'une guerre avec les puissances voisines, ou rester spectateur de l'effondrement d'un peuple frère.
+
+
+
+
+
+
+\chapter{ARCHIVES HISTORIQUES}
+\section{1204 ap. D.  : Le Grand Schisme des Hauteurs}
+
+\paragraph{STATUT  :} ÉVÉNEMENT FONDATEUR / RUPTURE
+
+\paragraph{PROFIL  :} Séparation idéologique entre les clans du Nord et les cités du Sud.
+
+\paragraph{CONTEXTE  :} À cette époque reculée, la Gérionie n'était qu'une constellation de cités minières. Une dispute sur le partage des filons de fer profonds a mené à une guerre civile de trente ans. C'est à la suite de ce conflit que fut signé le "Premier Pacte de Concorde", ancêtre de notre Parlement actuel, instaurant l'idée qu'aucune province ne doit dominer les autres par la force.
+
+\section{2550 ap. D.  : L'Invention de l'Automate à Vapeur}
+
+\paragraph{STATUT  : RÉVOLUTION TECHNOLOGIQUE}
+
+\paragraph{PROFIL  : Mutation radicale du Plateau et naissance de l'industrie.}
+
+\paragraph{CONTEXTE  :} La découverte des plans de l'ingénieur Dobby-wan pour l'extraction automatisée a transformé le Plateau, alors zone pastorale, en un enfer de métal et de charbon. C'est le début de l'ascension économique de la Gérionie. Cet événement a créé une fracture durable avec la Vallée de l'Armoire, qui a refusé cette "déshumanisation" du travail pour rester fidèle à la terre.
+
+\section{3210 ap. D.  : La Grande Peste Noire de Thalj}
+
+\paragraph{STATUT  : CATASTROPHE SANITAIRE ET DIPLOMATIQUE}
+
+\paragraph{PROFIL  : Isolement total de la Gérionie et montée de la Luvonie.}
+
+\paragraph{CONTEXTE  :} Une épidémie venue des ports du Nord a décimé un tiers de la population de la Capitale. Le Royaume de Luvonie, en instaurant un blocus sanitaire strict, a pris le contrôle définitif de la Mer de Thalj. La Gérionie a perdu sa souveraineté maritime ce jour-là, devenant une puissance essentiellement continentale, dépendante des tarifs luvoniens pour son commerce.
+
+\newpage
+\section{3940 ap. D.  : Le Premier Siège d'Eldrazi}
+
+\paragraph{STATUT  : DÉBUT DE LA GUERRE FROIDE AVEC L'EST}
+
+\paragraph{PROFIL  : Première tentative d'annexion par l'ancêtre de Tori Value.}
+
+\paragraph{CONTEXTE  :} Bien avant la guerre d'il y a 30 ans, Tori Value (alors sous forme d'une coalition de Seigneurs de Guerre) a tenté de s'emparer de l'Archipel pour en faire une base de lancement. Le siège a duré deux ans. La République n'a survécu que grâce à l'intervention tardive et onéreuse de l'Alliance des États d’Elimat, marquant le début de notre dette historique et de notre dépendance envers le "Gendarme du Monde".
+
+\section{3996 ap. D.  : La Découverte des Polymères Organiques}
+
+\paragraph{STATUT  : NAISSANCE DE LA QUESTION PLASTICIENNE}
+
+\paragraph{PROFIL  : Émergence d'une nouvelle culture technologique.}
+
+\paragraph{CONTEXTE  : } Dans les laboratoires isolés de la périphérie, des chercheurs ont réussi à fusionner la chimie et le vivant. Ce succès a attiré des milliers de travailleurs spécialisés, formant ce qui deviendra la Province des Plasticiens. Cependant, l'incapacité du Parlement à intégrer ces nouveaux citoyens dans le code civil de l'époque a semé les graines de la contestation que nous connaissons aujourd'hui en 4026.
+
+
+
+
+
+
+\chapter{SYMBOLES ET CARTOGRAPHIE DE LA RÉPUBLIQUE}
+\section{Le Pavillon National}
+
+\paragraph{PROFIL  :} Étendard quadripartite représentant l'union indéfectible des quatre provinces fondatrices.
+
+\paragraph{DESCRIPTION  :} Le drapeau se compose d'un tricolore horizontal, Vert, Blanc, Noir,. La bande Verte occupe la moitié du drapeau, la bande Blanche le tiers et la bande Noire le sixième.
+
+Au centre est placé le Grand Sceau de la République.
+
+\qquad
+
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{Drapeau Gérionie.png}
+    \caption{Drapeau de la Gérionie}
+\end{figure}
+
+
+\newpage
+\section{Le Grand Sceau de la République }
+
+\paragraph{STATUT  :} AUTHENTIFICATION LÉGALE
+
+\paragraph{PROFIL  :} Armoirie officielle apposé par le Greffier sur les Lois Organiques et les Traités Internationaux.
+
+\paragraph{CONTEXTE  :} Le Sceau se compose de quatre quartiers d’égale dimension. En haut à
+gauche, la Balance d’or sur fond pourpre (La Capitale) ; en haut à droite, l’Enclume de sable
+sur fond bleu azur (Le Plateau) ; en bas à gauche, le Pic de roche sur fond gris acier (Les Hauteurs Profondes) ; en bas à droite, la Gerbe d’or sur fond vert émeraude (La Vallée de l’Armoire). Au sommet est inscrit la devise nationale  : \textbf{E PLURIBUS, UNA RESPUBLICA}, surplombée par les remparts de Tribut.
+
+Toute altération du Sceau non autorisée sur un document officiel est considérée comme un crime de lèse-république.
+
+\qquad
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=6cm]{Sceau Gérionie.png}
+    \caption{Grand Sceau de la République}
+\end{figure}
+
+
+\newpage
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=12cm]{Carte Continentale Etendue Nord_cropped_page-0001.jpg}
+    \caption{Carte du Continent et du Nord}
+\end{figure}
+
+
+
+
+
+\chapter{REMERCIEMENTS ET DEVOIR D'ARCHIVAGE}
+\section*{À l'attention des Représentants}
+
+\paragraph{RECONNAISSANCE  :} Le Greffe de la République de Gérionie tient à exprimer sa profonde gratitude envers les parlementaires dont l'engagement et la sagacité permettent à ce Parlement d'exister. Que vos débats soient animés, mais que votre loyauté envers la Concorde reste inébranlable.
+
+\paragraph{CONTRIBUTEURS ARCHIVISTES  :}
+Ce recueil n'aurait pu voir le jour sans le travail acharné des services suivants  :
+
+    Le Département de Cartographie des Hauteurs Profondes, pour les relevés de bordure.
+
+    L'Institut de Vexillologie de la Capitale, pour la préservation des couleurs de la nation.
+
+    Les Services de Renseignement Extérieurs, pour les dossiers classés sur Tori Value et Elimat.
+
+    L'Imprimerie Nationale, pour l'édition de ce volume en 4026 ap. D.
+
+\paragraph{MENTIONS SPÉCIALES  :}
+Un remerciement particulier aux pionniers et visionnaires qui ont forgé l'esprit gérionien  :
+
+    À Henri L., dont les serveurs et les connaissances nous permettent d'avoir un logiciel à la pointe de la technologie.
+
+    À David L. M., dont les unes de journaux, véritables miroirs de nos crises et de nos triomphes, resteront gravées dans les annales comme le témoignage vivant de l'opinion publique gérionienne.
+
+    À Claire V., dont l'idée même du parlement est issue de son esprit.
+
+    À Dobby, dont l'héritage chronologique guide nos pas à travers les siècles.
+
+
+
+
+
+\section*{Note de l'Éditeur}
+
+\paragraph{AVERTISSEMENT  :} Ce document est une propriété de l'État. Toute reproduction, même partielle, sans le sceau du Greffier est passible de sanctions au titre de l'Article 20.2 du Code Constitutionnel.
+
+\paragraph{FINALITÉ  :} Que ce guide serve de boussole dans la tempête politique à venir. La Gérionie ne survit que par la volonté de ses membres de s'unir quand l'ombre de l'Est s'étend sur nos côtes.
+
+
+\newpage
+\section*{Devoir d'Archivage}
+\paragraph{SIGNATURES :}
+\textit{Scellé et approuvé par Le Greffier de la République.}
+
+
+\newcommand\namegroup[1]{%
+    \begin{minipage}[t]{0.4\textwidth}
+        \vspace*{1.5cm}  % leave some space above the horizontal line
+        \hrule
+        \vspace{1mm} % just a bit more whitespace below the line
+        \centering
+        \begin{tabular}[t]{c}
+            #1
+        \end{tabular}
+\end{minipage}}
+
+
+
+\begin{center}
+    \namegroup{Yahia B. L.\\ Greffier du Parlement de Gérionie}
+    \hspace{1.5cm}
+    \namegroup{Henri L.\\Responsable logiciel }
+
+    \namegroup{Président d'Honneur \\du Parlement de Gérionie}
+    \hspace{1.5cm}
+    \namegroup{David L. M.\\Rédacteur en Chef de la Critique}
+
+\end{center}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=3cm]{tampon gérionie.png}
+\end{figure}
+
+
+\newpage
+\paragraph{ARCHIVES PARLEMENTAIRES  :}
+\textit{Nous, Représentants souverains du Parlement, apposons ici notre seing pour lier nos destins à celui de la République. Que l'Histoire retienne notre unité.}
+\newpage
+\paragraph{ARCHIVES PARLEMENTAIRES  :}
+\textit{Nous, Représentants souverains du Parlement, apposons ici notre seing pour lier nos destins à celui de la République. Que l'Histoire retienne notre unité.}
+
+
+\end{document}
+
+
+
+
+
+
